@@ -41,7 +41,6 @@
   font-size: 18px;
   line-height: 27px;
   color: #ffffff;
-
 }
 
 .ui.primary.button.explore-boats {
@@ -54,20 +53,38 @@
   background-color: #d01919;
 }
 
+.generate-income {
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
+  height: 109px;
+  left: 0px;
+  top: 791px;
+  background: #f7f7f7;
+  padding-top: 22px;
+  padding-right: 7px;
+
+}
+
+.generate-income-boat {
+  text-align: center;
+  width: 200px;
+}
+
 @media only screen and (max-width: 425px) {
   .background-pic {
     height: 550px;
     background-size: cover;
     background: linear-gradient(
-      0deg,
-      rgba(12, 87, 142, 0.3),
-      rgba(12, 87, 142, 0.3)
-    ),
-    url(images/Rectangle-mobile.png);
+        0deg,
+        rgba(12, 87, 142, 0.3),
+        rgba(12, 87, 142, 0.3)
+      ),
+      url(images/Rectangle-mobile.png);
     background-position: center center;
     background-repeat: no-repeat;
-  }  
-  
+  }
+
   .get-your-boat-bold-text {
     font-size: 28px;
     top: 100px;
@@ -87,16 +104,22 @@
   .ui.primary.button.explore-boats {
     margin-top: 230px;
   }
-
 }
 
 @media only screen and (max-width: 768px) {
   .get-your-boat-bold-text {
     font-size: 30px;
   }
-    
 }
 
+@media only screen and (max-width: 768px) {
+  .generate-income {
+    height: 135px;
+    padding-top: 10px;
+  }
 
-
-
+  .generate-income-boat { 
+    width: 90px;
+    
+  }
+}
