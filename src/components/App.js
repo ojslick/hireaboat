@@ -9,6 +9,7 @@ import LandingPage from './Landing-page/LandingPage';
 import Login from './Login/Login';
 import SignUp from './SignUp/SignUp';
 import AddABoat from './AddABoat/Addaboat';
+import boatResult from './boatResult/boatResult';
 
 class App extends React.Component {
   UNSAFE_componentWillMount() {
@@ -38,6 +39,7 @@ class App extends React.Component {
             <Route path="/login" exact component={Login} />
             <Route path="/signup" exact component={SignUp} />
             <Route path="/listaboat" exact component={AddABoat} />
+            <Route path="/boatresult" exact component={boatResult} />
           </Switch>
         </Router>
       </div>

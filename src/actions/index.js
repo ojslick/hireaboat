@@ -1,5 +1,7 @@
 import { LOGIN } from './types/login';
 import { LOGOUT } from './types/logout';
+import { ADD_BOAT } from './types/addboat';
+import { LIST_BOATS } from './types/listBoats';
 import { CONNECTION_STATUS_UPDATE } from './types/connection';
 import history from '../history';
 
@@ -64,6 +66,62 @@ export const createUser = (
   } catch (err) {
     console.log(err);
     cb(err);
+  }
+};
+
+//Add a boat
+export const addBoat = (
+  boatType,
+  boatManufacturer,
+  boatModel,
+  city,
+  boatHabour,
+  captain,
+  currency,
+  dailyBookingPrice,
+  numberOfCabins,
+  numberOfBathrooms,
+  lengthOfBoats,
+  boatCapacity,
+  boatDescription,
+  photos,
+  cb
+) => async (dispatch, getState) => {
+  try {
+    const response = await getState().hoodie.store.add({
+      boatType,
+      boatManufacturer,
+      boatModel,
+      city,
+      boatHabour,
+      captain,
+      currency,
+      dailyBookingPrice,
+      numberOfCabins,
+      numberOfBathrooms,
+      lengthOfBoats,
+      boatCapacity,
+      boatDescription,
+      photos
+    });
+
+    if (response) {
+      dispatch({ type: 'ADD_BOAT', payload: response });
+      history.push('/');
+    }
+  } catch (err) {
+    console.log(err);
+    cb(err);
+  }
+};
+
+export const listBoats = () => async (dispatch, getState) => {
+  try {
+    const response = await getState().hoodie.store.findAll();
+
+    dispatch({ type: 'LIST_BOATS', payload: response });
+  } catch (err) {
+    console.log(err);
   }
 };
 

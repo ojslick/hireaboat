@@ -30,6 +30,7 @@ class Login extends React.Component {
   //Create a new user in hoodie
   login = () => {
     const { username, password } = this.state;
+    const { login } = this.props;
     if (username && password) {
       const loginFunc = login;
       // login
