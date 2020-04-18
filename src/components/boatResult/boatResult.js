@@ -1,6 +1,7 @@
 import React from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { connect } from 'react-redux';
+
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import BoatCard from './boatCard';

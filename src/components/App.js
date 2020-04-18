@@ -10,6 +10,7 @@ import Login from './Login/Login';
 import SignUp from './SignUp/SignUp';
 import AddABoat from './AddABoat/Addaboat';
 import boatResult from './boatResult/boatResult';
+import SelectBoat from './SelectBoat/SelectBoat';
 
 class App extends React.Component {
   UNSAFE_componentWillMount() {
@@ -40,6 +41,7 @@ class App extends React.Component {
             <Route path="/signup" exact component={SignUp} />
             <Route path="/listaboat" exact component={AddABoat} />
             <Route path="/boatresult" exact component={boatResult} />
+            <Route path="/selectboat" exact component={SelectBoat} />
           </Switch>
         </Router>
       </div>
