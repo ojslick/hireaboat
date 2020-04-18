@@ -27,8 +27,8 @@
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
-    "start": "hoodie",
-    "start-": "react-scripts start",
+    "now-start": "hoodie --inMemory",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
