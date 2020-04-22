@@ -83,6 +83,7 @@ class Login extends React.Component {
   }
 
   render() {
+    console.log(process.env);
     const { errors } = this.state;
     console.log(errors);
     return (

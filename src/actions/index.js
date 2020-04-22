@@ -9,7 +9,6 @@ import history from '../history';
 export const checkUser = () => async (dispatch, getState) => {
   try {
     const response = await getState().hoodie.account.get();
-    console.log(response);
 
     dispatch({ type: LOGIN, payload: response });
   } catch (err) {
@@ -138,4 +137,11 @@ export const selectBoat = data => async dispatch => {
 
 export const connectionStatus = status => dispatch => {
   dispatch({ type: CONNECTION_STATUS_UPDATE, payload: status });
+};
+
+//Similar Boats
+export const similarBoats = data => async dispatch => {
+  const response = await data;
+
+  dispatch({ type: 'SIMILAR_BOATS', payload: response });
 };

@@ -5,6 +5,7 @@ import connectionStatus from './connectionStatus';
 import hireaboat from './hireaboat';
 import listBoatsReducer from './listBoatsReducer';
 import selectBoatReducer from './selectBoatReducer';
+import similarBoatsReducer from './similarBoatsReducer';
 
 export default combineReducers({
   hoodie,
@@ -12,5 +13,6 @@ export default combineReducers({
   connectionStatus,
   hireaboat,
   boatList: listBoatsReducer,
-  selectBoat: selectBoatReducer
+  selectBoat: selectBoatReducer,
+  similarBoats: similarBoatsReducer
 });
