@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectBoat } from '../../actions/index';
 
-class BoatCard extends React.Component {
+class SimilarBoatCard extends React.Component {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     const { data } = this.props;
     const slideImages = !data.photos ? '' : data.photos;
@@ -33,71 +37,35 @@ class BoatCard extends React.Component {
     return (
       <div
         to="/selectboat"
-        className="boat-result-search-result-boat-list-card"
+        className="boat-result-search-result-boat-list-card-similar"
         key={data._id}
         onClick={() => this.props.selectBoat(data)}
       >
         <Slide {...properties}>
-          <div style={{ width: '321px', height: '213px' }}>
+          {slideImages.map(photo => (
             <div
               style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[0]})`,
-                width: '321px',
+                width: '100%',
                 height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
-
-                backgroundBlendMode: 'multiply, normal'
+                backgroundSize: 'cover'
               }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
-          <div
-            style={{
-              width: '321px',
-              height: '213px',
-              backgroundSize: 'cover'
-            }}
-          >
-            <div
-              style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[1]})`,
-                width: '321px',
-                height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
+            >
+              <div
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${photo})`,
+                  width: '100%',
+                  height: '213px',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat',
+                  borderRadius: '5px 5px 0px 0px',
 
-                backgroundBlendMode: 'multiply, normal'
-              }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
-          <div
-            style={{
-              width: '321px',
-              height: '213px',
-              backgroundSize: 'cover'
-            }}
-          >
-            <div
-              style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[2]})`,
-                width: '321px',
-                height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
-
-                backgroundBlendMode: 'multiply, normal'
-              }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
+                  backgroundBlendMode: 'multiply, normal'
+                }}
+                className="boat-result-search-result-boat-list-card-pic"
+              ></div>
+            </div>
+          ))}
         </Slide>
         <div className="boat-result-search-result-boat-list-card-price">
           <p>
@@ -165,4 +133,4 @@ class BoatCard extends React.Component {
   }
 }
 
-export default connect(null, { selectBoat })(BoatCard);
+export default connect(null, { selectBoat })(SimilarBoatCard);

@@ -7,14 +7,20 @@ import bathIcon from './images/bathIcon.svg';
 import lengthIcon from './images/lengthIcon.svg';
 import guestIcon from './images/guestIcon.svg';
 import BookingCard from './BookingCard';
-import BookNowModal from './BookNowModal';
+import ReactModal from 'react-modal';
+import cancelIconWhite from './images/cancelIconWhite.svg';
+import SimilarBoatCard from './SimilarBoatCard';
+import Footer from '../Footer/Footer';
+import MessageOwner from './MessageOwner';
 
 import './selectBoat.css';
 
+ReactModal.setAppElement('#root');
+
 class SelectBoat extends React.Component {
   state = {
-    openBookNowModal: false,
-    closeBookNowModal: false
+    modalIsOpen: false,
+    messageModalIsOpen: false
   };
 
   componentDidMount() {
@@ -23,6 +29,22 @@ class SelectBoat extends React.Component {
 
   onChangeTo = date => this.setState({ toDate: date });
   onChangeFrom = date => this.setState({ fromDate: date });
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  messageCloseModal = () => {
+    this.setState({ messageModalIsOpen: true });
+  };
+
+  messageOpenModal = () => {
+    this.setState({ messageModalIsOpen: true });
+  };
 
   render() {
     const {
@@ -36,16 +58,63 @@ class SelectBoat extends React.Component {
       dailyBookingPrice,
       boatDescription
     } = this.props.selectBoatState;
+
+    const customStyles = {
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <div className="select-boat-container">
-        <BookNowModal
-          openBookNowModal={this.state.openBookNowModal}
-          dailyBookingPrice={dailyBookingPrice}
-          fromDate={this.state.fromDate}
-          toDate={this.state.toDate}
-          clickToDay={this.state.clickToDay}
-          clickFromDay={this.state.clickFromDay}
-        />
+        <div>
+          <ReactModal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+            shouldCloseOnOverlayClick={true}
+            shouldCloseOnEsc={true}
+          >
+            <BookingCard dailyBookingPrice={dailyBookingPrice} />
+            <div
+              style={{ position: 'absolute', left: '87%', top: '6.5%' }}
+              onClick={this.closeModal}
+            >
+              <img
+                src={cancelIconWhite}
+                alt="cancel icon"
+                style={{ width: '30px', height: '30px', cursor: 'pointer' }}
+              />
+            </div>
+          </ReactModal>
+        </div>
+        <div>
+          <ReactModal
+            isOpen={this.state.messageModalIsOpen}
+            onRequestClose={this.messageCloseModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+            shouldCloseOnOverlayClick={true}
+            shouldCloseOnEsc={true}
+          >
+            <MessageOwner dailyBookingPrice={dailyBookingPrice} />
+            <div
+              style={{ position: 'absolute', left: '87%', top: '6.5%' }}
+              onClick={this.messageCloseModal}
+            >
+              <img
+                src={cancelIconWhite}
+                alt="cancel icon"
+                style={{ width: '30px', height: '30px', cursor: 'pointer' }}
+              />
+            </div>
+          </ReactModal>
+        </div>
         <div className="select-boat-mobile-booking">
           <div className="select-boat-mobile-booking-align">
             <button
@@ -56,11 +125,7 @@ class SelectBoat extends React.Component {
                 marginTop: '0px',
                 opacity: '0.9'
               }}
-              onClick={() =>
-                this.setState(prevState => ({
-                  openBookNowModal: !prevState.openBookNowModal
-                }))
-              }
+              onClick={this.openModal}
             >
               Book Now
             </button>
@@ -72,6 +137,7 @@ class SelectBoat extends React.Component {
                 marginTop: '0px',
                 opacity: '0.9'
               }}
+              onClick={this.messageOpenModal}
             >
               Message Owner
             </button>
@@ -158,6 +224,33 @@ class SelectBoat extends React.Component {
                       </div>
                     </div>
                   </div>
+                  <div className="select-boat-description-details-captain">
+                    <div className="select-boat-description-details-description">
+                      <div style={{ display: 'inline-block', width: '100%' }}>
+                        <h3 className="select-boat-description-details-description-heading">
+                          Boat Captain
+                        </h3>
+
+                        <div className="select-boat-description-details-description-body">
+                          {/* Render Captain Details */}
+                          <div className="select-boat-description-left-separator-line1"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="select-boat-description-details-reviews-comments">
+                    <div className="select-boat-description-details-description">
+                      <div style={{ display: 'inline-block', width: '100%' }}>
+                        <h3 className="select-boat-description-details-description-heading">
+                          Reviews (0)
+                        </h3>
+
+                        <div className="select-boat-description-details-description-body">
+                          {/* Render Reviews */}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="select-boat-description-right">
@@ -165,14 +258,44 @@ class SelectBoat extends React.Component {
               </div>
             </div>
           </div>
+          <div className="select-boat-description-left-separator-last-line"></div>
+          <div className="select-boat-description-details-similar-boats">
+            <div className="select-boat-description-details-description">
+              <div style={{ display: 'inline-block', width: '100%' }}>
+                <h3 className="select-boat-description-details-description-heading">
+                  Similar Boats
+                </h3>
+
+                <div className="select-boat-description-details-description-body">
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    {this.props.similarBoats.map(data => {
+                      return this.props.selectBoatState === data ? null : (
+                        <SimilarBoatCard data={data} key={data._id} />
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <Footer />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { selectBoatState: state.selectBoat };
+  return {
+    selectBoatState: state.selectBoat,
+    similarBoats: state.similarBoats
+  };
 };
 
 export default connect(mapStateToProps, { selectBoat })(SelectBoat);

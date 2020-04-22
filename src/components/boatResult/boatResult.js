@@ -1,6 +1,8 @@
 import React from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { connect } from 'react-redux';
+import { listBoats } from '../../actions/';
+import { similarBoats } from '../../actions';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -8,8 +10,6 @@ import BoatCard from './boatCard';
 import FilterComponents from './Filter';
 import Pagination from './Pagination';
 import Footer from '../Footer/Footer';
-
-import { listBoats } from '../../actions/';
 
 import LengthSlider from './lengthSlider';
 import CapacitySliders from './capacitySlider';
@@ -46,20 +46,15 @@ class boatResult extends React.Component {
     this.props.listBoats();
   }
 
+  componentDidUpdate() {
+    this.props.similarBoats(this.state.filteredSearch);
+  }
+
   handleMobileFilterClick = () => {
     this.setState(prevState => ({ mobileFilter: !prevState.mobileFilter }));
   };
 
   handleFilter = (name, value) => {
-    const {
-      location,
-      boatType,
-      price,
-      length,
-      capacity,
-      cabin,
-      manufacturer
-    } = this.state;
     const boatsCopy = [...this.props.boats];
     const searchResult =
       this.state.filteredSearch.length > 0
@@ -493,7 +488,10 @@ class boatResult extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return { boats: state.boatList };
 };
 
-export default connect(mapStateToProps, { listBoats })(boatResult);
+export default connect(mapStateToProps, { listBoats, similarBoats })(
+  boatResult
+);

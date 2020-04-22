@@ -26,7 +26,9 @@ class LandingPage extends React.Component {
       <div>
         <div className="background-pic">
           <div className="get-your-boat-container">
-            <h1 className="get-your-boat-bold-text">Let's get you your boat</h1>
+            <h1 className="get-your-boat-bold-text">
+              Let's get you your boats
+            </h1>
             <p className="get-your-boat-intro-text">
               More than 35,000 private yachts rental and bareboat charters
               around the world to help you make the right choice
