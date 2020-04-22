@@ -29,8 +29,8 @@
   },
   "scripts": {
     "now-start": "hoodie --inMemory",
-    "start": " REACT_APP_SEUN=akogun react-scripts start",
-    "build": "REACT_APP_hoodie_inMemory=true REACT_APP_hoodie_dbUrl=https://e3ce296d-6ba7-40a1-9487-0edc2f5b5b40-bluemix:7a305a37e4021e1f2ca4aaf4480794ac25a9e8bac82472e90b62c27f31933349@e3ce296d-6ba7-40a1-9487-0edc2f5b5b40-bluemix.cloudantnosqldb.appdomain.cloud react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-hoodie": "hoodie"
