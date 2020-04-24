@@ -30,10 +30,9 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(process.env);
     const { auth, connectionStatus, logout, checkUser } = this.props;
-    console.log('hoodie_dbUrl====>', process.env.REACT_APP_hoodie_dbUrl);
-    console.log('hoodie_inMemory====>', process.env.REACT_APP_hoodie_inMemory);
-    console.log('REACT_APP_SEUN===>', process.env.REACT_APP_SEUN);
+
     return (
       <div>
         <Router history={history}>

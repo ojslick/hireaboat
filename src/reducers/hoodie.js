@@ -1,6 +1,6 @@
 import Hoodie from '@hoodie/client';
 const hoodieInstance = new Hoodie({
-  url: 'http://localhost:8080',
+  url: 'https://localhost:8080',
   PouchDB: require('pouchdb-browser').default
 });
 const hoodie = () => hoodieInstance;
