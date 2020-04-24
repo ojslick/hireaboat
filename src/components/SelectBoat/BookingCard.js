@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bookingCard } from '../../actions';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
@@ -10,8 +12,13 @@ class BookingCard extends React.Component {
     clickFromDay: true
   };
 
+  componentDidUpdate() {
+    this.props.bookingCard(this.state.fromDate.toLocaleDateString());
+  }
+
   onChangeTo = date => this.setState({ toDate: date });
   onChangeFrom = date => this.setState({ fromDate: date });
+
   render() {
     const { dailyBookingPrice } = this.props;
     return (
@@ -162,4 +169,4 @@ class BookingCard extends React.Component {
   }
 }
 
-export default BookingCard;
+export default connect(null, { bookingCard })(BookingCard);

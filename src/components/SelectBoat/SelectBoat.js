@@ -20,15 +20,13 @@ ReactModal.setAppElement('#root');
 class SelectBoat extends React.Component {
   state = {
     modalIsOpen: false,
-    messageModalIsOpen: false
+    messageModalIsOpen: false,
+    fromDate: null
   };
 
   componentDidMount() {
     this.props.selectBoat();
   }
-
-  onChangeTo = date => this.setState({ toDate: date });
-  onChangeFrom = date => this.setState({ fromDate: date });
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
@@ -44,6 +42,11 @@ class SelectBoat extends React.Component {
 
   messageOpenModal = () => {
     this.setState({ messageModalIsOpen: true });
+  };
+
+  handleFromDate = date => {
+    console.log('handleFromDateDate====>', date);
+    this.setState({ fromDate: date });
   };
 
   render() {
@@ -69,6 +72,7 @@ class SelectBoat extends React.Component {
         transform: 'translate(-50%, -50%)'
       }
     };
+    console.log('selectboatstate===>', this.state.fromDate);
     return (
       <div className="select-boat-container">
         <div>
@@ -80,7 +84,10 @@ class SelectBoat extends React.Component {
             shouldCloseOnOverlayClick={true}
             shouldCloseOnEsc={true}
           >
-            <BookingCard dailyBookingPrice={dailyBookingPrice} />
+            <BookingCard
+              dailyBookingPrice={dailyBookingPrice}
+              handleFromDate={() => this.handleFromDate}
+            />
             <div
               style={{ position: 'absolute', left: '87%', top: '6.5%' }}
               onClick={this.closeModal}
@@ -254,7 +261,10 @@ class SelectBoat extends React.Component {
                 </div>
               </div>
               <div className="select-boat-description-right">
-                <BookingCard dailyBookingPrice={dailyBookingPrice} />
+                <BookingCard
+                  dailyBookingPrice={dailyBookingPrice}
+                  handleFromDate={() => this.handleFromDate}
+                />
               </div>
             </div>
           </div>
