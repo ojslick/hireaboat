@@ -28,12 +28,12 @@
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
-    "now-start": "hoodie --inMemory",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "hoodie REACT_APP_hoodie_inMemory=true REACT_APP_hoodie_dbUrl=https://e3ce296d-6ba7-40a1-9487-0edc2f5b5b40-bluemix:7a305a37e4021e1f2ca4aaf4480794ac25a9e8bac82472e90b62c27f31933349@e3ce296d-6ba7-40a1-9487-0edc2f5b5b40-bluemix.cloudantnosqldb.appdomain.cloud REACT_APP_hoodie_port=8090",
+    "start-": "react-scripts start",
+    "build": "npm run start & react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-hoodie": "hoodie"
+    "start--": "hoodie"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,5 +49,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "hoodie": {
+    "address": "127.0.0.1",
+    "port": 8080,
+    "data": ".hoodie",
+    "public": "public",
+    "dbUrl": "",
+    "dbAdapter": "pouchdb-adapter-fs",
+    "inMemory": false,
+    "loglevel": "warn",
+    "url": "",
+    "adminPassword": "",
+    "name": "my-hoodie-app"
   }
 }

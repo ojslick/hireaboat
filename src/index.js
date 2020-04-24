@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 
 import App from './components/App';
 import reducers from './reducers';
+require('dotenv').config();
 
 const store = createStore(reducers, applyMiddleware(thunk));
 

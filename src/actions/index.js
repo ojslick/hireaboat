@@ -136,7 +136,7 @@ export const selectBoat = data => async dispatch => {
 };
 
 export const connectionStatus = status => dispatch => {
-  dispatch({ type: CONNECTION_STATUS_UPDATE, payload: status });
+  dispatch({ type: 'CONNECTION_STATUS_UPDATE', payload: status });
 };
 
 //Similar Boats
