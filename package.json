@@ -29,8 +29,7 @@
   },
   "scripts": {
     "start": "hoodie",
-    "start-": "react-scripts start",
-    "build": "npm run start & react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start--": "hoodie"
