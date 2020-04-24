@@ -135,6 +135,13 @@ export const selectBoat = data => async dispatch => {
   }
 };
 
+//Boat Card
+export const bookingCard = data => async dispatch => {
+  const response = await data;
+
+  dispatch({ type: 'BOOKING_CARD', payload: response });
+};
+
 export const connectionStatus = status => dispatch => {
   dispatch({ type: 'CONNECTION_STATUS_UPDATE', payload: status });
 };

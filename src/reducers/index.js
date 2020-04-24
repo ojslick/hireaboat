@@ -6,6 +6,7 @@ import hireaboat from './hireaboat';
 import listBoatsReducer from './listBoatsReducer';
 import selectBoatReducer from './selectBoatReducer';
 import similarBoatsReducer from './similarBoatsReducer';
+import bookingCardReducer from './bookingCardReducer';
 
 export default combineReducers({
   hoodie,
@@ -14,5 +15,6 @@ export default combineReducers({
   hireaboat,
   boatList: listBoatsReducer,
   selectBoat: selectBoatReducer,
-  similarBoats: similarBoatsReducer
+  similarBoats: similarBoatsReducer,
+  bookingCard: bookingCardReducer
 });
