@@ -48,18 +48,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "hoodie": {
-    "address": "127.0.0.1",
-    "port": 8080,
-    "data": ".hoodie",
-    "public": "public",
-    "dbUrl": "",
-    "dbAdapter": "pouchdb-adapter-fs",
-    "inMemory": false,
-    "loglevel": "warn",
-    "url": "",
-    "adminPassword": "",
-    "name": "my-hoodie-app"
   }
 }
