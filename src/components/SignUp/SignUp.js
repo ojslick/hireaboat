@@ -1,22 +1,20 @@
 import React from 'react';
 import { createUser, login } from '../../actions/index';
 import { connect } from 'react-redux';
-import userIcon from './Images/user-icon.svg';
-import lockIcon from './Images/lock-icon.svg';
+import { auth, createUserProfileDocument } from '../../firebase/firebase';
 
 import './signup.css';
 
 class SignUp extends React.Component {
   state = {
-    firstname: '',
-    lastname: '',
-    username: '',
+    displayName: '',
+    email: '',
     password: '',
     repeat_password: '',
     errors: {
-      firstname: '',
+      displayName: '',
       lastname: '',
-      username: '',
+      email: '',
       password: '',
       repeat_password: '',
       message: ''
@@ -24,20 +22,8 @@ class SignUp extends React.Component {
     error: ''
   };
 
-  //Create a new user in hoodie
-  login = newUser => {
-    const { createUser } = this.props;
-    const { username, password, firstname, lastname } = this.state;
-
-    if (username && password) {
-      const loginFunc = createUser;
-      loginFunc(username, password, firstname, lastname, err => {
-        if (err) this.setState({ error: err.message });
-      });
-    }
-  };
-
-  handleSubmit = event => {
+  handleSubmit = async event => {
+    const { displayName, email, password } = this.state;
     event.preventDefault();
     const validateForm = errors => {
       let valid = true;
@@ -50,6 +36,23 @@ class SignUp extends React.Component {
     } else {
       console.error('Invalid Form');
     }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      await createUserProfileDocument(user, { displayName });
+      this.setState({
+        displayName: '',
+        email: '',
+        password: '',
+        repeat_password: ''
+      });
+    } catch (error) {
+      console.error(error);
+      this.setState({ error: error });
+    }
   };
 
   updateForm(name, value) {
@@ -58,21 +61,16 @@ class SignUp extends React.Component {
       /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
     );
     switch (name) {
-      case 'firstname':
-        errors.firstname =
+      case 'displayName':
+        errors.displayName =
           value.length < 1 ? 'Kindly input your First Name' : '';
         break;
-      case 'lastname':
-        errors.lastname = value.length < 2 ? 'Kindly input your Last Name' : '';
-        break;
-      case 'username':
-        errors.username = validEmailRegex.test(value)
-          ? ''
-          : 'Email is not valid!';
+      case 'email':
+        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
         break;
       case 'password':
         errors.password =
-          value.length < 8 ? 'Password must be 8 characters long!' : '';
+          value.length < 8 ? 'Password must be 6 characters long!' : '';
         break;
       default:
         break;
@@ -82,6 +80,7 @@ class SignUp extends React.Component {
   }
 
   render() {
+    console.log(this.state.error);
     const { errors } = this.state;
     const { error } = this.state;
     return (
@@ -92,53 +91,37 @@ class SignUp extends React.Component {
             <div className="input-container">
               <div className="input-align">
                 <input
-                  name="firstname"
-                  placeholder="First Name"
+                  name="displayName"
+                  placeholder="Full Name"
                   className="input-email"
                   type="text"
                   onChange={event => {
                     event.preventDefault();
-                    this.updateForm('firstname', event.target.value);
+                    this.updateForm('displayName', event.target.value);
                   }}
                 />
               </div>{' '}
             </div>
-            {errors.firstname.length > 0 && (
-              <span className="form-error">{errors.firstname}</span>
+            {errors.displayName.length > 0 && (
+              <span className="form-error">{errors.displayName}</span>
             )}
+
             <div className="input-container" style={{ marginTop: '10px' }}>
               <div className="input-align">
                 <input
-                  name="lastname"
-                  placeholder="Last Name"
-                  className="input-email"
-                  type="text"
-                  onChange={event => {
-                    event.preventDefault();
-                    this.updateForm('lastname', event.target.value);
-                  }}
-                />
-              </div>{' '}
-            </div>
-            {errors.lastname.length > 0 && (
-              <span className="form-error">{errors.lastname}</span>
-            )}
-            <div className="input-container" style={{ marginTop: '10px' }}>
-              <div className="input-align">
-                <input
-                  name="username"
+                  name="email"
                   placeholder="Email"
                   className="input-email"
                   type="email"
                   onChange={event => {
                     event.preventDefault();
-                    this.updateForm('username', event.target.value);
+                    this.updateForm('email', event.target.value);
                   }}
                 />
               </div>{' '}
             </div>
-            {errors.username.length > 0 && (
-              <span className="form-error">{errors.username}</span>
+            {errors.email.length > 0 && (
+              <span className="form-error">{errors.email}</span>
             )}
             <div className="input-container" style={{ marginTop: '10px' }}>
               <div className="input-align">
@@ -185,15 +168,13 @@ class SignUp extends React.Component {
             {errors.repeat_password.length > 0 && (
               <span className="form-error">{errors.repeat_password}</span>
             )}
-            {error.length > 0 && (
-              <span className="form-error">This account already exist</span>
-            )}
+            {error ? <span className="form-error">{error.message}</span> : ''}
             <div className="forgot-password-container">
               <p className="rememberThisDevice">Remember this device</p>
               <p className="forgot-password">Forgot password?</p>
             </div>
-            <button className="submit-button" onClick={() => this.login()}>
-              Login
+            <button className="submit-button" onClick={this.handleSubmit}>
+              Sign Up
             </button>
             <p className="signup-text">Not a member? Register</p>
           </form>
@@ -203,14 +184,4 @@ class SignUp extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-};
-
-const mapDispatchToProps = dispatch => ({
-  createUser: (username, password, firstname, lastname, cb) =>
-    dispatch(createUser(username, password, firstname, lastname, cb)),
-  login: (email, password, cb) => dispatch(login(email, password, cb))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect()(SignUp);

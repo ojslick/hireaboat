@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { checkUser, logout } from '../actions/index';
-import { connectionStatus } from '../actions/index';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../history';
 import NavBar from './Header/NavBar/NavBar';
@@ -11,22 +9,30 @@ import SignUp from './SignUp/SignUp';
 import AddABoat from './AddABoat/Addaboat';
 import boatResult from './boatResult/boatResult';
 import SelectBoat from './SelectBoat/SelectBoat';
-import { auth } from '../firebase/firebase';
+import { auth, createUserProfileDocument } from '../firebase/firebase';
 
 class App extends React.Component {
   state = { currentUser: null };
-
-  UNSAFE_componentWillMount() {
-    this.props.checkUser();
-  }
 
   unsubscribeFromAuth = null;
 
   // Monitor connection status to the Hoodie store
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+          console.log(this.state);
+        });
+      }
+      this.setState({ currentUser: userAuth });
     });
   }
 
@@ -35,7 +41,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(process.env);
     const { auth, connectionStatus, logout, checkUser } = this.props;
 
     return (
@@ -60,16 +65,4 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ auth, hoodie, connectionStatus }) => ({
-  auth,
-  hoodie,
-  connectionStatus
-});
-
-const mapDispatchToProps = dispatch => ({
-  checkUser: () => dispatch(checkUser()),
-  logout: () => dispatch(logout()),
-  updateStatus: newStatus => dispatch(connectionStatus(newStatus))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect()(App);

@@ -85,9 +85,7 @@ class Login extends React.Component {
   }
 
   render() {
-    console.log(process.env);
     const { errors } = this.state;
-    console.log(errors);
     return (
       <div className="login-background">
         <div className="login-form-container">
@@ -182,7 +180,6 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return { auth: state.auth };
 };
 
