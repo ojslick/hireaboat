@@ -1,4 +1,0 @@
-applications:
-  - name: hireaboat
-    random-route: true
-    memory: 128M
