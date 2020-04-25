@@ -11,22 +11,27 @@ import SignUp from './SignUp/SignUp';
 import AddABoat from './AddABoat/Addaboat';
 import boatResult from './boatResult/boatResult';
 import SelectBoat from './SelectBoat/SelectBoat';
+import { auth } from '../firebase/firebase';
 
 class App extends React.Component {
+  state = { currentUser: null };
+
   UNSAFE_componentWillMount() {
     this.props.checkUser();
   }
 
+  unsubscribeFromAuth = null;
+
   // Monitor connection status to the Hoodie store
   componentDidMount() {
-    const { connectionStatus } = this.props.hoodie;
-    connectionStatus.startChecking({ interval: 3000 });
-    connectionStatus.on('disconnect', () => {
-      this.props.updateStatus(false);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({ currentUser: user });
+      console.log(user);
     });
-    connectionStatus.on('reconnect', () => {
-      this.props.updateStatus(true);
-    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
 
   render() {
@@ -36,7 +41,11 @@ class App extends React.Component {
     return (
       <div>
         <Router history={history}>
-          <NavBar auth={auth && auth.username} handleLogOut={logout} />
+          <NavBar
+            auth={auth && auth.username}
+            handleLogOut={logout}
+            currentUser={this.state.currentUser}
+          />
           <Switch>
             <Route path="/" exact component={LandingPage} />
             <Route path="/login" exact component={Login} />

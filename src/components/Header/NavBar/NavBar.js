@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from './logo1.svg';
 import SideBar from '../SideBar/SideBar';
 import burgerMenu from './icons8-menu.svg';
+import { auth } from '../../../firebase/firebase';
 
 import './navbar.css';
 
@@ -49,7 +50,7 @@ class NavBar extends React.Component {
             onClick={this.handleClick}
           ></div>
         </div>
-        {this.props.auth ? (
+        {this.props.currentUser ? (
           <div className="ui large menu" style={{ marginTop: '0px' }}>
             <Link to="/" className="ui fullscreen small image">
               <img src={logo} alt="logo" className="logo" />
@@ -62,8 +63,8 @@ class NavBar extends React.Component {
               <Link to="/profile" className="item item2">
                 My Account
               </Link>
-              <div className="item item2" onClick={this.props.handleLogOut}>
-                Log Out
+              <div className="item item2" onClick={() => auth.signOut()}>
+                Sign Out
               </div>
               <Link to="/listaboat" className="item">
                 <div className="ui primary button">List a Boat</div>
@@ -78,7 +79,7 @@ class NavBar extends React.Component {
 
             <div className="fullscreen right menu">
               <Link to="/login" className="item item1">
-                Log In
+                Sign In
               </Link>
               <Link to="/signUp" className="item item2">
                 Sign Up

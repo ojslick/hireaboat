@@ -9,6 +9,8 @@ import googleIcon from './Images/googleIcon.svg';
 import history from '../../history';
 import { Redirect } from 'react-router';
 
+import { signInWithGoogle } from '../../firebase/firebase';
+
 import './login.css';
 
 class Login extends React.Component {
@@ -149,24 +151,27 @@ class Login extends React.Component {
                   alt="Login with facebook"
                   className="facebook-icon"
                 />
-                <p>Login with Facebook</p>
+                <p>Sign In with Facebook</p>
               </button>
             </div>
             <div className="oauth-container">
               <button
                 className="login-with-facebook"
-                onClick={e => e.preventDefault()}
+                onClick={e => {
+                  e.preventDefault();
+                  signInWithGoogle();
+                }}
               >
                 <img
                   src={googleIcon}
                   alt="Login with facebook"
                   className="facebook-icon"
                 />
-                <p>Login with Google</p>
+                <p>Sign In with Google</p>
               </button>
             </div>
             <button className="submit-button" onClick={() => this.login()}>
-              Login
+              Sign In
             </button>
             <p className="signup-text">Not a member? Register</p>
           </form>
