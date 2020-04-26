@@ -1,7 +1,7 @@
-export default (state = [], action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case 'ADD_BOAT':
-      return [action.payload, ...state];
+      return action.payload;
     case 'LOGOUT':
       return state;
     default:

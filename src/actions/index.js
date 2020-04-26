@@ -69,49 +69,8 @@ export const createUser = (
 };
 
 //Add a boat
-export const addBoat = (
-  boatType,
-  boatManufacturer,
-  boatModel,
-  city,
-  boatHabour,
-  captain,
-  currency,
-  dailyBookingPrice,
-  numberOfCabins,
-  numberOfBathrooms,
-  lengthOfBoats,
-  boatCapacity,
-  boatDescription,
-  photos,
-  cb
-) => async (dispatch, getState) => {
-  try {
-    const response = await getState().hoodie.store.add({
-      boatType,
-      boatManufacturer,
-      boatModel,
-      city,
-      boatHabour,
-      captain,
-      currency,
-      dailyBookingPrice,
-      numberOfCabins,
-      numberOfBathrooms,
-      lengthOfBoats,
-      boatCapacity,
-      boatDescription,
-      photos
-    });
-
-    if (response) {
-      dispatch({ type: 'ADD_BOAT', payload: response });
-      history.push('/');
-    }
-  } catch (err) {
-    console.log(err);
-    cb(err);
-  }
+export const addBoat = data => dispatch => {
+  dispatch({ type: 'ADD_BOAT', payload: data });
 };
 
 //Boat Result
