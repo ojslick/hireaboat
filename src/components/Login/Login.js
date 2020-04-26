@@ -9,47 +9,34 @@ import googleIcon from './Images/googleIcon.svg';
 import history from '../../history';
 import { Redirect } from 'react-router';
 
-import { signInWithGoogle } from '../../firebase/firebase';
+import { auth, signInWithGoogle } from '../../firebase/firebase';
 
 import './login.css';
 
 class Login extends React.Component {
   state = {
-    username: '',
+    email: '',
     password: '',
     errors: {
-      username: '',
+      email: '',
       password: '',
       message: ''
     },
     error: ''
   };
 
-  // UNSAFE_componentWillMount() {
-  //   this.props.checkUser();
-  // }
-
-  //Create a new user in hoodie
-  login = () => {
-    const { username, password } = this.state;
-    const { login } = this.props;
-    if (username && password) {
-      const loginFunc = login;
-      // login
-      //   ? history.push('/')
-      //   : this.setState({ error: 'Email or Password is incorrect' });
-      loginFunc(username, password, err => {
-        if (err) {
-          this.setState({ error: err.message });
-        }
-      });
-    } else {
-      this.setState({ error: 'You must input a username and password' });
-    }
-  };
-
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: '', password: '' });
+    } catch (error) {
+      console.log(error);
+      this.setState({ error: error });
+    }
+
     const validateForm = errors => {
       let valid = true;
       Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -69,10 +56,8 @@ class Login extends React.Component {
       /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
     );
     switch (name) {
-      case 'username':
-        errors.username = validEmailRegex.test(value)
-          ? ''
-          : 'Email is not valid!';
+      case 'email':
+        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
         break;
       case 'password':
         errors.password =
@@ -86,6 +71,7 @@ class Login extends React.Component {
 
   render() {
     const { errors } = this.state;
+    const { error } = this.state;
     return (
       <div className="login-background">
         <div className="login-form-container">
@@ -95,19 +81,19 @@ class Login extends React.Component {
               <div className="input-align">
                 <img src={userIcon} alt="email" />
                 <input
-                  name="username"
+                  name="email"
                   placeholder="Email"
                   className="input-email"
                   type="email"
                   onChange={event => {
                     event.preventDefault();
-                    this.updateForm('username', event.target.value);
+                    this.updateForm('email', event.target.value);
                   }}
                 />
               </div>{' '}
             </div>
-            {errors.username.length > 0 && (
-              <span className="form-error">{errors.username}</span>
+            {errors.email.length > 0 && (
+              <span className="form-error">{errors.email}</span>
             )}
             <div className="input-container" style={{ marginTop: '10px' }}>
               <div className="input-align">
@@ -123,9 +109,7 @@ class Login extends React.Component {
                 />
               </div>
             </div>
-            {errors.password.length > 0 && (
-              <span className="form-error">{errors.password}</span>
-            )}
+            {error ? <span className="form-error">{error.message}</span> : ''}
             <div className="forgot-password-container">
               <p className="rememberThisDevice">Remember this device</p>
               <p className="forgot-password">Forgot password?</p>
@@ -168,7 +152,7 @@ class Login extends React.Component {
                 <p>Sign In with Google</p>
               </button>
             </div>
-            <button className="submit-button" onClick={() => this.login()}>
+            <button className="submit-button" onClick={this.handleSubmit}>
               Sign In
             </button>
             <p className="signup-text">Not a member? Register</p>

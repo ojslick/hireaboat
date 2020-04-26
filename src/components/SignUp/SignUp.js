@@ -2,6 +2,7 @@ import React from 'react';
 import { createUser, login } from '../../actions/index';
 import { connect } from 'react-redux';
 import { auth, createUserProfileDocument } from '../../firebase/firebase';
+import history from '../../history';
 
 import './signup.css';
 
@@ -42,7 +43,11 @@ class SignUp extends React.Component {
         email,
         password
       );
-      await createUserProfileDocument(user, { displayName });
+      const response = await createUserProfileDocument(user, { displayName });
+      if (response) {
+        history.push('/');
+      }
+
       this.setState({
         displayName: '',
         email: '',
