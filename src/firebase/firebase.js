@@ -43,13 +43,16 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const addCollectionAndDocument = async (
   collectionKey,
   objectsToAdd,
-  imageToAdd
+  imageToAdd,
+  currentUser
 ) => {
   const collectionRef = firestore.collection(collectionKey);
   const storageRef = firebase.storage().ref();
+  console.log(imageToAdd);
 
   await imageToAdd.map(blob => {
-    storageRef.put(blob);
+    console.log('blobfirbase==>', blob);
+    storageRef.child(`images/${blob.name}`).put(blob);
   });
   const batch = firestore.batch();
   const newDocRef = collectionRef.doc();

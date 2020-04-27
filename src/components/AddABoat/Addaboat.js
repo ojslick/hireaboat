@@ -1,7 +1,7 @@
 import React from 'react';
-import { addBoat } from '../../actions';
+import { addBoat, currentUser } from '../../actions';
 import { connect } from 'react-redux';
-import { addCollectionAndDocument } from '../../firebase/firebase';
+import { addCollectionAndDocument, auth } from '../../firebase/firebase';
 
 import BoatPhotosUpload from './BoatPhotosUpload/BoatPhotosUpload';
 import Footer from '../Footer/Footer';
@@ -42,6 +42,7 @@ class AddABoat extends React.Component {
       createdAt: new Date()
     },
     boatImages: [],
+    previewImages: [],
 
     error: ''
   };
@@ -118,15 +119,16 @@ class AddABoat extends React.Component {
 
   upload = event => {
     let image = new Blob([event.target.files[0]], { type: 'mime' });
-    const { boatImages } = this.state;
+    console.log(image);
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onloadend = () => {
       const currentImage = reader.result;
       this.setState({
-        boatImages: [...boatImages, currentImage]
+        previewImages: [...this.state.previewImages, currentImage]
       });
     };
+    this.setState({ boatImages: [...this.state.boatImages, image] });
   };
 
   handleDeletePhoto = image => {
@@ -138,22 +140,6 @@ class AddABoat extends React.Component {
   };
 
   handleAddABoatSubmit = () => {
-    const {
-      boatType,
-      boatManufacturer,
-      boatModel,
-      city,
-      boatHabour,
-      captain,
-      currency,
-      dailyBookingPrice,
-      numberOfCabins,
-      numberOfBathrooms,
-      lengthOfBoats,
-      boatCapacity,
-      boatDescription,
-      images
-    } = this.state.boatData;
     const { addBoat } = this.props;
 
     if (this.state.boatData) {
@@ -164,11 +150,13 @@ class AddABoat extends React.Component {
     addCollectionAndDocument(
       'boats',
       this.state.boatData,
-      this.state.boatImages.images
+      this.state.boatImages,
+      this.props.currentUser
     );
   };
 
   render() {
+    console.log('stateImages===>', this.state.boatImages);
     let yachts = this.state.yachts ? 'blue-background' : '';
     let catamarans = this.state.catamarans ? 'blue-background' : '';
     let houseboats = this.state.houseboats ? 'blue-background' : '';
@@ -674,7 +662,7 @@ class AddABoat extends React.Component {
         <BoatPhotosUpload
           upload={this.upload}
           handleDeletePhoto={this.handleDeletePhoto}
-          images={this.state.boatImages}
+          images={this.state.previewImages}
         />
         {this.state.error.length > 0 && (
           <span className="form-error">{this.state.error}</span>
@@ -706,7 +694,7 @@ class AddABoat extends React.Component {
 
 const mapStateToProps = state => {
   console.log(state);
-  return { addBoatState: state.hireaboat };
+  return { addBoatState: state.hireaboat, currentUser: state.currentUser };
 };
 
 export default connect(mapStateToProps, { addBoat })(AddABoat);

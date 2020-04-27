@@ -14,6 +14,7 @@ import {
   createUserProfileDocument,
   addCollectionAndDocument
 } from '../firebase/firebase';
+import { currentUser } from '../actions/';
 
 class App extends React.Component {
   state = { currentUser: null };
@@ -40,6 +41,10 @@ class App extends React.Component {
 
       this.setState({ currentUser: userAuth });
     });
+  }
+
+  componentDidUpdate() {
+    this.props.currentUser(this.state.currentUser);
   }
 
   componentWillUnmount() {
@@ -75,4 +80,4 @@ const mapStateToProps = state => {
   return { addBoat: state.hireaboat };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { currentUser })(App);

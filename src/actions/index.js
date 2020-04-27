@@ -111,3 +111,10 @@ export const similarBoats = data => async dispatch => {
 
   dispatch({ type: 'SIMILAR_BOATS', payload: response });
 };
+
+//Current user
+export const currentUser = data => async dispatch => {
+  const response = await data;
+
+  dispatch({ type: 'CURRENT_USER', payload: response });
+};
