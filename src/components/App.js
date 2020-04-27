@@ -9,6 +9,7 @@ import SignUp from './SignUp/SignUp';
 import AddABoat from './AddABoat/Addaboat';
 import boatResult from './boatResult/boatResult';
 import SelectBoat from './SelectBoat/SelectBoat';
+import AddaboatSuccessful from './AddABoat/AddaboatSuccessful/AddaboatSuccessful';
 import {
   auth,
   createUserProfileDocument,
@@ -69,6 +70,11 @@ class App extends React.Component {
             <Route path="/listaboat" exact component={AddABoat} />
             <Route path="/boatresult" exact component={boatResult} />
             <Route path="/selectboat" exact component={SelectBoat} />
+            <Route
+              path="/listaboat/successful"
+              exact
+              component={AddaboatSuccessful}
+            />
           </Switch>
         </Router>
       </div>

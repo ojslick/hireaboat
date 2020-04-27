@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
+import history from '../history';
 
 const config = {
   apiKey: 'AIzaSyCEjp0hXVLpKHDiEon-YqtXhSZbR00oQ4o',
@@ -44,8 +45,10 @@ export const addCollectionAndDocument = async (collectionKey, objectsToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
   const batch = firestore.batch();
   const newDocRef = collectionRef.doc();
-  batch.set(newDocRef, objectsToAdd);
-
+  const response = await batch.set(newDocRef, objectsToAdd);
+  if (response) {
+    history.push('/listaboat/successful');
+  }
   return await batch.commit();
 };
 
