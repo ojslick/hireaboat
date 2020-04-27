@@ -39,9 +39,10 @@ class AddABoat extends React.Component {
       lengthOfBoats: '',
       boatCapacity: '',
       boatDescription: '',
-      createdAt: new Date()
+      createdAt: new Date(),
+      boatImages: []
     },
-    boatImages: [],
+
     previewImages: [],
 
     error: ''
@@ -119,40 +120,83 @@ class AddABoat extends React.Component {
 
   upload = event => {
     let image = new Blob([event.target.files[0]], { type: 'mime' });
-    console.log(image);
+    const blobUrl = URL.createObjectURL(image);
     const reader = new FileReader();
-    reader.readAsDataURL(image);
     reader.onloadend = () => {
       const currentImage = reader.result;
       this.setState({
-        previewImages: [...this.state.previewImages, currentImage]
+        previewImages: [...this.state.previewImages, blobUrl]
       });
     };
-    this.setState({ boatImages: [...this.state.boatImages, image] });
+
+    this.setState({
+      boatData: {
+        ...this.state.boatData,
+        boatImages: [
+          ...this.state.boatData.boatImages,
+          URL.createObjectURL(image)
+        ]
+      }
+    });
   };
 
   handleDeletePhoto = image => {
     this.setState({
-      boatImages: this.state.boatImages.filter(url => {
-        return url !== image;
-      })
+      boatData: {
+        ...this.state.boatData,
+        boatImages: this.state.boatData.boatImages.filter(url => {
+          return url !== image;
+        })
+      }
     });
   };
 
   handleAddABoatSubmit = () => {
     const { addBoat } = this.props;
-
-    if (this.state.boatData) {
+    const {
+      boatType,
+      boatManufacturer,
+      boatModel,
+      city,
+      boatHabour,
+      captain,
+      currency,
+      dailyBookingPrice,
+      numberOfCabins,
+      numberOfBathrooms,
+      lengthOfBoats,
+      boatCapacity,
+      boatDescription,
+      createdAt,
+      boatImages
+    } = this.state.boatData;
+    if (
+      boatType &&
+      boatManufacturer &&
+      boatModel &&
+      city &&
+      boatHabour &&
+      captain &&
+      currency &&
+      dailyBookingPrice &&
+      numberOfCabins &&
+      numberOfBathrooms &&
+      lengthOfBoats &&
+      boatCapacity &&
+      boatDescription &&
+      createdAt &&
+      boatImages
+    ) {
       addBoat(this.state.boatData);
+      addCollectionAndDocument(
+        'boats',
+        this.state.boatData,
+        this.state.boatImages,
+        this.props.currentUser
+      );
     } else {
       this.setState({ error: 'Kindly complete the form' });
     }
-    addCollectionAndDocument(
-      'boats',
-      this.state.boatData,
-      this.state.boatImages,
-      this.props.currentUser
-    );
   };
 
   render() {
@@ -662,7 +706,7 @@ class AddABoat extends React.Component {
         <BoatPhotosUpload
           upload={this.upload}
           handleDeletePhoto={this.handleDeletePhoto}
-          images={this.state.previewImages}
+          images={this.state.boatData.boatImages}
         />
         {this.state.error.length > 0 && (
           <span className="form-error">{this.state.error}</span>
