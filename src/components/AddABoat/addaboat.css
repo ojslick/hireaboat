@@ -186,7 +186,7 @@
 .addaboat-input-align {
   width: 315px;
   height: 38px;
-
+  padding: 0 15px;
   background: #ffffff;
   border: 1px solid #c4c4c4;
   box-sizing: border-box;
@@ -194,11 +194,10 @@
 }
 
 .input-manufacturer {
+  width: 100%;
   background: #ffffff;
   color: #787878;
-  margin-left: 15px;
   border-style: none;
-  width: 270px;
   outline: none;
   margin-top: 8px;
 }
@@ -210,9 +209,8 @@
 .currency-input {
   background: #ffffff;
   color: #787878;
-  margin-left: 15px;
+  width: 100%;
   border-style: none;
-  width: 150px;
   outline: none;
   margin-top: 8px;
 }
@@ -382,10 +380,6 @@
     width: 250px;
   }
 
-  .input-manufacturer {
-    width: 220px;
-  }
-
   .currency {
     width: 183px;
   }
@@ -407,8 +401,8 @@
 
 @media only screen and (max-width: 585px) {
   .addaboat-select-boattype-container {
-    margin-right: 50px;
-    margin-left: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 
@@ -432,15 +426,35 @@
   }
 
   .add-boat-manufacturer-price {
-    width: 250px !important;
+    width: 100% !important;
   }
 }
 
 @media only screen and (max-width: 556px) {
+  .addaboat-separator-line-align-boat-upload {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .add-boat-cabins-container {
+    width: 100%;
+  }
+  .addaboat-input-align {
+    width: 100% !important;
+  }
+
   .addaboat-separator-line.boat-size {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .addaboat-boat-manufacturer-align {
+    width: 100%;
+  }
+
+  .addaboat-input-align {
+    width: 100%;
   }
 
   .addaboat-separator-line-align.boat-size {
@@ -470,6 +484,7 @@
   .addaboat-separator-line-align-boat-upload-container {
     display: inline-block !important;
     margin-top: 5px;
+    width: 100%;
   }
 
   .addaboat-separator-line-align-boat-upload {

@@ -364,13 +364,8 @@ class AddABoat extends React.Component {
         </div>
         <div className="addaboat-boat-manufacturer-container-align">
           <div className="addaboat-boat-manufacturer-container">
-            <div>
-              <label
-                className="add-boat-manufacturer"
-                style={{ width: '355px' }}
-              >
-                Boat Manufacturer
-              </label>
+            <div className="addaboat-boat-manufacturer-align">
+              <label className="add-boat-manufacturer">Boat Manufacturer</label>
               <div className="addaboat-input-align">
                 <input
                   placeholder="Select Manufacturer"
@@ -388,7 +383,7 @@ class AddABoat extends React.Component {
                 />
               </div>
             </div>
-            <div>
+            <div className="addaboat-boat-manufacturer-align">
               <label className="add-boat-manufacturer">Boat Model</label>
               <div className="addaboat-input-align">
                 <input
@@ -411,7 +406,7 @@ class AddABoat extends React.Component {
         </div>
         <div className="addaboat-boat-manufacturer-container-align">
           <div className="addaboat-boat-manufacturer-container">
-            <div>
+            <div className="addaboat-boat-manufacturer-align">
               <label
                 className="add-boat-manufacturer"
                 style={{ width: '355px' }}
@@ -435,7 +430,7 @@ class AddABoat extends React.Component {
                 />
               </div>
             </div>
-            <div>
+            <div className="addaboat-boat-manufacturer-align">
               <label className="add-boat-manufacturer">Boat Habour</label>
               <div className="addaboat-input-align">
                 <input
@@ -458,7 +453,7 @@ class AddABoat extends React.Component {
         </div>
         <div className="addaboat-boat-manufacturer-container-align">
           <div className="addaboat-boat-manufacturer-container">
-            <div>
+            <div className="addaboat-boat-manufacturer-align">
               <label className="add-boat-manufacturer">
                 Is your boat with a Captain ?
               </label>
@@ -513,7 +508,7 @@ class AddABoat extends React.Component {
                 </select>
               </div>
             </div>
-            <div>
+            <div className="add-boat-manufacturer-price">
               <label className="add-boat-manufacturer">
                 Daily booking price
               </label>
@@ -565,7 +560,7 @@ class AddABoat extends React.Component {
               justifyContent: 'space-between'
             }}
           >
-            <div>
+            <div className="add-boat-cabins-container">
               <label className="add-boat-manufacturer">Number of cabins</label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
@@ -584,7 +579,7 @@ class AddABoat extends React.Component {
                 />
               </div>
             </div>
-            <div>
+            <div className="add-boat-cabins-container">
               <label className="add-boat-manufacturer">
                 Number of bathrooms
               </label>
@@ -605,7 +600,7 @@ class AddABoat extends React.Component {
                 />
               </div>
             </div>
-            <div>
+            <div className="add-boat-cabins-container">
               <label className="add-boat-manufacturer">
                 Length of boat (ft)
               </label>
@@ -626,7 +621,7 @@ class AddABoat extends React.Component {
                 />
               </div>
             </div>
-            <div>
+            <div className="add-boat-cabins-container">
               <label className="add-boat-manufacturer">Boat capacity</label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
