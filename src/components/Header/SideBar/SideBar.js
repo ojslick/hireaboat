@@ -51,10 +51,6 @@ class SideBar extends React.Component {
             <Link to="/help" className="item">
               Help
             </Link>
-            <div to="/listaboat" className="item">
-              {' '}
-              List a Boat
-            </div>
           </div>
         )}
       </div>

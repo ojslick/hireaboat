@@ -30,8 +30,11 @@ class Login extends React.Component {
     const { email, password } = this.state;
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      this.setState({ email: '', password: '' });
+      const response = await auth.signInWithEmailAndPassword(email, password);
+      if (response) {
+        this.setState({ email: '', password: '' });
+        history.push('/');
+      }
     } catch (error) {
       console.log(error);
       this.setState({ error: error });

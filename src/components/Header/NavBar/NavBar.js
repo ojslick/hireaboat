@@ -6,6 +6,7 @@ import burgerMenu from './icons8-menu.svg';
 import { auth } from '../../../firebase/firebase';
 
 import './navbar.css';
+import history from '../../../history';
 
 class NavBar extends React.Component {
   state = { visible: false, dimmed: false };
@@ -42,7 +43,7 @@ class NavBar extends React.Component {
           <SideBar
             isVisible={this.state.visible}
             handleClick={this.handleClick}
-            auth={this.props.auth}
+            currentUser={this.props.currentUser}
             handleLogOut={this.props.handleLogOut}
           />
           <div
@@ -63,7 +64,13 @@ class NavBar extends React.Component {
               <Link to="/profile" className="item item2">
                 My Account
               </Link>
-              <div className="item item2" onClick={() => auth.signOut()}>
+              <div
+                className="item item2"
+                onClick={async () => {
+                  await auth.signOut();
+                  history.push('/');
+                }}
+              >
                 Sign Out
               </div>
               <Link to="/listaboat" className="item">
@@ -86,9 +93,6 @@ class NavBar extends React.Component {
               </Link>
               <Link to="/help" className="item item3">
                 Help
-              </Link>
-              <Link to="/listaboat" className="item">
-                <div className="ui primary button">List a Boat</div>
               </Link>
             </div>
           </div>
