@@ -564,7 +564,6 @@ class AddABoat extends React.Component {
               <label className="add-boat-manufacturer">Number of cabins</label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
-                  style={{ width: '170px' }}
                   className="input-manufacturer"
                   type="number"
                   onChange={event => {
@@ -585,7 +584,6 @@ class AddABoat extends React.Component {
               </label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
-                  style={{ width: '170px' }}
                   className="input-manufacturer"
                   type="number"
                   onChange={event => {
@@ -606,7 +604,6 @@ class AddABoat extends React.Component {
               </label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
-                  style={{ width: '170px' }}
                   className="input-manufacturer"
                   type="number"
                   onChange={event => {
@@ -625,7 +622,6 @@ class AddABoat extends React.Component {
               <label className="add-boat-manufacturer">Boat capacity</label>
               <div className="addaboat-input-align" style={{ width: '200px' }}>
                 <input
-                  style={{ width: '170px' }}
                   className="input-manufacturer"
                   type="number"
                   onChange={event => {
