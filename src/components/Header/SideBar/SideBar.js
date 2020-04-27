@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import cancelIcon from './icons8-cancel.svg';
+import history from '../../../history';
 
 import './sidebar.css';
 
@@ -14,6 +15,7 @@ class SideBar extends React.Component {
   };
 
   render() {
+    console.log('authprops===>', this.props.auth);
     return (
       <div
         className={`ui sidebar ${this.visible()} inverted overlay animating right vertical menu`}
@@ -24,7 +26,7 @@ class SideBar extends React.Component {
           onClick={this.props.handleClick}
           className="cancel"
         />
-        {this.props.auth ? (
+        {this.props.currentUser ? (
           <div className="sidebar-items">
             <Link to="/profile" className="item">
               My Account
@@ -32,18 +34,24 @@ class SideBar extends React.Component {
             <Link to="/help" className="item">
               Help
             </Link>
-            <div to="/listaboat" className="item">
+            <Link to="/listaboat" className="item">
               {' '}
               List a Boat
-            </div>
-            <div className="item" onClick={this.props.handleLogOut}>
-              LogOut
+            </Link>
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.auth.signOut();
+                history.push('/');
+              }}
+            >
+              Sign Out
             </div>
           </div>
         ) : (
           <div className="sidebar-items">
             <Link to="/login" className="item">
-              Log In
+              Sign In
             </Link>
             <Link to="/signup" className="item">
               Sign Up

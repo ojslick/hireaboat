@@ -44,7 +44,7 @@ class NavBar extends React.Component {
             isVisible={this.state.visible}
             handleClick={this.handleClick}
             currentUser={this.props.currentUser}
-            handleLogOut={this.props.handleLogOut}
+            auth={auth}
           />
           <div
             className={`pusher ${this.isDimmed()}`}
