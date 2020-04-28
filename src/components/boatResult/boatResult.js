@@ -1,5 +1,6 @@
 import React from 'react';
 import { Range, getTrackBackground } from 'react-range';
+import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { listBoats } from '../../actions/';
 import { similarBoats } from '../../actions';
@@ -24,6 +25,7 @@ const MAXS = 1000;
 
 class boatResult extends React.Component {
   state = {
+    listOfBoats: [],
     mobileFilter: false,
     values: [0, 1000],
     filteredSearch: [],
@@ -43,11 +45,17 @@ class boatResult extends React.Component {
   };
 
   componentDidMount() {
-    this.props.listBoats();
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      const data = await db.collection('boats').get();
+      this.setState({ listOfBoats: data.docs.map(doc => doc.data()) });
+    };
+    fetchData();
   }
 
   componentDidUpdate() {
     this.props.similarBoats(this.state.filteredSearch);
+    this.props.listBoats(this.state.listOfBoats);
   }
 
   handleMobileFilterClick = () => {

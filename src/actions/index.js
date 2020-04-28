@@ -74,14 +74,8 @@ export const addBoat = data => dispatch => {
 };
 
 //Boat Result
-export const listBoats = () => async (dispatch, getState) => {
-  try {
-    const response = await getState().hoodie.store.findAll();
-
-    dispatch({ type: 'LIST_BOATS', payload: response });
-  } catch (err) {
-    console.log(err);
-  }
+export const listBoats = data => dispatch => {
+  dispatch({ type: 'LIST_BOATS', payload: data });
 };
 
 //Select Boat

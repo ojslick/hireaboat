@@ -365,7 +365,12 @@ class AddABoat extends React.Component {
         <div className="addaboat-boat-manufacturer-container-align">
           <div className="addaboat-boat-manufacturer-container">
             <div className="addaboat-boat-manufacturer-align">
-              <label className="add-boat-manufacturer">Boat Manufacturer</label>
+              <label
+                className="add-boat-manufacturer"
+                style={{ width: '355px' }}
+              >
+                Boat Manufacturer
+              </label>
               <div className="addaboat-input-align">
                 <input
                   placeholder="Select Manufacturer"

@@ -7,7 +7,8 @@ import { selectBoat } from '../../actions/index';
 class BoatCard extends React.Component {
   render() {
     const { data } = this.props;
-    const slideImages = !data.photos ? '' : data.photos;
+
+    const slideImages = !data.boatImages ? '' : data.boatImages;
 
     const handleCurrency = () => {
       if (data.currency === 'USD') {
@@ -20,6 +21,8 @@ class BoatCard extends React.Component {
         return '₦';
       }
     };
+
+    console.log('slideimages===>', slideImages);
 
     const properties = {
       duration: 5000,
@@ -41,7 +44,7 @@ class BoatCard extends React.Component {
           <div style={{ width: '321px', height: '213px' }}>
             <div
               style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[0]})`,
+                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url( 'data:image/png;base64' ${slideImages[0]})`,
                 width: '321px',
                 height: '213px',
                 backgroundSize: 'cover',
