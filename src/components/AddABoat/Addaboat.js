@@ -39,9 +39,9 @@ class AddABoat extends React.Component {
       lengthOfBoats: '',
       boatCapacity: '',
       boatDescription: '',
-      createdAt: new Date(),
-      boatImages: []
+      createdAt: new Date()
     },
+    boatImages: [],
 
     previewImages: [],
 
@@ -119,35 +119,19 @@ class AddABoat extends React.Component {
   };
 
   upload = event => {
-    let image = new Blob([event.target.files[0]], { type: 'mime' });
-    const blobUrl = URL.createObjectURL(image);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const currentImage = reader.result;
-      this.setState({
-        previewImages: [...this.state.previewImages, blobUrl]
-      });
-    };
+    let image = [event.target.files[0]];
+    console.log('===>uipload', image);
 
     this.setState({
-      boatData: {
-        ...this.state.boatData,
-        boatImages: [
-          ...this.state.boatData.boatImages,
-          URL.createObjectURL(image)
-        ]
-      }
+      boatImages: [...this.state.boatImages, image]
     });
   };
 
   handleDeletePhoto = image => {
     this.setState({
-      boatData: {
-        ...this.state.boatData,
-        boatImages: this.state.boatData.boatImages.filter(url => {
-          return url !== image;
-        })
-      }
+      boatImages: this.state.boatImages.filter(url => {
+        return url !== image;
+      })
     });
   };
 
@@ -167,9 +151,10 @@ class AddABoat extends React.Component {
       lengthOfBoats,
       boatCapacity,
       boatDescription,
-      createdAt,
-      boatImages
+      createdAt
     } = this.state.boatData;
+
+    const boatImages = this.state;
     if (
       boatType &&
       boatManufacturer &&
@@ -702,7 +687,7 @@ class AddABoat extends React.Component {
         <BoatPhotosUpload
           upload={this.upload}
           handleDeletePhoto={this.handleDeletePhoto}
-          images={this.state.boatData.boatImages}
+          images={this.state.boatImages}
         />
         {this.state.error.length > 0 && (
           <span className="form-error">{this.state.error}</span>

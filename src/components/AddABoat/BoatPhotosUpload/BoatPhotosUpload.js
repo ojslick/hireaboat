@@ -4,7 +4,11 @@ import addIcon from './Images/addIcon.svg';
 import deleteIcon from './Images/deleteIcon.png';
 
 class BoatPhotosUpload extends React.Component {
+  state = { images: [] };
   render() {
+    console.log('imagesprop===>', this.props.images);
+    console.log('imagesstate===>', this.state.images);
+
     return (
       <div className="addaboat-separator-line ">
         <div
@@ -32,8 +36,12 @@ class BoatPhotosUpload extends React.Component {
           <div className="addaboat-separator-line-align-boat-upload-preview">
             {this.props.images.length > 0 ? (
               this.props.images.map((dataUrl, index) => {
+                const blob = new Blob(dataUrl, { type: 'mime' });
+                const image = URL.createObjectURL(blob);
+                console.log('blobnew===>', blob);
                 return (
                   <div
+                    key={index}
                     style={{
                       width: 'auto',
                       height: 'auto',
@@ -41,8 +49,7 @@ class BoatPhotosUpload extends React.Component {
                     }}
                   >
                     <img
-                      key={index}
-                      src={dataUrl}
+                      src={image}
                       alt="boat image"
                       className="addaboat-separator-line-align-boat-upload-preview-image"
                       style={{
@@ -55,6 +62,7 @@ class BoatPhotosUpload extends React.Component {
                         justifyContent: 'center'
                       }}
                     />
+
                     <img
                       src={deleteIcon}
                       alt="delete icon"

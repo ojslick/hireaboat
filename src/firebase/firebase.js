@@ -41,7 +41,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export const addCollectionAndDocument = async (collectionKey, objectsToAdd) => {
+export const addCollectionAndDocument = async (
+  collectionKey,
+  objectsToAdd,
+  boatImages,
+  currentUser
+) => {
   const collectionRef = firestore.collection(collectionKey);
   const batch = firestore.batch();
   const newDocRef = collectionRef.doc();
@@ -49,6 +54,31 @@ export const addCollectionAndDocument = async (collectionKey, objectsToAdd) => {
   if (response) {
     history.push('/listaboat/successful');
   }
+
+  const updateImage = async image => {
+    const path = `users/${currentUser.id}/images/${Math.round(
+      Math.random() * 1000000000
+    )}.jpg`;
+    console.log('file==>', image);
+    const blob = new Blob(image, { type: 'mime' });
+    console.log(blob);
+    const storageRef = firebase.storage().ref();
+    const task = storageRef.child(path).put(blob);
+
+    task.snapshot.ref.getDownloadURL().then(downloadURL => {
+      newDocRef.update({ images: downloadURL });
+    });
+  };
+  const updateImageArray = async imageArray => {
+    return Promise.all(
+      imageArray.map(image => {
+        updateImage(image);
+      })
+    );
+  };
+
+  updateImageArray(boatImages);
+
   return await batch.commit();
 };
 
