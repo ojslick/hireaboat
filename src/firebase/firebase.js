@@ -55,26 +55,44 @@ export const addCollectionAndDocument = async (
     history.push('/listaboat/successful');
   }
 
+  const imagesUpload = [];
+
   const updateImage = async image => {
     const path = `users/${currentUser.id}/images/${Math.round(
       Math.random() * 1000000000
     )}.jpg`;
-    console.log('file==>', image);
     const blob = new Blob(image, { type: 'mime' });
-    console.log(blob);
     const storageRef = firebase.storage().ref();
-    const task = storageRef.child(path).put(blob);
+    try {
+      const task = await storageRef.child(path).put(blob);
+      console.log('task--->>>', task);
 
-    task.snapshot.ref.getDownloadURL().then(downloadURL => {
-      newDocRef.update({ images: downloadURL });
-    });
+      // task.ref.getDownloadURL().then(downloadURL => {
+      //   console.log('downloadUrl===>', downloadURL);
+      //   newDocRef.update({ images: [downloadURL, downloadURL ]});
+      // });
+
+      const imageRes = await task.ref.getDownloadURL();
+      imagesUpload.push(imageRes);
+      console.log('imageRes---->>>>', imageRes);
+      await newDocRef.update({ images: imagesUpload });
+    } catch (errorr) {
+      console.log('ohew--->>>', errorr);
+    }
   };
+
   const updateImageArray = async imageArray => {
-    return Promise.all(
-      imageArray.map(image => {
-        updateImage(image);
-      })
-    );
+    try {
+      const responses = Promise.all(
+        imageArray.map(async image => {
+          await updateImage(image);
+        })
+      );
+      console.log('responses---->>>', responses);
+      return responses;
+    } catch (error) {
+      console.log('error occurred', error);
+    }
   };
 
   updateImageArray(boatImages);

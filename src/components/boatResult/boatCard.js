@@ -8,7 +8,7 @@ class BoatCard extends React.Component {
   render() {
     const { data } = this.props;
 
-    const slideImages = !data.boatImages ? '' : data.boatImages;
+    const slideImages = !data.images ? '' : data.images;
 
     const handleCurrency = () => {
       if (data.currency === 'USD') {
