@@ -41,66 +41,24 @@ class BoatCard extends React.Component {
         onClick={() => this.props.selectBoat(data)}
       >
         <Slide {...properties}>
-          <div style={{ width: '321px', height: '213px' }}>
-            <div
-              style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[0]})`,
-                width: '321px',
-                height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
+          {slideImages.map(image => (
+            <div style={{ width: '321px', height: '213px' }}>
+              <div
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${image})`,
+                  width: '321px',
+                  height: '213px',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat',
+                  borderRadius: '5px 5px 0px 0px',
 
-                backgroundBlendMode: 'multiply, normal'
-              }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
-          <div
-            style={{
-              width: '321px',
-              height: '213px',
-              backgroundSize: 'cover'
-            }}
-          >
-            <div
-              style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[1]})`,
-                width: '321px',
-                height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
-
-                backgroundBlendMode: 'multiply, normal'
-              }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
-          <div
-            style={{
-              width: '321px',
-              height: '213px',
-              backgroundSize: 'cover'
-            }}
-          >
-            <div
-              style={{
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${slideImages[2]})`,
-                width: '321px',
-                height: '213px',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '5px 5px 0px 0px',
-
-                backgroundBlendMode: 'multiply, normal'
-              }}
-              className="boat-result-search-result-boat-list-card-pic"
-            ></div>
-          </div>
+                  backgroundBlendMode: 'multiply, normal'
+                }}
+                className="boat-result-search-result-boat-list-card-pic"
+              ></div>
+            </div>
+          ))}
         </Slide>
         <div className="boat-result-search-result-boat-list-card-price">
           <p>
