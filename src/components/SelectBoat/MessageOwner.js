@@ -22,7 +22,7 @@ class MessageOwner extends React.Component {
                 Departure Date
               </h3>
               <p className="select-boat-message-owner-departure-text-date">
-                {this.props.bookingDetails}
+                {this.props.bookingDetails.fromDate}
               </p>
             </div>
 
@@ -31,7 +31,7 @@ class MessageOwner extends React.Component {
                 Duration
               </h3>
               <p className="select-boat-message-owner-departure-text-date">
-                {this.props.bookingDetails}
+                {this.props.bookingDetails.bookingDays}
               </p>
             </div>
 
@@ -40,7 +40,7 @@ class MessageOwner extends React.Component {
                 Price
               </h3>
               <p className="select-boat-message-owner-departure-text-date">
-                {this.props.bookingDetails}
+                {this.props.bookingDetails.price}
               </p>
             </div>
           </div>

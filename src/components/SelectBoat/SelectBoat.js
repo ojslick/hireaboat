@@ -37,7 +37,7 @@ class SelectBoat extends React.Component {
   };
 
   messageCloseModal = () => {
-    this.setState({ messageModalIsOpen: true });
+    this.setState({ messageModalIsOpen: false });
   };
 
   messageOpenModal = () => {
@@ -302,6 +302,7 @@ class SelectBoat extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     selectBoatState: state.selectBoat,
     similarBoats: state.similarBoats

@@ -9,17 +9,40 @@ class BookingCard extends React.Component {
     fromDate: new Date(),
     toDate: new Date(),
     clickToDay: true,
-    clickFromDay: true
+    clickFromDay: true,
+    bookingDays: ''
   };
 
   componentDidUpdate() {
-    this.props.bookingCard(this.state.fromDate.toLocaleDateString());
+    const renderBookingDays =
+      this.state.toDate.getDate() - this.state.fromDate.getDate() === 0
+        ? 1
+        : Math.ceil(
+            (this.state.toDate.getTime() - this.state.fromDate.getTime()) /
+              (1000 * 60 * 60 * 24)
+          );
+
+    const price = `$${
+      this.state.toDate.getDate() - this.state.fromDate.getDate() === 0
+        ? 1 * this.props.dailyBookingPrice
+        : Math.ceil(
+            (this.state.toDate.getTime() - this.state.fromDate.getTime()) /
+              (1000 * 60 * 60 * 24)
+          ) * this.props.dailyBookingPrice
+    }`;
+
+    this.props.bookingCard(
+      this.state.fromDate.toLocaleDateString(),
+      renderBookingDays,
+      price
+    );
   }
 
   onChangeTo = date => this.setState({ toDate: date });
   onChangeFrom = date => this.setState({ fromDate: date });
 
   render() {
+    console.log('bookingdays==>', this.state.bookingDays);
     const { dailyBookingPrice } = this.props;
     return (
       <div className="select-boat-description-booking-card-container">
@@ -127,8 +150,11 @@ class BookingCard extends React.Component {
                       this.state.fromDate.getDate() ===
                     0
                       ? 1
-                      : this.state.toDate.getDate() -
-                        this.state.fromDate.getDate()}
+                      : Math.ceil(
+                          (this.state.toDate.getTime() -
+                            this.state.fromDate.getTime()) /
+                            (1000 * 60 * 60 * 24)
+                        )}
                   </p>
                 </div>
               </div>
@@ -148,9 +174,11 @@ class BookingCard extends React.Component {
                         this.state.fromDate.getDate() ===
                       0
                         ? 1 * dailyBookingPrice
-                        : (this.state.toDate.getDate() -
-                            this.state.fromDate.getDate()) *
-                          dailyBookingPrice
+                        : Math.ceil(
+                            (this.state.toDate.getTime() -
+                              this.state.fromDate.getTime()) /
+                              (1000 * 60 * 60 * 24)
+                          ) * dailyBookingPrice
                     }`}
                   </p>
                 </div>
