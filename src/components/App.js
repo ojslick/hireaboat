@@ -10,6 +10,7 @@ import AddABoat from './AddABoat/Addaboat';
 import boatResult from './boatResult/boatResult';
 import SelectBoat from './SelectBoat/SelectBoat';
 import AddaboatSuccessful from './AddABoat/AddaboatSuccessful/AddaboatSuccessful';
+import Loading from '../components/Loading/Loading';
 import {
   auth,
   createUserProfileDocument,
@@ -18,18 +19,20 @@ import {
 import { currentUser } from '../actions/';
 
 class App extends React.Component {
-  state = { currentUser: null };
+  state = { currentUser: null, loading: false };
 
   unsubscribeFromAuth = null;
 
   // Monitor connection status to the Hoodie store
   componentDidMount() {
     const { addBoat } = this.props;
+    this.setState({ loading: true });
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
+          this.setState({ loading: false });
           this.setState({
             currentUser: {
               id: snapShot.id,
@@ -57,26 +60,30 @@ class App extends React.Component {
 
     return (
       <div>
-        <Router history={history}>
-          <NavBar
-            auth={auth && auth.username}
-            handleLogOut={logout}
-            currentUser={this.state.currentUser}
-          />
-          <Switch>
-            <Route path="/" exact component={LandingPage} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/signup" exact component={SignUp} />
-            <Route path="/listaboat" exact component={AddABoat} />
-            <Route path="/boatresult" exact component={boatResult} />
-            <Route path="/selectboat" exact component={SelectBoat} />
-            <Route
-              path="/listaboat/successful"
-              exact
-              component={AddaboatSuccessful}
+        {this.state.loading ? (
+          <Loading />
+        ) : (
+          <Router history={history}>
+            <NavBar
+              auth={auth && auth.username}
+              handleLogOut={logout}
+              currentUser={this.state.currentUser}
             />
-          </Switch>
-        </Router>
+            <Switch>
+              <Route path="/" exact component={LandingPage} />
+              <Route path="/login" exact component={Login} />
+              <Route path="/signup" exact component={SignUp} />
+              <Route path="/listaboat" exact component={AddABoat} />
+              <Route path="/boatresult" exact component={boatResult} />
+              <Route path="/selectboat" exact component={SelectBoat} />
+              <Route
+                path="/listaboat/successful"
+                exact
+                component={AddaboatSuccessful}
+              />
+            </Switch>
+          </Router>
+        )}
       </div>
     );
   }
