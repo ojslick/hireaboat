@@ -45,7 +45,6 @@ class SelectBoat extends React.Component {
   };
 
   handleFromDate = date => {
-    console.log('handleFromDateDate====>', date);
     this.setState({ fromDate: date });
   };
 
@@ -72,7 +71,7 @@ class SelectBoat extends React.Component {
         transform: 'translate(-50%, -50%)'
       }
     };
-    console.log('selectboatstate===>', this.state.fromDate);
+
     return (
       <div className="select-boat-container">
         <div>
@@ -89,7 +88,7 @@ class SelectBoat extends React.Component {
               handleFromDate={() => this.handleFromDate}
             />
             <div
-              style={{ position: 'absolute', left: '87%', top: '6.5%' }}
+              style={{ position: 'absolute', left: '88%', top: '3%' }}
               onClick={this.closeModal}
             >
               <img
@@ -111,7 +110,7 @@ class SelectBoat extends React.Component {
           >
             <MessageOwner dailyBookingPrice={dailyBookingPrice} />
             <div
-              style={{ position: 'absolute', left: '87%', top: '6.5%' }}
+              style={{ position: 'absolute', left: '88%', top: '3%' }}
               onClick={this.messageCloseModal}
             >
               <img
@@ -264,6 +263,7 @@ class SelectBoat extends React.Component {
                 <BookingCard
                   dailyBookingPrice={dailyBookingPrice}
                   handleFromDate={() => this.handleFromDate}
+                  messageOpenModal={this.messageOpenModal}
                 />
               </div>
             </div>

@@ -67,7 +67,6 @@ class boatResult extends React.Component {
     const searchResult =
       this.state.filteredSearch.length > 0
         ? this.state.filteredSearch.filter(aBoat => {
-            console.log(aBoat.numberOfCabins);
             switch (name) {
               case 'city':
                 return aBoat.city
@@ -192,7 +191,6 @@ class boatResult extends React.Component {
   handleSelectedDate = () => {};
 
   render() {
-    console.log(this.props.boats);
     const indexOfLastBoat = this.state.currentPage * this.state.boatsPerPage;
     const indexOfFirstBoat = indexOfLastBoat - this.state.boatsPerPage;
     const currentBoats = this.state.filteredSearch.slice(
@@ -437,8 +435,8 @@ class boatResult extends React.Component {
               </div>
               {this.state.filteredSearch.length > 0 ? (
                 <div className="boat-result-search-result-boat-list">
-                  {currentBoats.map(data => (
-                    <BoatCard data={data} key={data._id} />
+                  {currentBoats.map((data, index) => (
+                    <BoatCard data={data} key={index} />
                   ))}
                 </div>
               ) : (
@@ -496,7 +494,6 @@ class boatResult extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return { boats: state.boatList };
 };
 

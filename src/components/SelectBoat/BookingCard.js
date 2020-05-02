@@ -158,7 +158,10 @@ class BookingCard extends React.Component {
               <button className="select-boat-description-booking-card-book-now-btn">
                 Book Now
               </button>
-              <button className="select-boat-description-booking-card-message-owner-btn">
+              <button
+                onClick={this.props.messageOpenModal}
+                className="select-boat-description-booking-card-message-owner-btn"
+              >
                 Message Owner
               </button>
             </div>

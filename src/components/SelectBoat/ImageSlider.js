@@ -14,37 +14,40 @@ class ImageSlider extends React.Component {
     return (
       <Slide {...properties} className="active">
         {this.props.selectBoat
-          ? this.props.selectBoat.photos.map(photo => (
-              <div
-                style={{
-                  width: '100%',
-                  height: '504px',
-                  backgroundSize: 'cover',
-                  textAlign: 'center',
-                  backgroundPosition: 'center center',
-                  backgroundRepeat: 'no-repeat',
-                  display: 'inline-block',
-
-                  overflow: 'none'
-                }}
-                className="active"
-              >
+          ? this.props.selectBoat.images.map((photo, index) => {
+              return (
                 <div
                   style={{
-                    backgroundImage: `linear-gradient(180deg, #FFFFFF 79.37%, #000000 107.14%), url(${photo})`,
                     width: '100%',
                     height: '504px',
                     backgroundSize: 'cover',
+                    textAlign: 'center',
                     backgroundPosition: 'center center',
                     backgroundRepeat: 'no-repeat',
                     display: 'inline-block',
 
-                    backgroundBlendMode: 'multiply, normal'
+                    overflow: 'none'
                   }}
                   className="active"
-                ></div>
-              </div>
-            ))
+                  key={index}
+                >
+                  <div
+                    style={{
+                      backgroundImage: `linear-gradient(180deg, #FFFFFF 79.37%, #000000 107.14%), url(${photo})`,
+                      width: '100%',
+                      height: '504px',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center center',
+                      backgroundRepeat: 'no-repeat',
+                      display: 'inline-block',
+
+                      backgroundBlendMode: 'multiply, normal'
+                    }}
+                    className="active"
+                  ></div>
+                </div>
+              );
+            })
           : 'loading'}
       </Slide>
     );

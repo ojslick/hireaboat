@@ -22,8 +22,6 @@ class BoatCard extends React.Component {
       }
     };
 
-    console.log('slideimages===>', slideImages);
-
     const properties = {
       duration: 5000,
       transitionDuration: 500,
@@ -41,8 +39,8 @@ class BoatCard extends React.Component {
         onClick={() => this.props.selectBoat(data)}
       >
         <Slide {...properties}>
-          {slideImages.map(image => (
-            <div style={{ width: '321px', height: '213px' }}>
+          {slideImages.map((image, index) => (
+            <div style={{ width: '321px', height: '213px' }} key={index}>
               <div
                 style={{
                   backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.8) 70.42%, rgba(0, 0, 0, 0.8) 109.39%), url(${image})`,
