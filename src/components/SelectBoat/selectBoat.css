@@ -389,9 +389,8 @@
 .select-boat-mobile-booking {
   display: inline-block;
   position: absolute;
-  z-index: 10;
   width: 100%;
-
+  z-index: 1;
   position: fixed;
   bottom: 30px;
 }
@@ -532,6 +531,78 @@
   color: #787878;
 }
 
+.select-boat-message-owner-explain-text {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 21px;
+
+  letter-spacing: 0.05em;
+
+  color: #343434;
+}
+
+.select-boat-message-owner-input-container {
+  width: 65%;
+  display: inline-block;
+}
+.select-boat-message-owner-input-name {
+  width: 100%;
+  height: 40px;
+
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 0 15px;
+  margin-top: 17px;
+  outline: none;
+  color: #787878;
+}
+
+.select-boat-message-owner-button-container {
+  width: 65%;
+  display: inline-block;
+  margin-top: 21px;
+}
+
+.select-boat-message-owner-button-align {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-boat-message-owner-cancel {
+  width: 150px;
+  height: 40px;
+  outline: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  border-radius: 5px;
+  color: #39a0ed;
+  border: 1px solid #39a0ed;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.select-boat-message-owner-send {
+  cursor: pointer;
+  outline: none;
+  width: 150px;
+  height: 40px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  background: #39a0ed;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
 @media only screen and (max-width: 900px) {
   .select-boat-description {
     display: inline;
@@ -572,6 +643,41 @@
 
   .select-boat-align {
     width: 90%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .select-boat-message-owner-container {
+    width: 100%;
+  }
+
+  .select-boat-message-owner-container-left {
+    display: none;
+  }
+
+  .select-boat-message-owner-container-right {
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .select-boat-message-owner-input-container {
+    width: 70%;
+  }
+
+  .select-boat-message-owner-button-container {
+    width: 70%;
+  }
+
+  .select-boat-message-owner-cancel {
+    width: 45%;
+  }
+
+  .select-boat-message-owner-send {
+    width: 45%;
+  }
+
+  .ReactModal__Overlay.ReactModal__Overlay--after-open {
+    z-index: 2;
   }
 }
 

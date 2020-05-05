@@ -21,7 +21,7 @@ class SelectBoat extends React.Component {
   state = {
     modalIsOpen: false,
     messageModalIsOpen: false,
-    fromDate: null
+    fromDate: null,
   };
 
   componentDidMount() {
@@ -44,7 +44,7 @@ class SelectBoat extends React.Component {
     this.setState({ messageModalIsOpen: true });
   };
 
-  handleFromDate = date => {
+  handleFromDate = (date) => {
     this.setState({ fromDate: date });
   };
 
@@ -58,7 +58,7 @@ class SelectBoat extends React.Component {
       lengthOfBoats,
       boatCapacity,
       dailyBookingPrice,
-      boatDescription
+      boatDescription,
     } = this.props.selectBoatState;
 
     const customStyles = {
@@ -68,8 +68,8 @@ class SelectBoat extends React.Component {
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-      }
+        transform: 'translate(-50%, -50%)',
+      },
     };
 
     return (
@@ -86,6 +86,7 @@ class SelectBoat extends React.Component {
             <BookingCard
               dailyBookingPrice={dailyBookingPrice}
               handleFromDate={() => this.handleFromDate}
+              messageOpenModal={this.messageOpenModal}
             />
             <div
               style={{ position: 'absolute', left: '88%', top: '3%' }}
@@ -108,7 +109,10 @@ class SelectBoat extends React.Component {
             shouldCloseOnOverlayClick={true}
             shouldCloseOnEsc={true}
           >
-            <MessageOwner dailyBookingPrice={dailyBookingPrice} />
+            <MessageOwner
+              dailyBookingPrice={dailyBookingPrice}
+              messageCloseModal={this.messageCloseModal}
+            />
             <div
               style={{ position: 'absolute', left: '88%', top: '3%' }}
               onClick={this.messageCloseModal}
@@ -129,7 +133,7 @@ class SelectBoat extends React.Component {
                 width: '42%',
                 marginLeft: '5%',
                 marginTop: '0px',
-                opacity: '0.9'
+                opacity: '0.9',
               }}
               onClick={this.openModal}
             >
@@ -141,7 +145,7 @@ class SelectBoat extends React.Component {
                 width: '42%',
                 marginRight: '5%',
                 marginTop: '0px',
-                opacity: '0.9'
+                opacity: '0.9',
               }}
               onClick={this.messageOpenModal}
             >
@@ -281,10 +285,10 @@ class SelectBoat extends React.Component {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      flexWrap: 'wrap'
+                      flexWrap: 'wrap',
                     }}
                   >
-                    {this.props.similarBoats.map(data => {
+                    {this.props.similarBoats.map((data) => {
                       return this.props.selectBoatState === data ? null : (
                         <SimilarBoatCard data={data} key={data._id} />
                       );
@@ -301,11 +305,11 @@ class SelectBoat extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log(state);
   return {
     selectBoatState: state.selectBoat,
-    similarBoats: state.similarBoats
+    similarBoats: state.similarBoats,
   };
 };
 

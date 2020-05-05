@@ -44,13 +44,62 @@ class MessageOwner extends React.Component {
               </p>
             </div>
           </div>
+          <div
+            style={{ marginTop: '17px', width: '80%', display: 'inline-block' }}
+          >
+            <p className="select-boat-message-owner-explain-text">
+              Please explain your enquiry here, and the captain will respond to
+              you asap
+            </p>
+          </div>
+          <div className="select-boat-message-owner-input-container">
+            <input
+              className="select-boat-message-owner-input-name"
+              type="text"
+              placeholder="Name"
+            />
+          </div>
+          <div className="select-boat-message-owner-input-container">
+            <input
+              className="select-boat-message-owner-input-name"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div className="select-boat-message-owner-input-container">
+            <input
+              className="select-boat-message-owner-input-name"
+              type="number"
+              placeholder="Phone Number"
+            />
+          </div>
+          <div className="select-boat-message-owner-input-container">
+            <textarea
+              className="select-boat-message-owner-input-name"
+              type="text"
+              placeholder="Enter your message here"
+              style={{ height: '135px', paddingTop: '12px' }}
+            />
+          </div>
+          <div className="select-boat-message-owner-button-container">
+            <div className="select-boat-message-owner-button-align">
+              <button
+                className="select-boat-message-owner-cancel"
+                onClick={this.props.messageCloseModal}
+              >
+                Cancel
+              </button>
+              <button className="select-boat-message-owner-send">Send</button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { bookingDetails: state.bookingCard };
 };
 
