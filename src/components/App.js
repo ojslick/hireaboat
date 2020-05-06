@@ -11,10 +11,11 @@ import boatResult from './boatResult/boatResult';
 import SelectBoat from './SelectBoat/SelectBoat';
 import AddaboatSuccessful from './AddABoat/AddaboatSuccessful/AddaboatSuccessful';
 import Loading from '../components/Loading/Loading';
+import Help from './Help/Help';
 import {
   auth,
   createUserProfileDocument,
-  addCollectionAndDocument
+  addCollectionAndDocument,
 } from '../firebase/firebase';
 import { currentUser } from '../actions/';
 
@@ -27,16 +28,16 @@ class App extends React.Component {
   componentDidMount() {
     const { addBoat } = this.props;
     this.setState({ loading: true });
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSnapshot(snapShot => {
+        userRef.onSnapshot((snapShot) => {
           this.setState({
             currentUser: {
               id: snapShot.id,
-              ...snapShot.data()
-            }
+              ...snapShot.data(),
+            },
           });
         });
       }
@@ -80,6 +81,7 @@ class App extends React.Component {
                 exact
                 component={AddaboatSuccessful}
               />
+              <Route path="/help" exact component={Help} />
             </Switch>
           </Router>
         )}
@@ -88,7 +90,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { addBoat: state.hireaboat };
 };
 
