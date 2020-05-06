@@ -15,7 +15,7 @@ class LandingPage extends React.Component {
 
   screenSize = () => {
     if (this.state.screenSize < 426) {
-      return 'small';
+      return 'large';
     } else {
       return 'massive';
     }

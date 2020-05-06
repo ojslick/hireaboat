@@ -11,8 +11,7 @@ import history from '../../../history';
 class NavBar extends React.Component {
   state = { visible: false, dimmed: false };
 
-  handleClick = e => {
-    e.preventDefault();
+  handleClick = (e) => {
     if (this.state.visible) {
       this.setState({ visible: false });
     } else {
@@ -42,7 +41,7 @@ class NavBar extends React.Component {
           </div>
           <SideBar
             isVisible={this.state.visible}
-            handleClick={this.handleClick}
+            handleClick={() => this.handleClick()}
             currentUser={this.props.currentUser}
             auth={auth}
           />

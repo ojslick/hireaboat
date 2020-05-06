@@ -28,20 +28,38 @@ class SideBar extends React.Component {
         />
         {this.props.currentUser ? (
           <div className="sidebar-items">
-            <Link to="/profile" className="item">
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/profile');
+              }}
+            >
               My Account
-            </Link>
-            <Link to="/help" className="item">
+            </div>
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/help');
+              }}
+            >
               Help
-            </Link>
-            <Link to="/listaboat" className="item">
-              {' '}
+            </div>
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/listaboat');
+              }}
+            >
               List a Boat
-            </Link>
+            </div>
             <div
               className="item"
               onClick={async () => {
                 await this.props.auth.signOut();
+                await this.props.handleClick();
                 history.push('/');
               }}
             >
@@ -50,15 +68,33 @@ class SideBar extends React.Component {
           </div>
         ) : (
           <div className="sidebar-items">
-            <Link to="/login" className="item">
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/login');
+              }}
+            >
               Sign In
-            </Link>
-            <Link to="/signup" className="item">
+            </div>
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/signup');
+              }}
+            >
               Sign Up
-            </Link>
-            <Link to="/help" className="item">
+            </div>
+            <div
+              className="item"
+              onClick={async () => {
+                await this.props.handleClick();
+                history.push('/help');
+              }}
+            >
               Help
-            </Link>
+            </div>
           </div>
         )}
       </div>
