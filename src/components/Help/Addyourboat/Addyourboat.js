@@ -8,16 +8,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
     <div>
       {addYourBoatDisplay ? (
         <>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <img src={boat4} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
@@ -31,16 +22,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
               </p>
             </div>
           </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
                 Select boat from list
@@ -54,16 +36,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
             </div>
             <img src={boat5} alt="boat photo" className="help-content-boat1" />
           </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <img src={boat6} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">

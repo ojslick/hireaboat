@@ -8,16 +8,7 @@ const Rentaboat = ({ rentABoatDisplay }) => {
     <>
       {rentABoatDisplay ? (
         <>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <img src={boat1} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
@@ -31,16 +22,7 @@ const Rentaboat = ({ rentABoatDisplay }) => {
               </p>
             </div>
           </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
                 Select boat from list
@@ -54,16 +36,7 @@ const Rentaboat = ({ rentABoatDisplay }) => {
             </div>
             <img src={boat2} alt="boat photo" className="help-content-boat1" />
           </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-
-              marginTop: '67px',
-              height: '266px',
-            }}
-          >
+          <div className="help-content-grid">
             <img src={boat3} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">

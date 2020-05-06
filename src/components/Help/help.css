@@ -49,6 +49,15 @@
   border: 1px solid #c4c4c4;
 }
 
+.help-content-grid {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 67px;
+  height: 266px;
+}
+
 .help-content-boat1 {
   width: 40%;
   height: 266px;
@@ -89,4 +98,22 @@
 .help-content-more-help-contact-us {
   color: #39a0ed;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 875px) {
+  .help-content-grid {
+    display: inline-block;
+  }
+
+  .help-content-boat1 {
+    width: 100%;
+  }
+
+  .help-content-search-and-filter {
+    width: auto;
+  }
+
+  .help-content-header {
+    padding: 0 5%;
+  }
 }
