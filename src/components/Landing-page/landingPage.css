@@ -63,7 +63,6 @@
   background: #f7f7f7;
   padding-top: 22px;
   padding-right: 7px;
-
 }
 
 .generate-income-boat {
@@ -118,8 +117,11 @@
     padding-top: 10px;
   }
 
-  .generate-income-boat { 
+  .generate-income-boat {
     width: 90px;
-    
+  }
+
+  .aboutUs-join-us-button {
+    margin-top: 5px;
   }
 }

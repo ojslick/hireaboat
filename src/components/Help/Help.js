@@ -63,7 +63,7 @@ class Help extends React.Component {
               >
                 Contact us
               </span>{' '}
-              today?
+              today
             </p>
           </div>
         </div>

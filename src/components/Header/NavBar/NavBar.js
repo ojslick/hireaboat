@@ -60,6 +60,9 @@ class NavBar extends React.Component {
               <Link to="/help" className="item item3">
                 Help
               </Link>
+              <Link to="/aboutus" className="item item3">
+                About Us
+              </Link>
               <Link to="/profile" className="item item2">
                 My Account
               </Link>
@@ -92,6 +95,9 @@ class NavBar extends React.Component {
               </Link>
               <Link to="/help" className="item item3">
                 Help
+              </Link>
+              <Link to="/aboutus" className="item item3">
+                About Us
               </Link>
             </div>
           </div>

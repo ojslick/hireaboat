@@ -12,7 +12,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
             <img src={boat4} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
-                Search and filter
+                Select your boat
               </h1>
               <p className="help-content-search-and-filter-content">
                 sectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -25,7 +25,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
           <div className="help-content-grid">
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
-                Select boat from list
+                List your full description
               </h1>
               <p className="help-content-search-and-filter-content">
                 sectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -40,7 +40,7 @@ const Addyourboat = ({ addYourBoatDisplay }) => {
             <img src={boat6} alt="boat photo" className="help-content-boat1" />
             <div className="help-content-search-and-filter">
               <h1 className="help-content-search-and-filter-header">
-                Book or chat with the captain
+                See your bookings
               </h1>
               <p className="help-content-search-and-filter-content">
                 sectetur adipiscing elit, sed do eiusmod tempor incididunt ut
