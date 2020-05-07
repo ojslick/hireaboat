@@ -185,9 +185,24 @@
   }
 }
 
+@media only screen and (max-width: 962px) {
+  .aboutUs-customers-reviews-content-card {
+    height: 450px;
+  }
+}
+
 @media only screen and (max-width: 867px) {
   .aboutUs-join-us {
     padding: 0 15%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .aboutUs-customers-reviews-content {
+    display: inline-block;
+  }
+  .aboutUs-customers-reviews-content-card {
+    width: 100%;
   }
 }
 
