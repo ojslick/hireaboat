@@ -21,7 +21,7 @@ const Footer = () => {
               alt="hire a boat logo"
               style={{
                 float: 'left',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             />
             <img
@@ -32,7 +32,7 @@ const Footer = () => {
                 width: '153px',
                 height: '47px',
                 cursor: 'pointer',
-                marginTop: '26.41px'
+                marginTop: '26.41px',
               }}
             />
             <img
@@ -43,28 +43,28 @@ const Footer = () => {
                 width: '153px',
                 height: '47px',
                 cursor: 'pointer',
-                marginTop: '16px'
+                marginTop: '16px',
               }}
             />
           </div>
           <div className="footer-content-hireaboat-icon company">
             <div>
-              <Link to="" className="footer-h4-text-style">
+              <div to="" className="footer-h4-text-style">
                 COMPANY
-              </Link>
+              </div>
             </div>
             <div style={{ marginTop: '22px' }}>
-              <Link to="" className="footer-p-text-style">
+              <Link to="/aboutus" className="footer-p-text-style">
                 About Us
               </Link>
             </div>
             <div style={{ marginTop: '7px' }}>
-              <Link to="" className="footer-p-text-style">
+              <Link to="/help" className="footer-p-text-style">
                 FAQ
               </Link>
             </div>
             <div style={{ marginTop: '7px' }}>
-              <Link to="" className="footer-p-text-style">
+              <Link to="/contact" className="footer-p-text-style">
                 Contact Us
               </Link>
             </div>
@@ -97,7 +97,7 @@ const Footer = () => {
               style={{
                 marginTop: '22px',
                 display: 'flex',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
               }}
             >
               <Link to="" className="">

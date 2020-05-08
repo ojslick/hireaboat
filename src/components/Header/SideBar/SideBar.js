@@ -32,15 +32,6 @@ class SideBar extends React.Component {
               className="item"
               onClick={async () => {
                 await this.props.handleClick();
-                history.push('/aboutus');
-              }}
-            >
-              About Us
-            </div>
-            <div
-              className="item"
-              onClick={async () => {
-                await this.props.handleClick();
                 history.push('/help');
               }}
             >
@@ -104,15 +95,6 @@ class SideBar extends React.Component {
               }}
             >
               Help
-            </div>
-            <div
-              className="item"
-              onClick={async () => {
-                await this.props.handleClick();
-                history.push('/aboutus');
-              }}
-            >
-              About Us
             </div>
           </div>
         )}

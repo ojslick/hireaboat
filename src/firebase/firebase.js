@@ -12,7 +12,7 @@ const config = {
   storageBucket: 'hireaboat-b6aa2.appspot.com',
   messagingSenderId: '610733690161',
   appId: '1:610733690161:web:25b59d0eff8326a3193410',
-  measurementId: 'G-FYYMX8731F'
+  measurementId: 'G-FYYMX8731F',
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -31,7 +31,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log('error creating user', error.message);
@@ -57,7 +57,7 @@ export const addCollectionAndDocument = async (
 
   const imagesUpload = [];
 
-  const updateImage = async image => {
+  const updateImage = async (image) => {
     const path = `users/${currentUser.id}/images/${Math.round(
       Math.random() * 1000000000
     )}.jpg`;
@@ -81,10 +81,10 @@ export const addCollectionAndDocument = async (
     }
   };
 
-  const updateImageArray = async imageArray => {
+  const updateImageArray = async (imageArray) => {
     try {
       const responses = Promise.all(
-        imageArray.map(async image => {
+        imageArray.map(async (image) => {
           await updateImage(image);
         })
       );
@@ -97,6 +97,16 @@ export const addCollectionAndDocument = async (
 
   updateImageArray(boatImages);
 
+  return await batch.commit();
+};
+
+export const addContactForm = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  const newDocRef = collectionRef.doc();
+  await batch.set(newDocRef, objectsToAdd);
+  console.log('collectionRef===>', collectionRef);
+  console.log('objectsToAdd===>', objectsToAdd);
   return await batch.commit();
 };
 
