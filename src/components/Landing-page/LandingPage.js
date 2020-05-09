@@ -11,6 +11,8 @@ class LandingPage extends React.Component {
 
   componentDidMount() {
     this.setState({ screenSize: window.innerWidth });
+
+    window.scrollTo(0, 0);
   }
 
   screenSize = () => {

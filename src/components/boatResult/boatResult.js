@@ -41,14 +41,16 @@ class boatResult extends React.Component {
     fromDate: new Date(),
     toDate: new Date(),
     clickToDay: true,
-    clickFromDay: true
+    clickFromDay: true,
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
+
     const fetchData = async () => {
       const db = firebase.firestore();
       const data = await db.collection('boats').get();
-      this.setState({ listOfBoats: data.docs.map(doc => doc.data()) });
+      this.setState({ listOfBoats: data.docs.map((doc) => doc.data()) });
     };
     fetchData();
   }
@@ -59,14 +61,14 @@ class boatResult extends React.Component {
   }
 
   handleMobileFilterClick = () => {
-    this.setState(prevState => ({ mobileFilter: !prevState.mobileFilter }));
+    this.setState((prevState) => ({ mobileFilter: !prevState.mobileFilter }));
   };
 
   handleFilter = (name, value) => {
     const boatsCopy = [...this.props.boats];
     const searchResult =
       this.state.filteredSearch.length > 0
-        ? this.state.filteredSearch.filter(aBoat => {
+        ? this.state.filteredSearch.filter((aBoat) => {
             switch (name) {
               case 'city':
                 return aBoat.city
@@ -114,7 +116,7 @@ class boatResult extends React.Component {
               default:
             }
           })
-        : boatsCopy.filter(aBoat => {
+        : boatsCopy.filter((aBoat) => {
             switch (name) {
               case 'city':
                 return aBoat.city
@@ -169,11 +171,11 @@ class boatResult extends React.Component {
           });
 
     this.setState({
-      filteredSearch: searchResult
+      filteredSearch: searchResult,
     });
   };
 
-  paginate = pageNumber => this.setState({ currentPage: pageNumber });
+  paginate = (pageNumber) => this.setState({ currentPage: pageNumber });
 
   handlePrevButton = () => {
     if (this.state.currentPage > 1) {
@@ -185,8 +187,8 @@ class boatResult extends React.Component {
     this.setState({ currentPage: this.state.currentPage + 1 });
   };
 
-  onChangeTo = date => this.setState({ toDate: date });
-  onChangeFrom = date => this.setState({ fromDate: date });
+  onChangeTo = (date) => this.setState({ toDate: date });
+  onChangeFrom = (date) => this.setState({ fromDate: date });
 
   handleSelectedDate = () => {};
 
@@ -210,7 +212,7 @@ class boatResult extends React.Component {
                 <input
                   type="text"
                   className="boat-result-input-search-city-input"
-                  onChange={event => {
+                  onChange={(event) => {
                     this.handleFilter('city', event.target.value);
                   }}
                 />
@@ -279,7 +281,7 @@ class boatResult extends React.Component {
                 <select
                   type="text"
                   className="boat-result-input-search-boat-type-input"
-                  onChange={event => {
+                  onChange={(event) => {
                     this.setState({ boatType: event.target.value });
                     this.handleFilter('boatType', event.target.value);
                   }}
@@ -334,7 +336,7 @@ class boatResult extends React.Component {
                         alignItems: 'center',
                         letterSpacing: ' 0.05em',
 
-                        color: '#787878'
+                        color: '#787878',
                       }}
                     >
                       {this.state.values[0]} -{' '}
@@ -346,7 +348,7 @@ class boatResult extends React.Component {
                   <div
                     style={{
                       marginRight: '3.0%',
-                      marginLeft: '3.0%'
+                      marginLeft: '3.0%',
                     }}
                   >
                     <Range
@@ -354,7 +356,7 @@ class boatResult extends React.Component {
                       step={STEPS}
                       min={MINS}
                       max={MAXS}
-                      onChange={values => {
+                      onChange={(values) => {
                         this.setState({ values });
                         this.handleFilter('price');
                       }}
@@ -366,7 +368,7 @@ class boatResult extends React.Component {
                             ...props.style,
                             height: '36px',
                             display: 'flex',
-                            width: '100%'
+                            width: '100%',
                           }}
                         >
                           <div
@@ -379,9 +381,9 @@ class boatResult extends React.Component {
                                 values: this.state.values,
                                 colors: ['#ccc', '#39a0ed', '#ccc'],
                                 min: MINS,
-                                max: MAXS
+                                max: MAXS,
                               }),
-                              alignSelf: 'center'
+                              alignSelf: 'center',
                             }}
                           >
                             {children}
@@ -401,14 +403,14 @@ class boatResult extends React.Component {
                             justifyContent: 'center',
                             alignItems: 'center',
                             boxShadow: '0px 2px 6px #AAA',
-                            outline: 'none'
+                            outline: 'none',
                           }}
                         >
                           <div
                             style={{
                               height: '10px',
                               width: '5px',
-                              backgroundColor: isDragged ? '#548BF4' : '#CCC'
+                              backgroundColor: isDragged ? '#548BF4' : '#CCC',
                             }}
                           />
                         </div>
@@ -427,7 +429,7 @@ class boatResult extends React.Component {
                   </div>
                   <input
                     className="boat-result-search-result-filter-label-price-input"
-                    onChange={event => {
+                    onChange={(event) => {
                       this.handleFilter('boatManufacturer', event.target.value);
                     }}
                   />
@@ -458,7 +460,7 @@ class boatResult extends React.Component {
                   display: 'block',
                   marginTop: '11px',
                   marginBottom: '0px',
-                  color: '#000000'
+                  color: '#000000',
                 }}
               >
                 Need help?
@@ -471,7 +473,7 @@ class boatResult extends React.Component {
                   lineHeight: '27px',
                   display: 'block',
                   marginTop: '11px',
-                  color: '#39A0ED'
+                  color: '#39A0ED',
                 }}
               >
                 Chat with us
@@ -493,7 +495,7 @@ class boatResult extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { boats: state.boatList };
 };
 

@@ -26,6 +26,8 @@ class SelectBoat extends React.Component {
 
   componentDidMount() {
     this.props.selectBoat();
+
+    window.scrollTo(0, 0);
   }
 
   closeModal = () => {
@@ -288,9 +290,13 @@ class SelectBoat extends React.Component {
                       flexWrap: 'wrap',
                     }}
                   >
-                    {this.props.similarBoats.map((data) => {
+                    {this.props.similarBoats.map((data, index) => {
                       return this.props.selectBoatState === data ? null : (
-                        <SimilarBoatCard data={data} key={data._id} />
+                        <SimilarBoatCard
+                          data={data}
+                          key={data._id}
+                          key={index}
+                        />
                       );
                     })}
                   </div>

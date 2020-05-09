@@ -16,6 +16,10 @@ class ContactUs extends React.Component {
     error: '',
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   handleFormSubmit = (e) => {
     e.preventDefault();
   };

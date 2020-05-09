@@ -18,17 +18,21 @@ class SignUp extends React.Component {
       email: '',
       password: '',
       repeat_password: '',
-      message: ''
+      message: '',
     },
-    error: ''
+    error: '',
   };
 
-  handleSubmit = async event => {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
+  handleSubmit = async (event) => {
     const { displayName, email, password } = this.state;
     event.preventDefault();
-    const validateForm = errors => {
+    const validateForm = (errors) => {
       let valid = true;
-      Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+      Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
       return valid;
     };
 
@@ -52,7 +56,7 @@ class SignUp extends React.Component {
         displayName: '',
         email: '',
         password: '',
-        repeat_password: ''
+        repeat_password: '',
       });
     } catch (error) {
       console.error(error);
@@ -100,7 +104,7 @@ class SignUp extends React.Component {
                   placeholder="Full Name"
                   className="input-email"
                   type="text"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.updateForm('displayName', event.target.value);
                   }}
@@ -118,7 +122,7 @@ class SignUp extends React.Component {
                   placeholder="Email"
                   className="input-email"
                   type="email"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.updateForm('email', event.target.value);
                   }}
@@ -135,7 +139,7 @@ class SignUp extends React.Component {
                   placeholder="Password"
                   className="input-password"
                   type="password"
-                  onChange={evt =>
+                  onChange={(evt) =>
                     this.updateForm('password', evt.target.value)
                   }
                 />
@@ -151,19 +155,19 @@ class SignUp extends React.Component {
                   placeholder="Repeat Password"
                   className="input-password"
                   type="password"
-                  onChange={evt => {
+                  onChange={(evt) => {
                     const { errors } = this.state;
                     const val = evt.target.value;
                     if (val === this.state.password) {
                       this.setState({
-                        errors: { ...errors, ...{ repeat_password: '' } }
+                        errors: { ...errors, ...{ repeat_password: '' } },
                       });
                     } else {
                       this.setState({
                         errors: {
                           ...errors,
-                          ...{ repeat_password: "Passwords don't match" }
-                        }
+                          ...{ repeat_password: "Passwords don't match" },
+                        },
                       });
                     }
                   }}

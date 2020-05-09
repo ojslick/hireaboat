@@ -10,6 +10,10 @@ import Addyourboat from './Addyourboat/Addyourboat';
 class Help extends React.Component {
   state = { rentABoatDisplay: true, addYourBoatDisplay: false };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   handleRentABoatDisplay = () => {
     this.setState({ rentABoatDisplay: true });
     this.setState({ addYourBoatDisplay: false });

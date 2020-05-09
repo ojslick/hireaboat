@@ -11,7 +11,7 @@ class SimilarBoatCard extends React.Component {
 
   render() {
     const { data } = this.props;
-    const slideImages = !data.photos ? '' : data.photos;
+    const slideImages = !data.images ? '' : data.images;
 
     const handleCurrency = () => {
       if (data.currency === 'USD') {
@@ -31,24 +31,26 @@ class SimilarBoatCard extends React.Component {
       infinite: true,
       indicators: false,
       arrows: false,
-      pauseOnHover: true
+      pauseOnHover: true,
     };
 
     return (
       <div
         to="/selectboat"
         className="boat-result-search-result-boat-list-card-similar"
+        style={{ cursor: 'pointer' }}
         key={data._id}
         onClick={() => this.props.selectBoat(data)}
       >
         <Slide {...properties}>
-          {slideImages.map(photo => (
+          {slideImages.map((photo, index) => (
             <div
               style={{
                 width: '100%',
                 height: '213px',
-                backgroundSize: 'cover'
+                backgroundSize: 'cover',
               }}
+              key={index}
             >
               <div
                 style={{
@@ -60,7 +62,7 @@ class SimilarBoatCard extends React.Component {
                   backgroundRepeat: 'no-repeat',
                   borderRadius: '5px 5px 0px 0px',
 
-                  backgroundBlendMode: 'multiply, normal'
+                  backgroundBlendMode: 'multiply, normal',
                 }}
                 className="boat-result-search-result-boat-list-card-pic"
               ></div>
@@ -88,7 +90,7 @@ class SimilarBoatCard extends React.Component {
                 alignItems: 'center',
                 marginTop: '10px',
                 marginLeft: '12px',
-                color: ' #000000'
+                color: ' #000000',
               }}
             >
               <p style={{ marginRight: '5px' }}>{data.boatManufacturer}</p>
@@ -105,7 +107,7 @@ class SimilarBoatCard extends React.Component {
                 display: 'flex',
                 alignItems: 'center',
 
-                color: '#787878'
+                color: '#787878',
               }}
             >
               {`${data.lengthOfBoats} m - ${data.boatCapacity} guest`}
@@ -121,7 +123,7 @@ class SimilarBoatCard extends React.Component {
                 display: 'flex',
                 alignItems: 'center',
 
-                color: '#787878'
+                color: '#787878',
               }}
             >
               {data.city}

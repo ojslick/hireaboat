@@ -20,12 +20,16 @@ class Login extends React.Component {
     errors: {
       email: '',
       password: '',
-      message: ''
+      message: '',
     },
-    error: ''
+    error: '',
   };
 
-  handleSubmit = async event => {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
+  handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = this.state;
 
@@ -40,9 +44,9 @@ class Login extends React.Component {
       this.setState({ error: error });
     }
 
-    const validateForm = errors => {
+    const validateForm = (errors) => {
       let valid = true;
-      Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+      Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
       return valid;
     };
 
@@ -88,7 +92,7 @@ class Login extends React.Component {
                   placeholder="Email"
                   className="input-email"
                   type="email"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.updateForm('email', event.target.value);
                   }}
@@ -106,7 +110,7 @@ class Login extends React.Component {
                   placeholder="Password"
                   className="input-password"
                   type="password"
-                  onChange={evt =>
+                  onChange={(evt) =>
                     this.updateForm('password', evt.target.value)
                   }
                 />
@@ -129,7 +133,7 @@ class Login extends React.Component {
             <div className="oauth-container">
               <button
                 className="login-with-facebook"
-                onClick={e => e.preventDefault()}
+                onClick={(e) => e.preventDefault()}
               >
                 <img
                   src={facebookIcon}
@@ -142,7 +146,7 @@ class Login extends React.Component {
             <div className="oauth-container">
               <button
                 className="login-with-facebook"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   signInWithGoogle();
                 }}
@@ -166,7 +170,7 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { auth: state.auth };
 };
 

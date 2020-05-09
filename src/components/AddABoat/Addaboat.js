@@ -39,14 +39,18 @@ class AddABoat extends React.Component {
       lengthOfBoats: '',
       boatCapacity: '',
       boatDescription: '',
-      createdAt: new Date()
+      createdAt: new Date(),
     },
     boatImages: [],
 
     previewImages: [],
 
-    error: ''
+    error: '',
   };
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   handleClick = (name, click) => {
     if (name === 'yachts') {
@@ -114,24 +118,24 @@ class AddABoat extends React.Component {
     }
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
   };
 
-  upload = event => {
+  upload = (event) => {
     let image = [event.target.files[0]];
     console.log('===>uipload', image);
 
     this.setState({
-      boatImages: [...this.state.boatImages, image]
+      boatImages: [...this.state.boatImages, image],
     });
   };
 
-  handleDeletePhoto = image => {
+  handleDeletePhoto = (image) => {
     this.setState({
-      boatImages: this.state.boatImages.filter(url => {
+      boatImages: this.state.boatImages.filter((url) => {
         return url !== image;
-      })
+      }),
     });
   };
 
@@ -151,7 +155,7 @@ class AddABoat extends React.Component {
       lengthOfBoats,
       boatCapacity,
       boatDescription,
-      createdAt
+      createdAt,
     } = this.state.boatData;
 
     const boatImages = this.state;
@@ -223,7 +227,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('yachts', !this.state.yachts);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Yacht' }
+                  boatData: { ...this.state.boatData, boatType: 'Yacht' },
                 });
               }}
             >
@@ -242,7 +246,7 @@ class AddABoat extends React.Component {
                 this.handleClick('catamarans', !this.state.catamarans);
 
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Catamarans' }
+                  boatData: { ...this.state.boatData, boatType: 'Catamarans' },
                 });
               }}
             >
@@ -260,7 +264,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('houseboats', !this.state.houseboats);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Houseboat' }
+                  boatData: { ...this.state.boatData, boatType: 'Houseboat' },
                 });
               }}
             >
@@ -278,7 +282,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('jetskis', !this.state.jetskis);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Jet ski' }
+                  boatData: { ...this.state.boatData, boatType: 'Jet ski' },
                 });
               }}
             >
@@ -296,7 +300,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('motorboats', !this.state.motorboats);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Motorboat' }
+                  boatData: { ...this.state.boatData, boatType: 'Motorboat' },
                 });
               }}
             >
@@ -314,7 +318,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('ribs', !this.state.ribs);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'RIB' }
+                  boatData: { ...this.state.boatData, boatType: 'RIB' },
                 });
               }}
             >
@@ -332,7 +336,7 @@ class AddABoat extends React.Component {
               onClick={() => {
                 this.handleClick('sailboats', !this.state.sailboats);
                 this.setState({
-                  boatData: { ...this.state.boatData, boatType: 'Sailboat' }
+                  boatData: { ...this.state.boatData, boatType: 'Sailboat' },
                 });
               }}
             >
@@ -361,13 +365,13 @@ class AddABoat extends React.Component {
                   placeholder="Select Manufacturer"
                   className="input-manufacturer"
                   type="text"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        boatManufacturer: event.target.value
-                      }
+                        boatManufacturer: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -380,13 +384,13 @@ class AddABoat extends React.Component {
                   placeholder="Select Model"
                   className="input-manufacturer"
                   type="text"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        boatModel: event.target.value
-                      }
+                        boatModel: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -408,13 +412,13 @@ class AddABoat extends React.Component {
                   placeholder="Which city are you located?"
                   className="input-manufacturer"
                   type="text"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        city: event.target.value
-                      }
+                        city: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -427,13 +431,13 @@ class AddABoat extends React.Component {
                   name="firstname"
                   className="input-manufacturer"
                   type="text"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        boatHabour: event.target.value
-                      }
+                        boatHabour: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -449,12 +453,12 @@ class AddABoat extends React.Component {
               </label>
               <div className="addaboat-input-align">
                 <select
-                  onChange={event =>
+                  onChange={(event) =>
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        captain: event.target.value
-                      }
+                        captain: event.target.value,
+                      },
                     })
                   }
                   className="input-manufacturer"
@@ -481,12 +485,12 @@ class AddABoat extends React.Component {
               <div className="addaboat-input-align currency">
                 <select
                   className="currency-input"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        currency: event.target.value
-                      }
+                        currency: event.target.value,
+                      },
                     })
                   }
                 >
@@ -507,13 +511,13 @@ class AddABoat extends React.Component {
                   className="currency-input"
                   placeholder="00.00"
                   type="number"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        dailyBookingPrice: event.target.value
-                      }
+                        dailyBookingPrice: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -538,7 +542,7 @@ class AddABoat extends React.Component {
           className="addaboat-separator-line boat-size"
           style={{
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}
         >
           <div
@@ -547,7 +551,7 @@ class AddABoat extends React.Component {
               border: 'none',
               display: 'flex',
 
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
             }}
           >
             <div className="add-boat-cabins-container">
@@ -556,13 +560,13 @@ class AddABoat extends React.Component {
                 <input
                   className="input-manufacturer"
                   type="number"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        numberOfCabins: event.target.value
-                      }
+                        numberOfCabins: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -576,13 +580,13 @@ class AddABoat extends React.Component {
                 <input
                   className="input-manufacturer"
                   type="number"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        numberOfBathrooms: event.target.value
-                      }
+                        numberOfBathrooms: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -596,13 +600,13 @@ class AddABoat extends React.Component {
                 <input
                   className="input-manufacturer"
                   type="number"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        lengthOfBoats: event.target.value
-                      }
+                        lengthOfBoats: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -614,13 +618,13 @@ class AddABoat extends React.Component {
                 <input
                   className="input-manufacturer"
                   type="number"
-                  onChange={event => {
+                  onChange={(event) => {
                     event.preventDefault();
                     this.setState({
                       boatData: {
                         ...this.state.boatData,
-                        boatCapacity: event.target.value
-                      }
+                        boatCapacity: event.target.value,
+                      },
                     });
                   }}
                 />
@@ -658,13 +662,13 @@ class AddABoat extends React.Component {
                 name="firstname"
                 className="input-manufacturer boat-description"
                 type="text"
-                onChange={event => {
+                onChange={(event) => {
                   event.preventDefault();
                   this.setState({
                     boatData: {
                       ...this.state.boatData,
-                      boatDescription: event.target.value
-                    }
+                      boatDescription: event.target.value,
+                    },
                   });
                 }}
               />
@@ -717,7 +721,7 @@ class AddABoat extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log(state);
   return { addBoatState: state.hireaboat, currentUser: state.currentUser };
 };
