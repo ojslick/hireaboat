@@ -14,6 +14,7 @@ import Loading from '../components/Loading/Loading';
 import Help from './Help/Help';
 import AboutUs from './AboutUs/AboutUs';
 import ContactUs from './ContactUs/ContactUs';
+import PaymentCheckOut from './PaymentCheckout/PaymentCheckOut';
 import {
   auth,
   createUserProfileDocument,
@@ -86,6 +87,11 @@ class App extends React.Component {
               <Route path="/help" exact component={Help} />
               <Route path="/aboutus" exact component={AboutUs} />
               <Route path="/contact" exact component={ContactUs} />
+              <Route
+                path="/selectboat/checkout"
+                exact
+                component={PaymentCheckOut}
+              />
             </Switch>
           </Router>
         )}

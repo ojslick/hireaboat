@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../../history';
 import { connect } from 'react-redux';
 import { bookingCard } from '../../actions';
 import Calendar from 'react-calendar';
@@ -10,7 +11,7 @@ class BookingCard extends React.Component {
     toDate: new Date(),
     clickToDay: true,
     clickFromDay: true,
-    bookingDays: ''
+    bookingDays: '',
   };
 
   componentDidUpdate() {
@@ -38,8 +39,8 @@ class BookingCard extends React.Component {
     );
   }
 
-  onChangeTo = date => this.setState({ toDate: date });
-  onChangeFrom = date => this.setState({ fromDate: date });
+  onChangeTo = (date) => this.setState({ toDate: date });
+  onChangeFrom = (date) => this.setState({ fromDate: date });
 
   render() {
     console.log('bookingdays==>', this.state.bookingDays);
@@ -54,7 +55,7 @@ class BookingCard extends React.Component {
                 display: 'flex',
                 justifyContent: 'space-between',
                 marginLeft: '26px',
-                marginTop: '10px'
+                marginTop: '10px',
               }}
             >
               <div style={{ width: '60%', float: 'left' }}>
@@ -64,7 +65,7 @@ class BookingCard extends React.Component {
                 style={{
                   width: '30%',
 
-                  float: 'left'
+                  float: 'left',
                 }}
               >
                 <p className="select-boat-description-booking-card-perday">
@@ -183,7 +184,11 @@ class BookingCard extends React.Component {
                   </p>
                 </div>
               </div>
-              <button className="select-boat-description-booking-card-book-now-btn">
+              <button
+                to="/selectboat/checkout"
+                className="select-boat-description-booking-card-book-now-btn"
+                onClick={() => history.push('/selectboat/checkout')}
+              >
                 Book Now
               </button>
               <button

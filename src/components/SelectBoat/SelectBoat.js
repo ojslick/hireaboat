@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../../history';
 import { connect } from 'react-redux';
 import { selectBoat } from '../../actions/';
 import ImageSlider from './ImageSlider';
