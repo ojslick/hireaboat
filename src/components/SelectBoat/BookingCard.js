@@ -34,6 +34,7 @@ class BookingCard extends React.Component {
 
     this.props.bookingCard(
       this.state.fromDate.toLocaleDateString(),
+      this.state.toDate.toLocaleDateString(),
       renderBookingDays,
       price
     );

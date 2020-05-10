@@ -313,7 +313,6 @@ class SelectBoat extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     selectBoatState: state.selectBoat,
     similarBoats: state.similarBoats,

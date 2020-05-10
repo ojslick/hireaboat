@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import ImageSlider from './ImageSlider/ImageSlider.js';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import './paymentCheckOut.css';
@@ -136,11 +138,104 @@ class PaymentCheckOut extends React.Component {
                       required
                     />
                   </div>
+                  <div
+                    className="payment-checkout-card-details-phone-number-align"
+                    style={{ marginTop: '19px' }}
+                  >
+                    <label className="payment-checkout-card-details-phone-number-label">
+                      State
+                    </label>
+                    <div className="payment-checkout-card-details-city-container">
+                      <input
+                        className="payment-checkout-card-details-city"
+                        type="text"
+                        required
+                      />
+                      <div className="payment-checkout-card-details-zipcode-container">
+                        <label>Zip code</label>
+                        <input
+                          className="payment-checkout-card-details-zipcode"
+                          type="text"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="payment-checkout-card-details-phone-number-align"
+                    style={{ marginTop: '19px' }}
+                  >
+                    <label className="payment-checkout-card-details-phone-number-label">
+                      Country
+                    </label>
+                    <input
+                      className="payment-checkout-card-details-email"
+                      type="text"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="payment-checkout-card-details"
+                style={{ height: '290px' }}
+              >
+                <div className="payment-checkout-card-details-header">
+                  <p className="payment-checkout-card-details-header-payment-information">
+                    Optional Message for the owner
+                  </p>
+                </div>
+                <div className="payment-checkout-line"></div>
+                <div className="payment-checkout-card-details-container">
+                  <div className="payment-checkout-card-details-phone-number-align">
+                    <label className="payment-checkout-card-details-phone-number-label">
+                      Message
+                    </label>
+                    <textarea
+                      className="payment-checkout-card-details-email"
+                      type="text"
+                      style={{ height: '178px' }}
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button className="payment-checkout-card-details-button">
+                Continue
+              </button>
+            </div>
+
+            <div className="payment-checkout-flex-right">
+              <div className="payment-checkout-boat-preview">
+                <ImageSlider selectBoat={this.props.selectBoatState} />
+                <div style={{ padding: '16px 22px', textAlign: 'justify' }}>
+                  <p className="payment-checkout-boat-preview-boatModel">
+                    {`${this.props.selectBoatState.boatManufacturer} ${this.props.selectBoatState.boatModel}`}
+                  </p>
+
+                  <p className="payment-checkout-boat-preview-location">
+                    {`${this.props.selectBoatState.city}`}
+                  </p>
+                  <div className="payment-checkout-boat-preview-dates">
+                    <div className="payment-checkout-boat-preview-dates-from-container">
+                      <p className="payment-checkout-boat-preview-dates-from">
+                        From
+                      </p>
+                      <p className="payment-checkout-boat-preview-dates-from-date">
+                        {this.props.bookingDetails.fromDate}
+                      </p>
+                    </div>
+                    <div className="payment-checkout-boat-preview-dates-from-container">
+                      <p className="payment-checkout-boat-preview-dates-from">
+                        To
+                      </p>
+                      <p className="payment-checkout-boat-preview-dates-from-date">
+                        {this.props.bookingDetails.toDate}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div className="payment-checkout-flex-right"></div>
           </div>
         </div>
       </div>
@@ -148,4 +243,11 @@ class PaymentCheckOut extends React.Component {
   }
 }
 
-export default PaymentCheckOut;
+const mapStateToProps = (state) => {
+  return {
+    selectBoatState: state.selectBoat,
+    bookingDetails: state.bookingCard,
+  };
+};
+
+export default connect(mapStateToProps)(PaymentCheckOut);
