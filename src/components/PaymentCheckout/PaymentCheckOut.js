@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImageSlider from './ImageSlider/ImageSlider.js';
+import Footer from '../Footer/Footer';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import './paymentCheckOut.css';
@@ -177,7 +178,7 @@ class PaymentCheckOut extends React.Component {
                 </div>
               </div>
               <div
-                className="payment-checkout-card-details"
+                className="payment-checkout-card-details message"
                 style={{ height: '290px' }}
               >
                 <div className="payment-checkout-card-details-header">
@@ -192,7 +193,7 @@ class PaymentCheckOut extends React.Component {
                       Message
                     </label>
                     <textarea
-                      className="payment-checkout-card-details-email"
+                      className="payment-checkout-card-details-email "
                       type="text"
                       style={{ height: '178px' }}
                     ></textarea>
@@ -233,11 +234,46 @@ class PaymentCheckOut extends React.Component {
                       </p>
                     </div>
                   </div>
+                  <p className="payment-checkout-boat-preview-habour">
+                    City of departure / Harbour
+                  </p>
+                  <p className="payment-checkout-boat-preview-habour-location">
+                    {`${this.props.selectBoatState.city} / ${this.props.selectBoatState.boatHabour}`}
+                  </p>
+                  <div className="payment-checkout-boat-preview-line"></div>
+                  <p className="payment-checkout-boat-preview-price-container">
+                    Price
+                  </p>
+                  <div className="payment-checkout-boat-preview-price">
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      Daily Price
+                    </p>
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      {`$${this.props.selectBoatState.dailyBookingPrice}`}
+                    </p>
+                  </div>
+                  <div className="payment-checkout-boat-preview-price">
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      Days
+                    </p>
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      {`${this.props.bookingDetails.bookingDays}`}
+                    </p>
+                  </div>
+                  <div className="payment-checkout-boat-preview-price">
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      Total
+                    </p>
+                    <p className="payment-checkout-boat-preview-daily-price">
+                      {`${this.props.bookingDetails.price}`}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
