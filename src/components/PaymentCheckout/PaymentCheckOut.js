@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { checkoutData } from '../../actions/';
+import history from '../../history';
 import ImageSlider from './ImageSlider/ImageSlider.js';
 import Footer from '../Footer/Footer';
 import PhoneInput from 'react-phone-input-2';
@@ -10,8 +12,13 @@ import visa from './Images/visa.svg';
 import card from './Images/card.svg';
 
 class PaymentCheckOut extends React.Component {
+  state = { email: '' };
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  componentDidUpdate() {
+    this.props.checkoutData(this.state.email);
   }
   render() {
     return (
@@ -20,7 +27,7 @@ class PaymentCheckOut extends React.Component {
           <div className="payment-checkout-flex">
             <div className="payment-checkout-flex-left">
               <div className="payment-checkout-header">
-                <p className="payment-checkout-header-payment">1.Payment</p>
+                <p className="payment-checkout-header-payment">1. Payment</p>
                 <p
                   className="payment-checkout-header-confirmation"
                   style={{ fontSize: '25px', fontWeight: '100' }}
@@ -28,7 +35,7 @@ class PaymentCheckOut extends React.Component {
                   >
                 </p>
                 <p className="payment-checkout-header-confirmation">
-                  2.Confirmation
+                  2. Confirmation
                 </p>
               </div>
               <div className="payment-checkout-card-details">
@@ -65,6 +72,9 @@ class PaymentCheckOut extends React.Component {
                       className="payment-checkout-card-details-email"
                       type="email"
                       required
+                      onChange={(event) =>
+                        this.setState({ email: event.target.value })
+                      }
                     />
                   </div>
                   <div
@@ -200,7 +210,12 @@ class PaymentCheckOut extends React.Component {
                   </div>
                 </div>
               </div>
-              <button className="payment-checkout-card-details-button">
+              <button
+                className="payment-checkout-card-details-button"
+                onClick={() =>
+                  history.push('/selectboat/checkout/payment-confirmation')
+                }
+              >
                 Continue
               </button>
             </div>
@@ -286,4 +301,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PaymentCheckOut);
+export default connect(mapStateToProps, { checkoutData })(PaymentCheckOut);

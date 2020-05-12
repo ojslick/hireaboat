@@ -43,3 +43,9 @@ export const currentUser = (data) => async (dispatch) => {
 
   dispatch({ type: 'CURRENT_USER', payload: response });
 };
+
+export const checkoutData = (data) => async (dispatch) => {
+  const response = await data;
+
+  dispatch({ type: 'CHECKOUT_DATA', payload: response });
+};

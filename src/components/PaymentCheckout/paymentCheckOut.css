@@ -356,6 +356,125 @@
   color: #787878;
 }
 
+.payment-successful {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  margin-top: 22px !important;
+  margin-bottom: 0 !important;
+  color: #343434;
+}
+
+.payment-successful-icon {
+  display: inline-block;
+  margin-top: 17px;
+}
+
+.payment-successful-takeoff-container {
+  width: 95%;
+  display: inline-block;
+  height: 229px;
+  margin-top: 34px;
+  background: #f6f6f6;
+}
+
+.payment-successful-takeoff-price {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 45px;
+  margin-top: 22px !important;
+  margin-bottom: 0 !important;
+  color: #39a0ed;
+}
+
+.payment-successful-takeoff-flex {
+  width: 100%;
+  text-align: center;
+}
+
+.payment-successful-takeoff-flex-align {
+  width: 90%;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.payment-successful-takeoff-time {
+  width: 40%;
+  text-align: start;
+}
+
+.payment-successful-takeoff-date {
+  width: 60%;
+  text-align: start;
+}
+
+.payment-successful-takeoff-time-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  margin: 0;
+  color: #343434;
+}
+
+.payment-successful-takeoff-date-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  color: #787878;
+}
+
+.payment-successful-more-info {
+  display: inline-block;
+  width: 95%;
+
+  margin-top: 17px;
+}
+
+.payment-successful-more-info-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-successful-more-info-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  color: #343434;
+}
+
+.payment-successful-more-contact {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  width: 150px;
+  height: 40px;
+
+  background: #39a0ed;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+@media only screen and (max-width: 1159px) {
+  .payment-checkout-card-details-data-date {
+    width: 20%;
+  }
+}
+
+@media only screen and (max-width: 1159px) {
+  .payment-checkout-card-details-data-date {
+    width: 25%;
+  }
+}
+
 @media only screen and (max-width: 900px) {
   .payment-checkout-align {
     width: 90%;

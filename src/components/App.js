@@ -15,6 +15,7 @@ import Help from './Help/Help';
 import AboutUs from './AboutUs/AboutUs';
 import ContactUs from './ContactUs/ContactUs';
 import PaymentCheckOut from './PaymentCheckout/PaymentCheckOut';
+import PaymentConfirmation from './PaymentCheckout/PaymentConfirmation/PaymentConfirmation';
 import {
   auth,
   createUserProfileDocument,
@@ -91,6 +92,11 @@ class App extends React.Component {
                 path="/selectboat/checkout"
                 exact
                 component={PaymentCheckOut}
+              />
+              <Route
+                path="/selectboat/checkout/payment-confirmation"
+                exact
+                component={PaymentConfirmation}
               />
             </Switch>
           </Router>
