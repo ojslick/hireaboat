@@ -512,7 +512,7 @@
   }
 
   .payment-checkout-card-details {
-    height: 435px;
+    min-height: 310px;
   }
 
   .payment-checkout-card-details-data {
