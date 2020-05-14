@@ -23,14 +23,13 @@ class BookingCard extends React.Component {
               (1000 * 60 * 60 * 24)
           );
 
-    const price = `$${
+    const price =
       this.state.toDate.getDate() - this.state.fromDate.getDate() === 0
         ? 1 * this.props.dailyBookingPrice
         : Math.ceil(
             (this.state.toDate.getTime() - this.state.fromDate.getTime()) /
               (1000 * 60 * 60 * 24)
-          ) * this.props.dailyBookingPrice
-    }`;
+          ) * this.props.dailyBookingPrice;
 
     this.props.bookingCard(
       this.state.fromDate.toLocaleDateString(),

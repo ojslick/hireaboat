@@ -1,4 +1,5 @@
 import React from 'react';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { connect } from 'react-redux';
 import { checkoutData } from '../../actions/';
 import history from '../../history';
@@ -39,6 +40,50 @@ class PaymentCheckOut extends React.Component {
                 </p>
               </div>
               <div className="payment-checkout-card-details">
+                <div className="payment-checkout-card-details-header">
+                  <p className="payment-checkout-card-details-header-payment-information">
+                    Pay with PayPal
+                  </p>
+                  <div className="payment-checkout-card-details-header-icons">
+                    <img src={mastercard} alt="icon" />
+                    <img src={visa} alt="icon" />
+                  </div>
+                </div>
+                <div className="payment-checkout-line"></div>
+                <div className="payment-checkout-card-details-container">
+                  <div
+                    className="payment-checkout-card-details-phone-number-align"
+                    style={{ display: 'inline-block', width: '65%' }}
+                  >
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        width: '100%',
+                      }}
+                    >
+                      <PayPalButton
+                        amount={this.props.bookingDetails.price}
+                        // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                        onSuccess={(details, data) => {
+                          alert(
+                            'Transaction completed by ' +
+                              details.payer.name.given_name
+                          );
+
+                          // OPTIONAL: Call your server to save the transaction
+                          return fetch('/paypal-transaction-complete', {
+                            method: 'post',
+                            body: JSON.stringify({
+                              orderId: data.orderID,
+                            }),
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="payment-checkout-card-details">
                 <div className="payment-checkout-card-details-header">
                   <p className="payment-checkout-card-details-header-payment-information">
                     Payment Information
@@ -117,7 +162,7 @@ class PaymentCheckOut extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
+                    </div>
               <div className="payment-checkout-card-details">
                 <div className="payment-checkout-card-details-header">
                   <p className="payment-checkout-card-details-header-payment-information">
@@ -217,7 +262,7 @@ class PaymentCheckOut extends React.Component {
                 }
               >
                 Continue
-              </button>
+              </button>*/}
             </div>
 
             <div className="payment-checkout-flex-right">
@@ -280,7 +325,7 @@ class PaymentCheckOut extends React.Component {
                       Total
                     </p>
                     <p className="payment-checkout-boat-preview-daily-price">
-                      {`${this.props.bookingDetails.price}`}
+                      {`$${this.props.bookingDetails.price}`}
                     </p>
                   </div>
                 </div>
