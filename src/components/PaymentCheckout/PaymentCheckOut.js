@@ -52,13 +52,13 @@ class PaymentCheckOut extends React.Component {
                 <div className="payment-checkout-line"></div>
                 <div
                   className="payment-checkout-card-details-container"
-                  style={{ padding: '20% 0', marginTop: '0' }}
+                  style={{ padding: '10% 0', marginTop: '0' }}
                 >
                   <div
                     className="payment-checkout-card-details-phone-number-align"
                     style={{
                       display: 'inline-block',
-                      width: '65%',
+                      width: '80%',
                     }}
                   >
                     <div
