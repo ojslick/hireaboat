@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class ProfileNav extends React.Component {
   state = {
@@ -71,7 +72,8 @@ class ProfileNav extends React.Component {
       <div className="profileNav-container">
         <div className="profileNav-align">
           <div className="profileNav-bar-flex">
-            <div
+            <Link
+              to="/dashboard"
               className={
                 this.state.dashboard
                   ? 'profileNav-bar-dashboard-ash'
@@ -80,8 +82,9 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('dashboard', true)}
             >
               Dashboard
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/message"
               className={
                 this.state.message
                   ? 'profileNav-bar-dashboard-ash'
@@ -90,8 +93,9 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('message', true)}
             >
               Message
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/trips"
               className={
                 this.state.trips
                   ? 'profileNav-bar-dashboard-ash'
@@ -100,8 +104,9 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('trips', true)}
             >
               Trips
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/profile/edit"
               className={
                 this.state.profile
                   ? 'profileNav-bar-dashboard-ash'
@@ -110,8 +115,9 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('profile', true)}
             >
               Profile
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/boats"
               className={
                 this.state.boats
                   ? 'profileNav-bar-dashboard-ash'
@@ -120,8 +126,9 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('boats', true)}
             >
               Boats
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/settings"
               className={
                 this.state.settings
                   ? 'profileNav-bar-dashboard-ash'
@@ -130,7 +137,7 @@ class ProfileNav extends React.Component {
               onClick={() => this.handleNavClick('settings', true)}
             >
               Settings
-            </div>
+            </Link>
           </div>
         </div>
       </div>
