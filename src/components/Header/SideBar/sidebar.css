@@ -16,5 +16,13 @@ a:hover {
 }
 
 .ui.sidebar.menu .item:hover {
-  background-color: #39A0ED;
+  background-color: #39a0ed;
+}
+
+.sub-item-display {
+  margin-left: 10px;
+}
+
+.sub-item {
+  display: none;
 }

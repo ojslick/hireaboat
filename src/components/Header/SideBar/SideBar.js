@@ -6,12 +6,17 @@ import history from '../../../history';
 import './sidebar.css';
 
 class SideBar extends React.Component {
+  state = { visible: false };
   visible = () => {
     if (this.props.isVisible) {
       return 'visible';
     } else {
       return '';
     }
+  };
+
+  handleDropDown = () => {
+    this.setState({ visible: !this.state.visible });
   };
 
   render() {
@@ -39,12 +44,69 @@ class SideBar extends React.Component {
             </div>
             <div
               className="item"
-              onClick={async () => {
-                await this.props.handleClick();
-                history.push('/profile');
+              onClick={() => {
+                this.handleDropDown();
               }}
             >
               My Account
+              <div
+                className={this.state.visible ? 'sub-item-display' : 'sub-item'}
+              >
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/dashboard');
+                  }}
+                >
+                  Dashboard
+                </div>
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/message');
+                  }}
+                >
+                  Message
+                </div>
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/trips');
+                  }}
+                >
+                  Trips
+                </div>
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/profile/edit');
+                  }}
+                >
+                  Profile
+                </div>
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/boats');
+                  }}
+                >
+                  Boats
+                </div>
+                <div
+                  className="item"
+                  onClick={async () => {
+                    await this.props.handleClick();
+                    history.push('/settings');
+                  }}
+                >
+                  Settings
+                </div>
+              </div>
             </div>
 
             <div

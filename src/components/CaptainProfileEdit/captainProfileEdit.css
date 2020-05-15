@@ -233,7 +233,25 @@ a {
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .profileNav-container {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 637px) {
+  .personal-profile-flex {
+    display: inline-block;
+  }
+
+  .personal-profile-left {
+    width: 100%;
+  }
+
+  .personal-profile-right {
+    margin-top: 25px;
+    width: 100%;
+  }
   .personal-information-dob {
     display: inline-block;
     width: 100%;

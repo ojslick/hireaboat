@@ -15,6 +15,10 @@ class CaptainProfileEdit extends React.Component {
     dob: '',
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   handleClick = (name, value) => {
     if (name == 'general') {
       this.setState({ general: true });
