@@ -1,6 +1,3 @@
-a {
-  color: #ffffff !important;
-}
 .captain-profile-edit-container {
   width: 100%;
   text-align: center;
@@ -37,7 +34,7 @@ a {
   line-height: 21px;
   cursor: pointer;
   vertical-align: middle;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .profileNav-bar-dashboard-ash {
@@ -73,6 +70,9 @@ a {
 
 .personal-profile-right {
   width: 70%;
+}
+
+.personal-profile-right-container {
   min-height: 500px;
 
   background: #ffffff;
@@ -222,6 +222,104 @@ a {
 
 .personal-information-firstname-container {
   margin-top: 0;
+}
+
+.personal-information-body-pic {
+  width: 240px;
+  height: 281px;
+  display: table;
+  background: #ffffff;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+}
+
+.addaboat-separator-line-align-boat-upload-icon-resize {
+  width: 100%;
+  height: 281px;
+}
+
+.boating-qualification-captain-license {
+  width: 60%;
+  height: 53px;
+  background: #d4efec;
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px rgba(212, 239, 236, 0.5);
+  display: table;
+}
+
+.boating-qualification-captain-license-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 19px;
+  display: table-cell;
+  vertical-align: middle;
+  color: #6a9d97;
+}
+
+.boating-qualification-captain-flex {
+  margin-top: 28px;
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.boating-qualification-captain {
+  width: 45%;
+  height: 128px;
+  display: table;
+  text-align: center;
+  background: #f6f6f6;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 15px 5px;
+  cursor: pointer;
+}
+
+.boating-qualification-captain-image {
+  filter: invert(47%) sepia(94%) saturate(0%) hue-rotate(222deg) brightness(82%)
+    contrast(85%);
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+.boating-qualification-captain-image-text {
+  display: table-row-group;
+  vertical-align: bottom;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 19px;
+  color: #787878;
+}
+
+.boating-qualification-captain-blue {
+  width: 45%;
+  height: 128px;
+  display: table;
+  text-align: center;
+  background: #f6f6f6;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 15px 5px;
+  cursor: pointer;
+  background: #39a0ed;
+  box-shadow: 0px 5px 15px rgba(57, 160, 237, 0.5);
+}
+
+.boating-qualification-captain-image-blue {
+  filter: brightness(0) invert(1);
+}
+
+.boating-qualification-captain-image-text-white {
+  display: table-row-group;
+  vertical-align: bottom;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 19px;
+  color: #ffffff;
 }
 
 @media only screen and (max-width: 1080px) {
