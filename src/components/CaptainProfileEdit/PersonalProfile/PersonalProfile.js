@@ -1,17 +1,72 @@
 import React from 'react';
 import Calendar from 'react-calendar';
 import PhoneInput from 'react-phone-input-2';
+import { auth, updateUserProfile } from '../../../firebase/firebase';
+import { connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class PersonalProfile extends React.Component {
   state = {
     toDate: new Date(),
     clickToDay: true,
-    dob: '',
+    personalProfile: {
+      firstName: '',
+      lastName: '',
+      dob: '',
+      sex: '',
+      phone: '',
+      city: '',
+      zipCode: '',
+      address: '',
+      describeYourself: '',
+    },
+  };
+
+  handleSubmit = async () => {
+    const {
+      firstName,
+      lastName,
+      dob,
+      sex,
+      phone,
+      city,
+      zipCode,
+      address,
+      describeYourself,
+    } = this.state.personalProfile;
+
+    if (
+      (firstName,
+      lastName,
+      dob,
+      sex,
+      phone,
+      city,
+      zipCode,
+      address,
+      describeYourself)
+    ) {
+      await updateUserProfile(
+        this.props.currentUser,
+        this.state.personalProfile
+      );
+      toast.success('Saved Successfully', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   onChangeTo = (date) => this.setState({ toDate: date });
 
   render() {
+    console.log(['personalProfile==>', this.state.personalProfile]);
     return (
       <>
         {this.props.handleGeneralClick ? (
@@ -37,6 +92,14 @@ class PersonalProfile extends React.Component {
                     <input
                       type="text"
                       className="personal-information-name-firstname"
+                      onChange={(event) =>
+                        this.setState({
+                          personalProfile: {
+                            ...this.state.personalProfile,
+                            firstName: event.target.value,
+                          },
+                        })
+                      }
                     />
                   </div>
                   <div
@@ -52,6 +115,14 @@ class PersonalProfile extends React.Component {
                     <input
                       type="text"
                       className="personal-information-name-firstname"
+                      onChange={(event) =>
+                        this.setState({
+                          personalProfile: {
+                            ...this.state.personalProfile,
+                            lastName: event.target.value,
+                          },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -66,10 +137,20 @@ class PersonalProfile extends React.Component {
                     <label className="personal-information-name-firstname-label">
                       Sex
                     </label>
-                    <select className="personal-information-name-firstname-input">
+                    <select
+                      className="personal-information-name-firstname-input"
+                      onChange={(event) =>
+                        this.setState({
+                          personalProfile: {
+                            ...this.state.personalProfile,
+                            sex: event.target.value,
+                          },
+                        })
+                      }
+                    >
                       <option></option>
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                     </select>
                   </div>
                   <div
@@ -88,8 +169,8 @@ class PersonalProfile extends React.Component {
                       className="personal-information-name-firstname-input"
                       type="text"
                       value={
-                        this.state.dob
-                          ? this.state.dob.toLocaleDateString()
+                        this.state.personalProfile.dob
+                          ? this.state.personalProfile.dob.toLocaleDateString()
                           : ''
                       }
                     />
@@ -105,7 +186,12 @@ class PersonalProfile extends React.Component {
                         value={this.state.toDate}
                         onClickDay={async () => {
                           await this.setState({ clickToDay: true });
-                          this.setState({ dob: this.state.toDate });
+                          this.setState({
+                            personalProfile: {
+                              ...this.state.personalProfile,
+                              dob: this.state.toDate,
+                            },
+                          });
                         }}
                       />
                     </div>
@@ -125,7 +211,14 @@ class PersonalProfile extends React.Component {
                     <div className="personal-information-name-firstname">
                       <PhoneInput
                         country={'us'}
-                        onChange={(phone) => this.setState({ phone })}
+                        onChange={(phone) =>
+                          this.setState({
+                            personalProfile: {
+                              ...this.state.personalProfile,
+                              phone,
+                            },
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -142,6 +235,14 @@ class PersonalProfile extends React.Component {
                     <input
                       type="text"
                       className="personal-information-name-firstname"
+                      onChange={(event) =>
+                        this.setState({
+                          personalProfile: {
+                            ...this.state.personalProfile,
+                            city: event.target.value,
+                          },
+                        })
+                      }
                     />
                   </div>
                   <div
@@ -157,6 +258,14 @@ class PersonalProfile extends React.Component {
                     <input
                       type="text"
                       className="personal-information-name-firstname"
+                      onChange={(event) =>
+                        this.setState({
+                          personalProfile: {
+                            ...this.state.personalProfile,
+                            zipCode: event.target.value,
+                          },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -173,6 +282,14 @@ class PersonalProfile extends React.Component {
                   <input
                     type="text"
                     className="personal-information-name-firstname"
+                    onChange={(event) =>
+                      this.setState({
+                        personalProfile: {
+                          ...this.state.personalProfile,
+                          address: event.target.value,
+                        },
+                      })
+                    }
                   />
                 </div>
                 <div
@@ -189,6 +306,14 @@ class PersonalProfile extends React.Component {
                     type="text"
                     className="personal-information-name-firstname"
                     style={{ height: '166px' }}
+                    onChange={(event) =>
+                      this.setState({
+                        personalProfile: {
+                          ...this.state.personalProfile,
+                          describeYourself: event.target.value,
+                        },
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -196,9 +321,11 @@ class PersonalProfile extends React.Component {
             <button
               className="personal-information-button"
               style={{ float: 'left' }}
+              onClick={this.handleSubmit}
             >
               Save
             </button>
+            <ToastContainer />
           </div>
         ) : (
           ''
@@ -208,4 +335,9 @@ class PersonalProfile extends React.Component {
   }
 }
 
-export default PersonalProfile;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return { currentUser: state.currentUser };
+};
+
+export default connect(mapStateToProps)(PersonalProfile);

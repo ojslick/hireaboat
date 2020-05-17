@@ -1,9 +1,12 @@
 import React from 'react';
+import addIcon from './Images/addIcon.svg';
+import deleteIcon from './Images/deleteIcon.png';
 import captainIcon from './Images/Vector1.svg';
 import anchorIcon from './Images/Vector2.svg';
+import { Checkbox } from 'semantic-ui-react';
 
 class BoatingQualification extends React.Component {
-  state = { captain: false, notACaptain: false };
+  state = { captain: false, notACaptain: false, boatImages: '', blobImage: '' };
 
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -18,6 +21,23 @@ class BoatingQualification extends React.Component {
       this.setState({ captain: false });
       this.setState({ notACaptain: value });
     }
+  };
+
+  upload = (event) => {
+    let image = [event.target.files[0]];
+    const blob = new Blob(image, { type: 'mime' });
+    const imageUrl = URL.createObjectURL(blob);
+    this.setState({ blobImage: imageUrl });
+
+    this.setState({
+      boatImages: [...this.state.boatImages, image],
+    });
+  };
+
+  handleDeletePhoto = (image) => {
+    this.setState({
+      blobImage: this.state.blobUrl === image ? '' : this.state.blobUrl,
+    });
   };
 
   render() {
@@ -125,7 +145,7 @@ class BoatingQualification extends React.Component {
                     Years of Experience
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     className="personal-information-name-firstname"
                   />
                 </div>
@@ -158,9 +178,134 @@ class BoatingQualification extends React.Component {
               </div>
               <div
                 className="personal-information-body"
-                style={{ textAlign: 'center' }}
-              ></div>
+                style={{ textAlign: 'start' }}
+              >
+                <p className="boat-experience-boat-driven-text">
+                  Type of boat driven
+                </p>
+                <div
+                  style={{
+                    marginTop: '15px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '55%',
+                  }}
+                >
+                  <div style={{ width: '20%' }}>
+                    <Checkbox label="JetSki" />
+                    <Checkbox
+                      label="Yacht"
+                      className="boat-experience-boat-driven-checkbox"
+                    />
+                    <Checkbox
+                      label="Catamaran"
+                      className="boat-experience-boat-driven-checkbox"
+                    />
+                    <Checkbox
+                      label="Motorboats"
+                      className="boat-experience-boat-driven-checkbox"
+                    />
+                  </div>
+                  <div style={{ width: '20%' }}>
+                    <Checkbox label="Sailboat" />
+                    <Checkbox
+                      label="RIB"
+                      className="boat-experience-boat-driven-checkbox"
+                    />
+                    <Checkbox
+                      label="Houseboat"
+                      className="boat-experience-boat-driven-checkbox"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+            <div
+              className="personal-profile-right-container"
+              style={{ minHeight: '200px', marginTop: '28px' }}
+            >
+              <div className="personal-information-header">
+                <h1 className="personal-information-header-text">
+                  Captain License
+                </h1>
+              </div>
+              <div
+                className="personal-information-body"
+                style={{ textAlign: 'center' }}
+              >
+                <div
+                  className="boating-qualification-captain-license"
+                  style={{ width: '70%' }}
+                >
+                  <p className="boating-qualification-captain-license-text">
+                    Upload a scanned visible image of your valid Captain’s
+                    license to enable us verify you
+                  </p>
+                </div>
+                <div
+                  className="personal-information-body-pic"
+                  style={{ marginTop: '14px' }}
+                >
+                  <label
+                    style={{
+                      display: 'table-cell',
+                      verticalAlign: 'middle',
+                      height: '100%',
+                      width: '100%',
+                      position: 'relative',
+                    }}
+                  >
+                    <img
+                      className={
+                        this.state.blobImage
+                          ? 'addaboat-separator-line-align-boat-upload-icon-resize'
+                          : 'addaboat-separator-line-align-boat-upload-icon'
+                      }
+                      style={{ margin: '0' }}
+                      src={
+                        this.state.blobImage ? this.state.blobImage : addIcon
+                      }
+                      alt="add icon"
+                    />
+
+                    <input
+                      type="file"
+                      className="addaboat-separator-line-align-boat-upload-button"
+                      onChange={this.upload}
+                      multiple
+                    />
+                    {this.state.blobImage ? (
+                      ''
+                    ) : (
+                      <p style={{ marginTop: '13px', color: '#343434' }}>
+                        Add Image
+                      </p>
+                    )}
+                  </label>
+                  <img
+                    src={deleteIcon}
+                    alt="delete icon"
+                    style={{
+                      display: this.state.blobImage ? '' : 'none',
+                      height: '35px',
+                      width: '35px',
+                      position: 'absolute',
+                      left: '85%',
+                      top: '2%',
+                      cursor: 'pointer',
+                      filter: 'drop-shadow(4px 0px 1px black)',
+                    }}
+                    onClick={() => this.handleDeletePhoto(this.state.blobImage)}
+                  />
+                </div>
+              </div>
+            </div>
+            <button
+              className="personal-information-button"
+              style={{ float: 'left' }}
+            >
+              Save
+            </button>
           </div>
         ) : (
           ''

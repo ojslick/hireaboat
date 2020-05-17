@@ -205,9 +205,11 @@
   width: 150px;
   height: 40px;
   margin-top: 28px;
+  border: none;
   background: #39a0ed;
   border-radius: 5px;
   outline: none;
+  cursor: pointer;
 }
 
 .personal-information-phone-number-container {
@@ -225,6 +227,7 @@
 }
 
 .personal-information-body-pic {
+  position: relative;
   width: 240px;
   height: 281px;
   display: table;
@@ -299,7 +302,7 @@
   display: table;
   text-align: center;
   background: #f6f6f6;
-  border: 1px solid #c4c4c4;
+  border: none;
   box-sizing: border-box;
   border-radius: 5px;
   padding: 15px 5px;
@@ -322,7 +325,27 @@
   color: #ffffff;
 }
 
+.boat-experience-boat-driven-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  color: #000000;
+}
+
+.boat-experience-boat-driven-checkbox {
+  margin-top: 16px;
+}
+
+.personal-information-body-pic {
+  background: #f6f6f6;
+}
+
 @media only screen and (max-width: 1080px) {
+  .boating-qualification-captain-flex {
+    width: 60%;
+  }
   .personal-information-phone-number {
     display: inline-block;
   }
@@ -338,6 +361,12 @@
 }
 
 @media only screen and (max-width: 637px) {
+  .boating-qualification-captain-flex {
+    width: 100%;
+  }
+  .boating-qualification-captain-license {
+    width: 100% !important;
+  }
   .personal-profile-flex {
     display: inline-block;
   }
@@ -368,5 +397,9 @@
   .personal-information-firstname-container-text {
     width: 100% !important;
     margin-top: 0;
+  }
+
+  .personal-information-body-pic {
+    width: 100%;
   }
 }

@@ -41,6 +41,50 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+export const updateUserProfile = async (userAuth, additionalData) => {
+  const userRef = firestore.doc(`users/${userAuth.id}`);
+  const batch = firestore.batch();
+
+  await batch.update(userRef, additionalData);
+  return await batch.commit();
+};
+
+// upload user photo
+export const uploadUserPhoto = async (userAuth, additionalData) => {
+  const userRef = firestore.doc(`users/${userAuth.id}`);
+  const updateImage = async (image) => {
+    const path = `users/${userAuth.id}/profile-image/${Math.round(
+      Math.random() * 1000000000
+    )}.jpg`;
+    const blob = new Blob(image, { type: 'mime' });
+    const storageRef = firebase.storage().ref();
+
+    try {
+      const task = await storageRef.child(path).put(blob);
+      console.log('task--->>>', task);
+
+      const imageRes = await task.ref.getDownloadURL();
+
+      console.log('imageRes---->>>>', imageRes);
+      await userRef.update({ images: imageRes });
+    } catch (errorr) {
+      console.log('ohew--->>>', errorr);
+    }
+  };
+
+  const updateImageArray = async (image) => {
+    try {
+      const response = await updateImage(image);
+      console.log('responses---->>>', response);
+      return response;
+    } catch (error) {
+      console.log('error occurred', error);
+    }
+  };
+
+  return await updateImageArray(additionalData);
+};
+
 export const addCollectionAndDocument = async (
   collectionKey,
   objectsToAdd,
@@ -105,8 +149,6 @@ export const addContactForm = async (collectionKey, objectsToAdd) => {
   const batch = firestore.batch();
   const newDocRef = collectionRef.doc();
   await batch.set(newDocRef, objectsToAdd);
-  console.log('collectionRef===>', collectionRef);
-  console.log('objectsToAdd===>', objectsToAdd);
   return await batch.commit();
 };
 
