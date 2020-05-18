@@ -1,13 +1,19 @@
 import React from 'react';
+import firebase from 'firebase';
 import Calendar from 'react-calendar';
 import PhoneInput from 'react-phone-input-2';
-import { auth, updateUserProfile } from '../../../firebase/firebase';
+import {
+  auth,
+  updateUserProfile,
+  createUserProfileDocument,
+} from '../../../firebase/firebase';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 class PersonalProfile extends React.Component {
   state = {
+    firebaseProfile: [],
     toDate: new Date(),
     clickToDay: true,
     personalProfile: {
@@ -22,6 +28,36 @@ class PersonalProfile extends React.Component {
       describeYourself: '',
     },
   };
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      console.log('currentUserId', this.props.currentUser.uid);
+      const docRef = await db
+        .collection(`users`)
+        .doc(`${this.props.currentUser.uid}`);
+
+      const data = await docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.setState({ firebaseProfile: doc.data() });
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        })
+        .catch(function (error) {
+          console.log('Error getting document:', error);
+        });
+
+      console.log('docRef==>', docRef);
+      console.log('data===>', data);
+    };
+    fetchData();
+  }
 
   handleSubmit = async () => {
     const {
@@ -66,7 +102,8 @@ class PersonalProfile extends React.Component {
   onChangeTo = (date) => this.setState({ toDate: date });
 
   render() {
-    console.log(['personalProfile==>', this.state.personalProfile]);
+    console.log('firebaseProfile==>', this.state.firebaseProfile);
+    // console.log('dob===>', new Date(this.state.firebaseProfile.dob));
     return (
       <>
         {this.props.handleGeneralClick ? (
@@ -100,6 +137,11 @@ class PersonalProfile extends React.Component {
                           },
                         })
                       }
+                      defaultValue={
+                        this.state.firebaseProfile
+                          ? this.state.firebaseProfile.firstName
+                          : ''
+                      }
                     />
                   </div>
                   <div
@@ -122,6 +164,11 @@ class PersonalProfile extends React.Component {
                             lastName: event.target.value,
                           },
                         })
+                      }
+                      defaultValue={
+                        this.state.firebaseProfile
+                          ? this.state.firebaseProfile.lastName
+                          : ''
                       }
                     />
                   </div>
@@ -148,7 +195,11 @@ class PersonalProfile extends React.Component {
                         })
                       }
                     >
-                      <option></option>
+                      <option>
+                        {this.state.firebaseProfile
+                          ? this.state.firebaseProfile.sex
+                          : ''}
+                      </option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                     </select>
@@ -171,6 +222,13 @@ class PersonalProfile extends React.Component {
                       value={
                         this.state.personalProfile.dob
                           ? this.state.personalProfile.dob.toLocaleDateString()
+                          : ''
+                      }
+                      defaultValue={
+                        this.state.firebaseProfile
+                          ? new Date(
+                              firebase.firestore.Timestamp.now().seconds * 1000
+                            ).toLocaleDateString()
                           : ''
                       }
                     />
@@ -336,7 +394,7 @@ class PersonalProfile extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  console.log('statecu===>', state.currentUser);
   return { currentUser: state.currentUser };
 };
 

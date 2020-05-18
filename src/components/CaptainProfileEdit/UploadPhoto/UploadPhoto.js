@@ -45,6 +45,7 @@ class PersonalProfile extends React.Component {
   };
 
   render() {
+    console.log('state===>', this.state);
     return (
       <>
         {this.props.handleGeneralClick ? (

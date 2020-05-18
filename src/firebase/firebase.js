@@ -3,6 +3,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 import history from '../history';
+import BoatingQualification from '../components/CaptainProfileEdit/BoatingQualification/BoatingQualification';
 
 const config = {
   apiKey: 'AIzaSyCEjp0hXVLpKHDiEon-YqtXhSZbR00oQ4o',
@@ -27,7 +28,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const createdAt = new Date();
 
     try {
-      await userRef.set({
+      await userRef.update({
         displayName,
         email,
         createdAt,
@@ -83,6 +84,53 @@ export const uploadUserPhoto = async (userAuth, additionalData) => {
   };
 
   return await updateImageArray(additionalData);
+};
+
+export const uploadBoatingQualification = async (
+  userAuth,
+  boatingResume,
+  captainLicense
+) => {
+  console.log('captainLicense==> ', captainLicense);
+  console.log('boatingQualification==>', boatingResume);
+  const userRef = firestore.doc(`users/${userAuth.id}`);
+
+  const batch = firestore.batch();
+
+  await batch.update(userRef, boatingResume);
+
+  const updateImage = async (image) => {
+    const path = `users/${userAuth.id}/profile-image/${Math.round(
+      Math.random() * 1000000000
+    )}.jpg`;
+    const blob = new Blob(image, { type: 'mime' });
+    const storageRef = firebase.storage().ref();
+
+    try {
+      const task = await storageRef.child(path).put(blob);
+      console.log('task--->>>', task);
+
+      const imageRes = await task.ref.getDownloadURL();
+
+      console.log('imageRes---->>>>', imageRes);
+      await userRef.update({ captainLicense: imageRes });
+    } catch (errorr) {
+      console.log('ohew--->>>', errorr);
+    }
+  };
+
+  const updateImageArray = async (image) => {
+    try {
+      const response = await updateImage(image);
+      console.log('responses---->>>', response);
+      return response;
+    } catch (error) {
+      console.log('error occurred', error);
+    }
+  };
+
+  updateImageArray(captainLicense);
+  return await batch.commit();
 };
 
 export const addCollectionAndDocument = async (

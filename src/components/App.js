@@ -65,7 +65,7 @@ class App extends React.Component {
 
     return (
       <div>
-        {this.state.loading ? (
+        {!this.props.isUserOnline ? (
           <Loading />
         ) : (
           <Router history={history}>
@@ -118,7 +118,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { addBoat: state.hireaboat };
+  return { addBoat: state.hireaboat, isUserOnline: state.currentUser };
 };
 
 export default connect(mapStateToProps, { currentUser })(App);
