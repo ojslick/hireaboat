@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { userProfile } from '../../../actions';
 
 class PersonalProfile extends React.Component {
   state = {
@@ -43,7 +44,7 @@ class PersonalProfile extends React.Component {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            this.setState({ firebaseProfile: doc.data() });
+            this.setState({ personalProfile: doc.data() });
           } else {
             // doc.data() will be undefined in this case
             console.log('No such document!');
@@ -57,6 +58,10 @@ class PersonalProfile extends React.Component {
       console.log('data===>', data);
     };
     fetchData();
+  }
+
+  componentDidUpdate() {
+    this.props.userProfile(this.state.personalProfile);
   }
 
   handleSubmit = async () => {
@@ -103,7 +108,8 @@ class PersonalProfile extends React.Component {
 
   render() {
     console.log('firebaseProfile==>', this.state.firebaseProfile);
-    // console.log('dob===>', new Date(this.state.firebaseProfile.dob));
+    console.log('personalProfile==>', this.state.personalProfile);
+
     return (
       <>
         {this.props.handleGeneralClick ? (
@@ -138,8 +144,8 @@ class PersonalProfile extends React.Component {
                         })
                       }
                       defaultValue={
-                        this.state.firebaseProfile
-                          ? this.state.firebaseProfile.firstName
+                        this.state.personalProfile
+                          ? this.state.personalProfile.firstName
                           : ''
                       }
                     />
@@ -166,8 +172,8 @@ class PersonalProfile extends React.Component {
                         })
                       }
                       defaultValue={
-                        this.state.firebaseProfile
-                          ? this.state.firebaseProfile.lastName
+                        this.state.personalProfile
+                          ? this.state.personalProfile.lastName
                           : ''
                       }
                     />
@@ -196,8 +202,8 @@ class PersonalProfile extends React.Component {
                       }
                     >
                       <option>
-                        {this.state.firebaseProfile
-                          ? this.state.firebaseProfile.sex
+                        {this.state.personalProfile
+                          ? this.state.personalProfile.sex
                           : ''}
                       </option>
                       <option value="Male">Male</option>
@@ -220,15 +226,9 @@ class PersonalProfile extends React.Component {
                       className="personal-information-name-firstname-input"
                       type="text"
                       value={
-                        this.state.personalProfile.dob
-                          ? this.state.personalProfile.dob.toLocaleDateString()
-                          : ''
-                      }
-                      defaultValue={
-                        this.state.firebaseProfile
-                          ? new Date(
-                              firebase.firestore.Timestamp.now().seconds * 1000
-                            ).toLocaleDateString()
+                        this.state.personalProfile || this.state.personalProfile
+                          ? this.state.personalProfile.dob ||
+                            this.state.personalProfile.dob
                           : ''
                       }
                     />
@@ -247,7 +247,7 @@ class PersonalProfile extends React.Component {
                           this.setState({
                             personalProfile: {
                               ...this.state.personalProfile,
-                              dob: this.state.toDate,
+                              dob: this.state.toDate.toLocaleDateString(),
                             },
                           });
                         }}
@@ -277,6 +277,11 @@ class PersonalProfile extends React.Component {
                             },
                           })
                         }
+                        value={
+                          this.state.personalProfile
+                            ? this.state.personalProfile.phone
+                            : ''
+                        }
                       />
                     </div>
                   </div>
@@ -301,6 +306,11 @@ class PersonalProfile extends React.Component {
                           },
                         })
                       }
+                      defaultValue={
+                        this.state.personalProfile
+                          ? this.state.personalProfile.city
+                          : ''
+                      }
                     />
                   </div>
                   <div
@@ -323,6 +333,11 @@ class PersonalProfile extends React.Component {
                             zipCode: event.target.value,
                           },
                         })
+                      }
+                      defaultValue={
+                        this.state.personalProfile
+                          ? this.state.personalProfile.zipCode
+                          : ''
                       }
                     />
                   </div>
@@ -348,6 +363,11 @@ class PersonalProfile extends React.Component {
                         },
                       })
                     }
+                    defaultValue={
+                      this.state.personalProfile
+                        ? this.state.personalProfile.address
+                        : ''
+                    }
                   />
                 </div>
                 <div
@@ -371,6 +391,11 @@ class PersonalProfile extends React.Component {
                           describeYourself: event.target.value,
                         },
                       })
+                    }
+                    defaultValue={
+                      this.state.personalProfile
+                        ? this.state.personalProfile.describeYourself
+                        : ''
                     }
                   />
                 </div>
@@ -398,4 +423,4 @@ const mapStateToProps = (state) => {
   return { currentUser: state.currentUser };
 };
 
-export default connect(mapStateToProps)(PersonalProfile);
+export default connect(mapStateToProps, { userProfile })(PersonalProfile);

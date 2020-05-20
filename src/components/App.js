@@ -23,6 +23,7 @@ import {
   addCollectionAndDocument,
 } from '../firebase/firebase';
 import { currentUser } from '../actions/';
+import firebase from 'firebase';
 
 class App extends React.Component {
   state = { currentUser: null, loading: false };

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 
 class PersonalProfile extends React.Component {
-  state = { boatImages: [], blobImage: '' };
+  state = { boatImages: [], blobImage: '', loaded: false };
 
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -45,7 +45,6 @@ class PersonalProfile extends React.Component {
   };
 
   render() {
-    console.log('state===>', this.state);
     return (
       <>
         {this.props.handleGeneralClick ? (
@@ -70,18 +69,27 @@ class PersonalProfile extends React.Component {
                       position: 'relative',
                     }}
                   >
-                    <img
-                      className={
-                        this.state.blobImage
-                          ? 'addaboat-separator-line-align-boat-upload-icon-resize'
-                          : 'addaboat-separator-line-align-boat-upload-icon'
-                      }
-                      style={{ margin: '0' }}
-                      src={
-                        this.state.blobImage ? this.state.blobImage : addIcon
-                      }
-                      alt="add icon"
-                    />
+                    {!this.state.blobImage ? (
+                      <img
+                        className="addaboat-separator-line-align-boat-upload-icon-resize"
+                        style={{ margin: '0' }}
+                        src={this.props.userProfile.images}
+                        alt="add icon"
+                      />
+                    ) : (
+                      <img
+                        className={
+                          this.state.blobImage
+                            ? 'addaboat-separator-line-align-boat-upload-icon-resize'
+                            : 'addaboat-separator-line-align-boat-upload-icon'
+                        }
+                        style={{ margin: '0' }}
+                        src={
+                          this.state.blobImage ? this.state.blobImage : addIcon
+                        }
+                        alt="add icon"
+                      />
+                    )}
 
                     <input
                       type="file"
@@ -92,9 +100,23 @@ class PersonalProfile extends React.Component {
                     {this.state.blobImage ? (
                       ''
                     ) : (
-                      <p style={{ marginTop: '13px', color: '#343434' }}>
-                        Add Image
-                      </p>
+                      <div
+                        style={{
+                          height: this.state.blobImage ? '' : '30px',
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginTop: this.state.blobImage ? '13px' : '7px',
+                            color: '#343434',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {this.props.userProfile.images
+                            ? 'Change Profile Picture'
+                            : 'Add Image'}
+                        </p>
+                      </div>
                     )}
                   </label>
                   <img
@@ -115,13 +137,23 @@ class PersonalProfile extends React.Component {
                 </div>
               </div>
             </div>
-            <button
-              className="personal-information-button"
-              style={{ float: 'left' }}
-              onClick={this.handleSubmit}
-            >
-              Save
-            </button>
+            {this.state.boatImages === [] ? (
+              <button
+                className="personal-information-button"
+                style={{ float: 'left' }}
+                onClick={this.handleSubmit}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                className="personal-information-button"
+                style={{ float: 'left' }}
+                disabled
+              >
+                Save
+              </button>
+            )}
             <ToastContainer />
           </div>
         ) : (
@@ -133,7 +165,8 @@ class PersonalProfile extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { currentUser: state.currentUser };
+  console.log('uploadState', state.userProfile);
+  return { currentUser: state.currentUser, userProfile: state.userProfile };
 };
 
 export default connect(mapStateToProps)(PersonalProfile);

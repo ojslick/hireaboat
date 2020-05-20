@@ -6,6 +6,7 @@ import anchorIcon from './Images/Vector2.svg';
 import { Checkbox } from 'semantic-ui-react';
 import { uploadBoatingQualification } from '../../../firebase/firebase';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 
 class BoatingQualification extends React.Component {
@@ -13,17 +14,51 @@ class BoatingQualification extends React.Component {
     captain: false,
     notACaptain: false,
     boatingQualification: {
-      blobImage: '',
+      captainLicense: '',
       sailingStatus: '',
       sailingResume: '',
       boatingExperience: '',
-      boatDriven: [],
+      JetSki: false,
+      Catamaran: false,
+      Yacht: false,
+      Motorboat: false,
+      Sailboat: false,
+      RIB: false,
+      Houseboat: false,
     },
+    blobImage: '',
     boatImages: [],
+    loaded: false,
   };
 
   componentDidMount() {
     window.scrollTo(0, 0);
+
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      console.log('currentUserId', this.props.currentUser.uid);
+      const docRef = await db
+        .collection(`users`)
+        .doc(`${this.props.currentUser.uid}`);
+
+      const data = await docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.setState({ boatingQualification: doc.data() });
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        })
+        .catch(function (error) {
+          console.log('Error getting document:', error);
+        });
+
+      console.log('docRef==>', docRef);
+      console.log('data===>', data);
+    };
+    fetchData();
   }
 
   handleSubmit = async () => {
@@ -70,9 +105,10 @@ class BoatingQualification extends React.Component {
     await this.setState({
       boatingQualification: {
         ...this.state.boatingQualification,
-        blobImage: imageUrl,
+        captainLicense: imageUrl,
       },
     });
+    this.setState({ blobImage: imageUrl });
 
     this.setState({
       boatImages: image,
@@ -80,19 +116,57 @@ class BoatingQualification extends React.Component {
   };
 
   handleDeletePhoto = (image) => {
+    console.log('blobUrl===>', this.state.blobImage);
+    console.log('image===>', image);
     this.setState({
-      boatingQualification: {
-        ...this.state.BoatingQualification,
-        blobImage:
-          this.state.boatingQualification.blobImage === image
-            ? ''
-            : this.state.boatingQualification.blobImage,
-      },
+      blobImage: this.state.blobImage === image ? '' : this.state.blobImage,
     });
   };
 
+  handleCheckBox = (name, value) => {
+    console.log('name', this.state.boatingQualification[name]);
+    return this.state.boatingQualification[name] ? (
+      <Checkbox
+        className="boat-experience-boat-driven-checkbox"
+        label={name}
+        onChange={() =>
+          this.setState({
+            boatingQualification: {
+              ...this.state.boatingQualification,
+              [name]: value,
+            },
+          })
+        }
+        defaultChecked
+      />
+    ) : (
+      <Checkbox
+        className="boat-experience-boat-driven-checkbox"
+        label={name}
+        onChange={() =>
+          this.setState({
+            boatingQualification: {
+              ...this.state.boatingQualification,
+              [name]: value,
+            },
+          })
+        }
+      />
+    );
+  };
+
   render() {
-    console.log('state===>', this.state);
+    console.log('sailingStatus====>', this.state.boatingQualification);
+    const {
+      JetSki,
+      Catamaran,
+      Motorboat,
+      Houseboat,
+      Yacht,
+      Sailboat,
+      RIB,
+    } = this.state.boatingQualification;
+
     return (
       <>
         {this.props.handleGeneralClick ? (
@@ -118,12 +192,15 @@ class BoatingQualification extends React.Component {
                 <div className="boating-qualification-captain-flex">
                   <div
                     className={
+                      // this.props.boatingQualification.sailingStatus
+                      //   ? 'boating-qualification-captain-blue'
+                      //   :
                       this.state.captain
                         ? 'boating-qualification-captain-blue'
                         : 'boating-qualification-captain'
                     }
                     onClick={() => {
-                      this.handleClick('captain', true);
+                      this.handleClick('captain', !this.state.captain);
                       this.setState({
                         boatingQualification: {
                           ...this.state.boatingQualification,
@@ -158,7 +235,7 @@ class BoatingQualification extends React.Component {
                         : 'boating-qualification-captain'
                     }
                     onClick={() => {
-                      this.handleClick('notACaptain', true);
+                      this.handleClick('notACaptain', !this.state.notACaptain);
                       this.setState({
                         boatingQualification: {
                           ...this.state.boatingQualification,
@@ -223,6 +300,11 @@ class BoatingQualification extends React.Component {
                         },
                       })
                     }
+                    defaultValue={
+                      this.state.boatingQualification.boatingExperience
+                        ? this.state.boatingQualification.boatingExperience
+                        : ''
+                    }
                   />
                 </div>
                 <div
@@ -246,6 +328,11 @@ class BoatingQualification extends React.Component {
                           sailingResume: event.target.value,
                         },
                       })
+                    }
+                    defaultValue={
+                      this.state.boatingQualification.sailingResume
+                        ? this.state.boatingQualification.sailingResume
+                        : ''
                     }
                   />
                 </div>
@@ -276,111 +363,15 @@ class BoatingQualification extends React.Component {
                   }}
                 >
                   <div style={{ width: '20%' }}>
-                    <Checkbox
-                      label="JetSki"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Jet Ski',
-                            ],
-                          },
-                        })
-                      }
-                    />
-                    <Checkbox
-                      label="Yacht"
-                      className="boat-experience-boat-driven-checkbox"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Yacht',
-                            ],
-                          },
-                        })
-                      }
-                    />
-                    <Checkbox
-                      label="Catamaran"
-                      className="boat-experience-boat-driven-checkbox"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Catamaran',
-                            ],
-                          },
-                        })
-                      }
-                    />
-                    <Checkbox
-                      label="Motorboat"
-                      className="boat-experience-boat-driven-checkbox"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Motorboat',
-                            ],
-                          },
-                        })
-                      }
-                    />
+                    {this.handleCheckBox('JetSki', !JetSki)}
+                    {this.handleCheckBox('Yacht', !Yacht)}
+                    {this.handleCheckBox('Catamaran', !Catamaran)}
+                    {this.handleCheckBox('Motorboat', !Motorboat)}
                   </div>
                   <div style={{ width: '20%' }}>
-                    <Checkbox
-                      label="Sailboat"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Sailboat',
-                            ],
-                          },
-                        })
-                      }
-                    />
-                    <Checkbox
-                      label="RIB"
-                      className="boat-experience-boat-driven-checkbox"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'RIB',
-                            ],
-                          },
-                        })
-                      }
-                    />
-                    <Checkbox
-                      label="Houseboat"
-                      className="boat-experience-boat-driven-checkbox"
-                      onChange={() =>
-                        this.setState({
-                          boatingQualification: {
-                            ...this.state.boatingQualification,
-                            boatDriven: [
-                              ...this.state.boatingQualification.boatDriven,
-                              'Houseboat',
-                            ],
-                          },
-                        })
-                      }
-                    />
+                    {this.handleCheckBox('Sailboat', !Sailboat)}
+                    {this.handleCheckBox('RIB', !RIB)}
+                    {this.handleCheckBox('Houseboat', !Houseboat)}
                   </div>
                 </div>
               </div>
@@ -421,20 +412,29 @@ class BoatingQualification extends React.Component {
                         position: 'relative',
                       }}
                     >
-                      <img
-                        className={
-                          this.state.boatingQualification.blobImage
-                            ? 'addaboat-separator-line-align-boat-upload-icon-resize'
-                            : 'addaboat-separator-line-align-boat-upload-icon'
-                        }
-                        style={{ margin: '0' }}
-                        src={
-                          this.state.boatingQualification.blobImage
-                            ? this.state.boatingQualification.blobImage
-                            : addIcon
-                        }
-                        alt="add icon"
-                      />
+                      {!this.state.blobImage ? (
+                        <img
+                          className="addaboat-separator-line-align-boat-upload-icon-resize"
+                          style={{ margin: '0' }}
+                          src={this.props.userProfile.captainLicense}
+                          alt="add icon"
+                        />
+                      ) : (
+                        <img
+                          className={
+                            this.state.blobImage
+                              ? 'addaboat-separator-line-align-boat-upload-icon-resize'
+                              : 'addaboat-separator-line-align-boat-upload-icon'
+                          }
+                          style={{ margin: '0' }}
+                          src={
+                            this.state.blobImage
+                              ? this.state.blobImage
+                              : addIcon
+                          }
+                          alt="add icon"
+                        />
+                      )}
 
                       <input
                         type="file"
@@ -442,21 +442,34 @@ class BoatingQualification extends React.Component {
                         onChange={this.upload}
                         multiple
                       />
-                      {this.state.boatingQualification.blobImage ? (
+
+                      {this.state.blobImage ? (
                         ''
                       ) : (
-                        <p style={{ marginTop: '13px', color: '#343434' }}>
-                          Add Image
-                        </p>
+                        <div
+                          style={{
+                            height: this.state.blobImage ? '' : '30px',
+                          }}
+                        >
+                          <p
+                            style={{
+                              marginTop: this.state.blobImage ? '13px' : '7px',
+                              color: '#343434',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {this.state.boatingQualification.captainLicense
+                              ? 'Change Profile Picture'
+                              : 'Add Image'}
+                          </p>
+                        </div>
                       )}
                     </label>
                     <img
                       src={deleteIcon}
                       alt="delete icon"
                       style={{
-                        display: this.state.boatingQualification.blobImage
-                          ? ''
-                          : 'none',
+                        display: this.state.blobImage ? '' : 'none',
                         height: '35px',
                         width: '35px',
                         position: 'absolute',
@@ -466,9 +479,7 @@ class BoatingQualification extends React.Component {
                         filter: 'drop-shadow(4px 0px 1px black)',
                       }}
                       onClick={() =>
-                        this.handleDeletePhoto(
-                          this.state.boatingQualification.blobImage
-                        )
+                        this.handleDeletePhoto(this.state.blobImage)
                       }
                     />
                   </div>
@@ -495,7 +506,8 @@ class BoatingQualification extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { currentUser: state.currentUser };
+  console.log(state);
+  return { userProfile: state.userProfile, currentUser: state.currentUser };
 };
 
 export default connect(mapStateToProps)(BoatingQualification);

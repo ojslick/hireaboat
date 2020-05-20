@@ -49,3 +49,10 @@ export const checkoutData = (data) => async (dispatch) => {
 
   dispatch({ type: 'CHECKOUT_DATA', payload: response });
 };
+
+// User Profile
+export const userProfile = (data) => async (dispatch) => {
+  const response = await data;
+
+  dispatch({ type: 'USER_PROFILE', payload: response });
+};

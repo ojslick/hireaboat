@@ -16,11 +16,16 @@ class CaptainProfileEdit extends React.Component {
     toDate: new Date(),
     clickToDay: true,
     dob: '',
+    captain: false,
   };
 
   componentDidMount() {
     window.scrollTo(0, 0);
   }
+
+  handleCaptain = (bool) => {
+    this.setState({ captain: bool });
+  };
 
   handleClick = (name, value) => {
     if (name == 'general') {
@@ -83,6 +88,7 @@ class CaptainProfileEdit extends React.Component {
           <UploadPhoto handleGeneralClick={this.state.photos} />
           <BoatingQualification
             handleGeneralClick={this.state.boatingQualification}
+            // handleCaptain={this.handleCaptain()}
           />
         </div>
         <Footer />
