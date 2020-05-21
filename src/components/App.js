@@ -24,7 +24,6 @@ import {
 } from '../firebase/firebase';
 import { currentUser } from '../actions/';
 import firebase from 'firebase';
-
 class App extends React.Component {
   state = { currentUser: null, loading: false };
 
@@ -35,6 +34,7 @@ class App extends React.Component {
     const { addBoat } = this.props;
     this.setState({ loading: true });
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      this.setState({ currentUser: userAuth });
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
@@ -48,7 +48,6 @@ class App extends React.Component {
         });
       }
 
-      this.setState({ currentUser: userAuth });
       this.setState({ loading: false });
     });
   }
@@ -66,7 +65,7 @@ class App extends React.Component {
 
     return (
       <div>
-        {!this.props.isUserOnline ? (
+        {this.state.loading ? (
           <Loading />
         ) : (
           <Router history={history}>

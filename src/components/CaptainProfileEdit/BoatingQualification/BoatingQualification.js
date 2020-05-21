@@ -4,7 +4,7 @@ import deleteIcon from './Images/deleteIcon.png';
 import captainIcon from './Images/Vector1.svg';
 import anchorIcon from './Images/Vector2.svg';
 import { Checkbox } from 'semantic-ui-react';
-import { uploadBoatingQualification } from '../../../firebase/firebase';
+import { auth, uploadBoatingQualification } from '../../../firebase/firebase';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
@@ -31,34 +31,42 @@ class BoatingQualification extends React.Component {
     loaded: false,
   };
 
+  unsubscribeFromAuth = null;
+
   componentDidMount() {
     window.scrollTo(0, 0);
 
     const fetchData = async () => {
-      const db = firebase.firestore();
-      console.log('currentUserId', this.props.currentUser.uid);
-      const docRef = await db
-        .collection(`users`)
-        .doc(`${this.props.currentUser.uid}`);
+      this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        const db = firebase.firestore();
 
-      const data = await docRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.setState({ boatingQualification: doc.data() });
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-        })
-        .catch(function (error) {
-          console.log('Error getting document:', error);
-        });
+        const docRef = await db
+          .collection(`users`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`);
 
-      console.log('docRef==>', docRef);
-      console.log('data===>', data);
+        const data = await docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.setState({ boatingQualification: doc.data() });
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting document:', error);
+          });
+
+        console.log('docRef==>', docRef);
+        console.log('data===>', data);
+      });
     };
     fetchData();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
 
   handleSubmit = async () => {

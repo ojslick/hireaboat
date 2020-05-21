@@ -30,38 +30,45 @@ class PersonalProfile extends React.Component {
     },
   };
 
+  unsubscribeFromAuth = null;
+
   componentDidMount() {
     window.scrollTo(0, 0);
 
     const fetchData = async () => {
-      const db = firebase.firestore();
-      console.log('currentUserId', this.props.currentUser.uid);
-      const docRef = await db
-        .collection(`users`)
-        .doc(`${this.props.currentUser.uid}`);
+      this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        const db = firebase.firestore();
+        const docRef = await db
+          .collection(`users`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`);
 
-      const data = await docRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.setState({ personalProfile: doc.data() });
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-        })
-        .catch(function (error) {
-          console.log('Error getting document:', error);
-        });
+        const data = await docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.setState({ personalProfile: doc.data() });
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting document:', error);
+          });
 
-      console.log('docRef==>', docRef);
-      console.log('data===>', data);
+        console.log('docRef==>', docRef);
+        console.log('data===>', data);
+      });
     };
     fetchData();
   }
 
   componentDidUpdate() {
     this.props.userProfile(this.state.personalProfile);
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
 
   handleSubmit = async () => {
