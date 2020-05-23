@@ -141,8 +141,12 @@ export const addCollectionAndDocument = async (
 ) => {
   const collectionRef = firestore.collection(collectionKey);
   const batch = firestore.batch();
-  const newDocRef = collectionRef.doc();
-  const response = await batch.set(newDocRef, objectsToAdd);
+  const newDocRef = collectionRef.doc(`${currentUser.id}`);
+
+  const newCollectionRef = newDocRef.collection('userBoats');
+
+  const newRef = newCollectionRef.doc();
+  const response = await batch.set(newRef, objectsToAdd);
   if (response) {
     history.push('/listaboat/successful');
   }
@@ -167,7 +171,7 @@ export const addCollectionAndDocument = async (
       const imageRes = await task.ref.getDownloadURL();
       imagesUpload.push(imageRes);
       console.log('imageRes---->>>>', imageRes);
-      await newDocRef.update({ images: imagesUpload });
+      await newRef.update({ images: imagesUpload });
     } catch (errorr) {
       console.log('ohew--->>>', errorr);
     }

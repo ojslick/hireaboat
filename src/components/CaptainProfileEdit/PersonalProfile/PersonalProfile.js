@@ -27,6 +27,7 @@ class PersonalProfile extends React.Component {
       zipCode: '',
       address: '',
       describeYourself: '',
+      language: '',
     },
   };
 
@@ -402,6 +403,34 @@ class PersonalProfile extends React.Component {
                     defaultValue={
                       this.state.personalProfile
                         ? this.state.personalProfile.describeYourself
+                        : ''
+                    }
+                  />
+                </div>
+                <div
+                  className="personal-information-phone-number-container"
+                  style={{
+                    width: '100%',
+                    textAlign: 'start',
+                  }}
+                >
+                  <label className="personal-information-name-firstname-label">
+                    Language
+                  </label>
+                  <input
+                    type="text"
+                    className="personal-information-name-firstname"
+                    onChange={(event) =>
+                      this.setState({
+                        personalProfile: {
+                          ...this.state.personalProfile,
+                          language: event.target.value,
+                        },
+                      })
+                    }
+                    defaultValue={
+                      this.state.personalProfile
+                        ? this.state.personalProfile.language
                         : ''
                     }
                   />

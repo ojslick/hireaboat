@@ -17,6 +17,8 @@ import ContactUs from './ContactUs/ContactUs';
 import PaymentCheckOut from './PaymentCheckout/PaymentCheckOut';
 import PaymentConfirmation from './PaymentCheckout/PaymentConfirmation/PaymentConfirmation';
 import CaptainProfileEdit from './CaptainProfileEdit/CaptainProfileEdit';
+import Dashboard from './CaptainProfileEdit/Dashboard/Dashboard';
+import CaptainProfile from './CaptainProfile/CaptainProfile';
 import {
   auth,
   createUserProfileDocument,
@@ -34,7 +36,6 @@ class App extends React.Component {
     const { addBoat } = this.props;
     this.setState({ loading: true });
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      this.setState({ currentUser: userAuth });
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
@@ -47,7 +48,7 @@ class App extends React.Component {
           });
         });
       }
-
+      this.setState({ currentUser: userAuth });
       this.setState({ loading: false });
     });
   }
@@ -109,6 +110,8 @@ class App extends React.Component {
                 exact
                 component={CaptainProfileEdit}
               />
+              <Route path="/dashboard" exact component={Dashboard} />
+              <Route path="/captain-profile" exact component={CaptainProfile} />
             </Switch>
           </Router>
         )}

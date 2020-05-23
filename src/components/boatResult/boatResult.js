@@ -48,9 +48,10 @@ class boatResult extends React.Component {
     window.scrollTo(0, 0);
 
     const fetchData = async () => {
-      const db = firebase.firestore();
-      const data = await db.collection('boats').get();
-      this.setState({ listOfBoats: data.docs.map((doc) => doc.data()) });
+      let db = firebase.firestore();
+      let boatsRef = await db.collectionGroup('userBoats').get();
+      console.log('boatsRef', boatsRef);
+      this.setState({ listOfBoats: boatsRef.docs.map((doc) => doc.data()) });
     };
     fetchData();
   }
@@ -193,6 +194,7 @@ class boatResult extends React.Component {
   handleSelectedDate = () => {};
 
   render() {
+    console.log('listOfBoats===>', this.state.listOfBoats);
     const indexOfLastBoat = this.state.currentPage * this.state.boatsPerPage;
     const indexOfFirstBoat = indexOfLastBoat - this.state.boatsPerPage;
     const currentBoats = this.state.filteredSearch.slice(

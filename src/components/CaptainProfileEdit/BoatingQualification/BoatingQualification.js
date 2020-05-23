@@ -491,6 +491,34 @@ class BoatingQualification extends React.Component {
                       }
                     />
                   </div>
+                  <div
+                    className="personal-information-phone-number-container"
+                    style={{
+                      width: '100%',
+                      textAlign: 'start',
+                    }}
+                  >
+                    <label className="personal-information-name-firstname-label">
+                      Sailing License
+                    </label>
+                    <input
+                      type="text"
+                      className="personal-information-name-firstname"
+                      onChange={(event) =>
+                        this.setState({
+                          boatingQualification: {
+                            ...this.state.boatingQualification,
+                            sailingLicense: event.target.value,
+                          },
+                        })
+                      }
+                      defaultValue={
+                        this.state.boatingQualification.sailingLicense
+                          ? this.state.boatingQualification.sailingLicense
+                          : ''
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             ) : (
