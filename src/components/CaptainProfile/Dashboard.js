@@ -16,6 +16,7 @@ class Dashboard extends React.Component {
     creationTime: '',
     boats: '',
     editProfile: true,
+    userEarning: '',
   };
 
   unsubscribeFromAuth = null;
@@ -63,7 +64,7 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log('boats', this.state.boats);
+    console.log('userEarning', this.state.userEarning);
     return (
       <div className="captain-profile-edit-container">
         <div className="dashboard-container" style={{ marginTop: '0' }}>

@@ -265,7 +265,7 @@ class PaymentConfirmation extends React.Component {
             <div className="payment-checkout-flex-right">
               <div
                 className="payment-checkout-boat-preview"
-                style={{ height: '525px' }}
+                style={{ minHeight: '525px' }}
               >
                 <ImageSlider selectBoat={this.props.selectBoatState} />
                 <div style={{ padding: '16px 22px', textAlign: 'justify' }}>

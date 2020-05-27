@@ -211,6 +211,48 @@
 
   vertical-align: middle;
 }
+.personal-information-earnings-header {
+  display: table;
+  height: 46px;
+  width: 100%;
+  border-bottom: 1px solid #ffffff;
+}
+
+.personal-information-earnings-header-text {
+  display: table-cell;
+  vertical-align: middle;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+
+  color: #ffffff;
+}
+
+.personal-information-earnings-body {
+  display: table;
+  height: 68px;
+  width: 100%;
+}
+
+.personal-information-earnings-body-last-earning {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  /* identical to box height */
+  margin: 0;
+  color: #ffffff;
+}
+
+.personal-information-earnings-body-last-earning-amount {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  color: #ffffff;
+}
 
 @media only screen and (max-width: 910px) {
   .dashboard-ash-profile-sailor-align {

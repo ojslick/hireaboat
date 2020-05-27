@@ -11,18 +11,23 @@ import './paymentCheckOut.css';
 import mastercard from './Images/mastercard.svg';
 import visa from './Images/visa.svg';
 import card from './Images/card.svg';
-import { auth } from '../../firebase/firebase';
+import { auth, addEarnings } from '../../firebase/firebase';
 import firebase from 'firebase';
 
 class PaymentCheckOut extends React.Component {
-  state = { email: '', captainProfile: '' };
+  state = {
+    email: '',
+    captainProfile: '',
+    amountEarned: { amountPayed: '', date: '' },
+  };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     window.scrollTo(0, 0);
 
     const fetchData = async () => {
       this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
         let boats = '';
+        let captainName: '';
         const db = firebase.firestore();
         const boatsAsync = async () => {
           const boatsRef = await db
@@ -34,6 +39,16 @@ class PaymentCheckOut extends React.Component {
           boats = boatsRef.docs.map((doc) => doc.data());
         };
 
+        // const earningsAsync = async () => {
+        //   const earningsRef = await db
+        //     .collection(`earnings`)
+        //     .doc(`${this.props.selectBoatState.uid}`)
+        //     .collection('userEarnings')
+        //     .get();
+
+        //   earnings = earningsRef.docs.map((doc) => doc.data());
+        // };
+
         await boatsAsync();
 
         const userRef = await db.collection(`users`).doc(`${boats[0].uid}`);
@@ -43,6 +58,7 @@ class PaymentCheckOut extends React.Component {
           .then((doc) => {
             if (doc.exists) {
               this.setState({ captainProfile: doc.data() });
+              captainName = doc.data();
             } else {
               // doc.data() will be undefined in this case
               console.log('No such document!');
@@ -51,15 +67,28 @@ class PaymentCheckOut extends React.Component {
           .catch(function (error) {
             console.log('Error getting document:', error);
           });
+
+        this.setState({
+          amountEarned: {
+            ...this.state.amountEarned,
+            amountPayed: this.props.bookingDetails.price,
+            reference: `Payment for ${captainName.firstName} ${captainName.lastName}'s boat`,
+            date: new Date().toLocaleDateString(),
+            time: new Date(),
+          },
+        });
       });
     };
-    fetchData();
-  }
+    await fetchData();
+  };
 
   componentDidUpdate() {
     this.props.checkoutData(this.state.email);
   }
+
   render() {
+    console.log('paymentstate', this.state.amountEarned);
+    console.log("captain's profile", this.state.captainProfile);
     return (
       <div className="payment-checkout-container">
         <div className="payment-checkout-align">
@@ -108,18 +137,22 @@ class PaymentCheckOut extends React.Component {
                       <PayPalButton
                         amount={this.props.bookingDetails.price}
                         // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+
                         onSuccess={(details, data) => {
                           history.push(
                             '/selectboat/checkout/payment-confirmation'
                           );
+
                           console.log('details', details);
                           // OPTIONAL: Call your server to save the transaction
-                          return fetch('/paypal-transaction-complete', {
-                            method: 'post',
-                            body: JSON.stringify({
-                              orderId: data.orderID,
-                            }),
-                          });
+                          return fetch(
+                            '/paypal-transaction-complete',
+
+                            addEarnings('earnings', this.props.currentUser, {
+                              ...this.state.amountEarned,
+                              paymentID: details.id,
+                            })
+                          );
                         }}
                       />
                     </div>
@@ -395,6 +428,7 @@ const mapStateToProps = (state) => {
   return {
     selectBoatState: state.selectBoat,
     bookingDetails: state.bookingCard,
+    currentUser: state.currentUser,
   };
 };
 

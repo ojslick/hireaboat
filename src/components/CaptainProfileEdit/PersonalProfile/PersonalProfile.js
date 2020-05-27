@@ -59,6 +59,18 @@ class PersonalProfile extends React.Component {
 
         console.log('docRef==>', docRef);
         console.log('data===>', data);
+
+        const userEarningRef = await db
+          .collection(`earnings`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
+          .collection('userEarnings')
+          .orderBy('time', 'desc')
+          .limit(1)
+          .get();
+
+        this.setState({
+          userEarning: userEarningRef.docs.map((doc) => doc.data()),
+        });
       });
     };
     fetchData();

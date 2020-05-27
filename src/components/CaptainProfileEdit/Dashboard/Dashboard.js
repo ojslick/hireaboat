@@ -16,6 +16,7 @@ class Dashboard extends React.Component {
     creationTime: '',
     boats: '',
     editProfile: true,
+    userEarning: '',
   };
 
   unsubscribeFromAuth = null;
@@ -53,6 +54,18 @@ class Dashboard extends React.Component {
           .get();
 
         this.setState({ boats: boatsRef.docs.map((doc) => doc.data()) });
+
+        const userEarningRef = await db
+          .collection(`earnings`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
+          .collection('userEarnings')
+          .orderBy('time', 'desc')
+          .limit(1)
+          .get();
+
+        this.setState({
+          userEarning: userEarningRef.docs.map((doc) => doc.data()),
+        });
       });
     };
     fetchData();
@@ -63,7 +76,7 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log('boats', this.state.boats);
+    console.log('userearning', this.state.userEarning);
     return (
       <div className="captain-profile-edit-container">
         <ProfileNav />
@@ -185,7 +198,59 @@ class Dashboard extends React.Component {
             <div className="dashboard-ash-profile-sailor-body-boating-experience">
               <div
                 className="personal-profile-right-container"
-                style={{ minHeight: '114px' }}
+                style={{
+                  minHeight: '114px',
+                  background: '#39A0ED',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0 10px',
+                }}
+              >
+                <div className="personal-information-earnings-header">
+                  <h1 className="personal-information-earnings-header-text">
+                    Earnings
+                  </h1>
+                </div>
+                <div className="personal-information-earnings-body">
+                  <div
+                    style={{ verticalAlign: 'middle', display: 'table-cell' }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <p className="personal-information-earnings-body-last-earning">
+                        Last Earning
+                      </p>
+                      <p className="personal-information-earnings-body-last-earning-amount">
+                        {this.state.userEarning
+                          ? `$${this.state.userEarning[0].amountPayed}`
+                          : ''}
+                      </p>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <p className="personal-information-earnings-body-last-earning">
+                        Available balance
+                      </p>
+                      <p className="personal-information-earnings-body-last-earning-amount">
+                        {this.state.userEarning
+                          ? `$${this.state.userEarning[0].amountPayed}`
+                          : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="personal-profile-right-container"
+                style={{ minHeight: '114px', marginTop: '27px' }}
               >
                 <div className="personal-information-header">
                   <h1 className="personal-information-header-text">

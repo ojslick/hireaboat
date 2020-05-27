@@ -133,6 +133,17 @@ export const uploadBoatingQualification = async (
   return await batch.commit();
 };
 
+//Earnings
+export const addEarnings = async (collectionKey, currentUser, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  const newDocRef = collectionRef.doc(`${currentUser.id}`);
+  const newCollectionRef = newDocRef.collection('userEarnings');
+  const newRef = newCollectionRef.doc();
+  await batch.set(newRef, objectsToAdd);
+  return await batch.commit();
+};
+
 export const addCollectionAndDocument = async (
   collectionKey,
   objectsToAdd,
