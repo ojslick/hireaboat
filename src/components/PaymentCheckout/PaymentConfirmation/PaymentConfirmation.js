@@ -3,11 +3,70 @@ import confirmIcon from './Images/confirm.svg';
 import { connect } from 'react-redux';
 import ImageSlider from '../ImageSlider/ImageSlider.js';
 import Footer from '../../Footer/Footer';
+import { auth } from '../../../firebase/firebase';
+import firebase from 'firebase';
 class PaymentConfirmation extends React.Component {
+  state = { personalProfile: '', boats: '', captainProfile: '' };
+
   componentDidMount() {
     window.scrollTo(0, 0);
+
+    const fetchData = async () => {
+      this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        let boats = '';
+        const db = firebase.firestore();
+        const boatsAsync = async () => {
+          const boatsRef = await db
+            .collection(`boats`)
+            .doc(`${this.props.selectBoatState.uid}`)
+            .collection('userBoats')
+            .get();
+
+          boats = boatsRef.docs.map((doc) => doc.data());
+        };
+
+        await boatsAsync();
+
+        const userRef = await db.collection(`users`).doc(`${boats[0].uid}`);
+
+        await userRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.setState({ captainProfile: doc.data() });
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting document:', error);
+          });
+
+        const docRef = await db
+          .collection(`users`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`);
+
+        const data = await docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.setState({ personalProfile: doc.data() });
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting document:', error);
+          });
+      });
+    };
+    fetchData();
   }
   render() {
+    console.log('propsUID', this.props.selectBoatState.uid);
+    console.log('captainProfile', this.state.captainProfile);
     return (
       <div className="payment-checkout-container">
         <div className="payment-checkout-align">
@@ -48,7 +107,7 @@ class PaymentConfirmation extends React.Component {
                 />
                 <div className="payment-successful-takeoff-container">
                   <p className="payment-successful-takeoff-price">
-                    {`${this.props.bookingDetails.price}`}
+                    {`$${this.props.bookingDetails.price}`}
                   </p>
                   <div className="payment-successful-takeoff-flex">
                     <div className="payment-successful-takeoff-flex-align">
@@ -101,7 +160,15 @@ class PaymentConfirmation extends React.Component {
                         </div>
                         <div className="payment-successful-takeoff-date">
                           <p className="payment-successful-takeoff-date-text">
-                            Captain's Name
+                            {`${
+                              this.state.captainProfile
+                                ? this.state.captainProfile.firstName
+                                : ''
+                            } ${
+                              this.state.captainProfile
+                                ? this.state.captainProfile.lastName
+                                : ''
+                            }`}
                           </p>
                         </div>
                       </div>
@@ -128,7 +195,15 @@ class PaymentConfirmation extends React.Component {
                         </div>
                         <div className="payment-successful-takeoff-date">
                           <p className="payment-successful-takeoff-date-text">
-                            Passenger's Name
+                            {`${
+                              this.state.personalProfile
+                                ? this.state.personalProfile.firstName
+                                : ''
+                            } ${
+                              this.state.personalProfile
+                                ? this.state.personalProfile.lastName
+                                : ''
+                            }`}
                           </p>
                         </div>
                       </div>
@@ -146,7 +221,11 @@ class PaymentConfirmation extends React.Component {
                         </div>
                         <div className="payment-successful-takeoff-date">
                           <p className="payment-successful-takeoff-date-text">
-                            {`${this.props.checkoutData}`}
+                            {`${
+                              this.state.personalProfile
+                                ? this.state.personalProfile.email
+                                : ''
+                            }`}
                           </p>
                         </div>
                       </div>
@@ -193,7 +272,16 @@ class PaymentConfirmation extends React.Component {
                   <p className="payment-checkout-boat-preview-boatModel">
                     {`${this.props.selectBoatState.boatManufacturer} ${this.props.selectBoatState.boatModel}`}
                   </p>
-
+                  <p className="payment-checkout-boat-preview-location">
+                    <span className="payment-checkout-boat-preview-location-by">
+                      By
+                    </span>
+                    {` ${
+                      this.state.captainProfile
+                        ? this.state.captainProfile.firstName
+                        : ''
+                    }`}
+                  </p>
                   <p className="payment-checkout-boat-preview-location">
                     {`${this.props.selectBoatState.city}`}
                   </p>

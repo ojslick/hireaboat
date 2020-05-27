@@ -100,11 +100,7 @@ class App extends React.Component {
                 exact
                 component={PaymentConfirmation}
               />
-              <Route
-                path="/selectboat/checkout/payment-confirmation"
-                exact
-                component={PaymentConfirmation}
-              />
+
               <Route
                 path="/profile/edit"
                 exact

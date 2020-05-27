@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
     console.log('boats', this.state.boats);
     return (
       <div className="captain-profile-edit-container">
-        <div className="dashboard-container">
+        <div className="dashboard-container" style={{ marginTop: '0' }}>
           <div className="dashboard-ash-container-flex">
             <div
               className="dashboard-ash-container"
@@ -229,7 +229,7 @@ class Dashboard extends React.Component {
                 <div
                   className="personal-information-body"
                   style={{
-                    padding: '0 4%',
+                    padding: '2% 4%',
                     textAlign: 'start',
                   }}
                 >

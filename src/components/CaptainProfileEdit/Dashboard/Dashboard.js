@@ -233,7 +233,7 @@ class Dashboard extends React.Component {
                 <div
                   className="personal-information-body"
                   style={{
-                    padding: '0 4%',
+                    padding: '2% 4%',
                     textAlign: 'start',
                   }}
                 >

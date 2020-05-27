@@ -11,11 +11,49 @@ import './paymentCheckOut.css';
 import mastercard from './Images/mastercard.svg';
 import visa from './Images/visa.svg';
 import card from './Images/card.svg';
+import { auth } from '../../firebase/firebase';
+import firebase from 'firebase';
 
 class PaymentCheckOut extends React.Component {
-  state = { email: '' };
+  state = { email: '', captainProfile: '' };
+
   componentDidMount() {
     window.scrollTo(0, 0);
+
+    const fetchData = async () => {
+      this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        let boats = '';
+        const db = firebase.firestore();
+        const boatsAsync = async () => {
+          const boatsRef = await db
+            .collection(`boats`)
+            .doc(`${this.props.selectBoatState.uid}`)
+            .collection('userBoats')
+            .get();
+
+          boats = boatsRef.docs.map((doc) => doc.data());
+        };
+
+        await boatsAsync();
+
+        const userRef = await db.collection(`users`).doc(`${boats[0].uid}`);
+
+        await userRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.setState({ captainProfile: doc.data() });
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting document:', error);
+          });
+      });
+    };
+    fetchData();
   }
 
   componentDidUpdate() {
@@ -71,11 +109,10 @@ class PaymentCheckOut extends React.Component {
                         amount={this.props.bookingDetails.price}
                         // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                         onSuccess={(details, data) => {
-                          alert(
-                            'Transaction completed by ' +
-                              details.payer.name.given_name
+                          history.push(
+                            '/selectboat/checkout/payment-confirmation'
                           );
-
+                          console.log('details', details);
                           // OPTIONAL: Call your server to save the transaction
                           return fetch('/paypal-transaction-complete', {
                             method: 'post',
@@ -278,7 +315,16 @@ class PaymentCheckOut extends React.Component {
                   <p className="payment-checkout-boat-preview-boatModel">
                     {`${this.props.selectBoatState.boatManufacturer} ${this.props.selectBoatState.boatModel}`}
                   </p>
-
+                  <p className="payment-checkout-boat-preview-location">
+                    <span className="payment-checkout-boat-preview-location-by">
+                      By
+                    </span>
+                    {` ${
+                      this.state.captainProfile
+                        ? this.state.captainProfile.firstName
+                        : ''
+                    }`}
+                  </p>
                   <p className="payment-checkout-boat-preview-location">
                     {`${this.props.selectBoatState.city}`}
                   </p>

@@ -40,6 +40,7 @@ class AddABoat extends React.Component {
       boatCapacity: '',
       boatDescription: '',
       createdAt: new Date(),
+      uid: '',
     },
     boatImages: [],
 
@@ -48,8 +49,22 @@ class AddABoat extends React.Component {
     error: '',
   };
 
+  unsubscribeFromAuth = null;
+
   componentDidMount() {
     window.scrollTo(0, 0);
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        this.setState({
+          boatData: { ...this.state.boatData, uid: userAuth.uid },
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
 
   handleClick = (name, click) => {
@@ -189,7 +204,7 @@ class AddABoat extends React.Component {
   };
 
   render() {
-    console.log('stateImages===>', this.state.boatImages);
+    console.log('boatdata===>', this.state.boatData);
     let yachts = this.state.yachts ? 'blue-background' : '';
     let catamarans = this.state.catamarans ? 'blue-background' : '';
     let houseboats = this.state.houseboats ? 'blue-background' : '';
