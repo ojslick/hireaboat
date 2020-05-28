@@ -7,7 +7,7 @@ import vector1 from './Images/vector1.svg';
 import firebase from 'firebase';
 import BoatCard from './boatCard';
 import Footer from '../../Footer/Footer';
-
+import history from '../../../history';
 import './dashboard.css';
 
 class Dashboard extends React.Component {
@@ -17,6 +17,7 @@ class Dashboard extends React.Component {
     boats: '',
     editProfile: true,
     userEarning: '',
+    totalEarnings: '',
   };
 
   unsubscribeFromAuth = null;
@@ -66,6 +67,20 @@ class Dashboard extends React.Component {
         this.setState({
           userEarning: userEarningRef.docs.map((doc) => doc.data()),
         });
+
+        const totalEarningRef = await db
+          .collection(`earnings`)
+          .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
+          .collection('userEarnings')
+          .get();
+
+        let total = 0;
+        totalEarningRef.docs.forEach((doc) => {
+          console.log('amountPayed', doc.data().amountPayed);
+          total += doc.data().amountPayed;
+        });
+
+        this.setState({ totalEarnings: `$${total}` });
       });
     };
     fetchData();
@@ -197,7 +212,8 @@ class Dashboard extends React.Component {
           <div className="dashboard-ash-profile-sailor-body">
             <div className="dashboard-ash-profile-sailor-body-boating-experience">
               <div
-                className="personal-profile-right-container"
+                onClick={() => history.push('/earnings')}
+                className="personal-profile-right-container earnings"
                 style={{
                   minHeight: '114px',
                   background: '#39A0ED',
@@ -240,9 +256,7 @@ class Dashboard extends React.Component {
                         Available balance
                       </p>
                       <p className="personal-information-earnings-body-last-earning-amount">
-                        {this.state.userEarning
-                          ? `$${this.state.userEarning[0].amountPayed}`
-                          : ''}
+                        {this.state.totalEarnings}
                       </p>
                     </div>
                   </div>

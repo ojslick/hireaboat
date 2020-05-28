@@ -144,6 +144,21 @@ export const addEarnings = async (collectionKey, currentUser, objectsToAdd) => {
   return await batch.commit();
 };
 
+//Withdrawals
+export const addWithdrawal = async (
+  collectionKey,
+  currentUser,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  const newDocRef = collectionRef.doc(`${currentUser.id}`);
+  const newCollectionRef = newDocRef.collection('userWithdrawal');
+  const newRef = newCollectionRef.doc();
+  await batch.set(newRef, objectsToAdd);
+  return await batch.commit();
+};
+
 export const addCollectionAndDocument = async (
   collectionKey,
   objectsToAdd,
