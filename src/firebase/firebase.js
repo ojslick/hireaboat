@@ -152,7 +152,7 @@ export const addWithdrawal = async (
 ) => {
   const collectionRef = firestore.collection(collectionKey);
   const batch = firestore.batch();
-  const newDocRef = collectionRef.doc(`${currentUser.id}`);
+  const newDocRef = collectionRef.doc(`${currentUser}`);
   const newCollectionRef = newDocRef.collection('userWithdrawal');
   const newRef = newCollectionRef.doc();
   await batch.set(newRef, objectsToAdd);

@@ -10,13 +10,15 @@ import './earnings.css';
 class Earnings extends React.Component {
   state = {
     totalEarnings: '',
+    totalAmountWithdrawn: 0,
     withdrawals: {
-      totalAmountWithdrawn: 0,
       currentWithdrawal: '',
+      storedCurrentWithdrawal: '',
       date: new Date().toLocaleDateString(),
       time: new Date(),
     },
     paymentReference: '',
+    userId: '',
   };
 
   unsubscribeFromAuth = null;
@@ -24,6 +26,7 @@ class Earnings extends React.Component {
   componentDidMount() {
     const fetchData = async () => {
       this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        this.setState({ userId: userAuth.uid });
         const db = firebase.firestore();
 
         const totalEarningRef = await db
@@ -44,18 +47,33 @@ class Earnings extends React.Component {
           totalEarnings: total,
         });
 
-        const withdrawalsRef = await db
-          .collection(`withdrawals`)
-          .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
-          .collection('userWithdrawal')
-          .get();
+        const paymentReferenceFunc = async () => {
+          const withdrawalsRef = await db
+            .collection(`withdrawals`)
+            .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
+            .collection('userWithdrawal')
+            .get();
 
-        withdrawalsRef.docs.forEach((doc) => {
-          this.setState({ withdrawals: doc.data() });
-        });
-        withdrawalsRef.docs.forEach((doc) => {
-          this.setState({ paymentReference: doc.data() });
-        });
+          // withdrawalsRef.docs.forEach((doc) => {
+          //   this.setState({ withdrawals: doc.data() });
+          // });
+          withdrawalsRef.docs.forEach((doc) => {
+            this.setState({
+              paymentReference: [...this.state.paymentReference, doc.data()],
+            });
+          });
+        };
+
+        await paymentReferenceFunc();
+
+        let totalAmount = 0;
+        if (this.state.paymentReference) {
+          this.state.paymentReference.forEach((earning) => {
+            console.log('mountedAmount', earning.totalEarnings);
+            totalAmount += earning.totalEarnings;
+          });
+          this.setState({ totalAmountWithdrawn: totalAmount });
+        }
       });
     };
 
@@ -69,6 +87,7 @@ class Earnings extends React.Component {
   handleWithdrawal = async () => {
     const db = firebase.firestore();
     let batch = db.batch();
+
     try {
       const totalEarningRef = await db
         .collection(`earnings`)
@@ -86,13 +105,31 @@ class Earnings extends React.Component {
       if (totalEarningRef) {
         const setTotalAmountWithdrawn = async () => {
           this.setState({
+            totalAmountWithdrawn:
+              this.state.totalAmountWithdrawn +
+              this.state.withdrawals.currentWithdrawal,
+          });
+
+          this.setState({
             withdrawals: {
               ...this.state.withdrawals,
-              totalAmountWithdrawn:
-                this.state.withdrawals.currentWithdrawal +
-                this.state.withdrawals.totalAmountWithdrawn,
+              storedCurrentWithdrawal: this.state.withdrawals.currentWithdrawal,
             },
           });
+
+          this.setState({
+            paymentReference: [
+              ...this.state.paymentReference,
+              {
+                withdrawals: {
+                  storedCurrentWithdrawal: this.state.withdrawals
+                    .currentWithdrawal,
+                  date: new Date().toLocaleDateString(),
+                },
+              },
+            ],
+          });
+
           this.setState({
             withdrawals: {
               ...this.state.withdrawals,
@@ -102,11 +139,7 @@ class Earnings extends React.Component {
         };
         await setTotalAmountWithdrawn();
 
-        addWithdrawal(
-          'withdrawals',
-          this.props.currentUser.id,
-          this.state.withdrawals
-        );
+        addWithdrawal('withdrawals', this.state.userId, this.state);
       }
     } catch (error) {
       console.log('Error removing document: ', error);
@@ -114,6 +147,7 @@ class Earnings extends React.Component {
   };
 
   render() {
+    console.log('state===>', this.state);
     return (
       <div className="earnings-container">
         <ProfileNav />
@@ -130,7 +164,9 @@ class Earnings extends React.Component {
                   Withdrawn
                 </p>
                 <p className="earnings-body-amount-withdrawn-flex-withdrawn-number">
-                  {this.state.withdrawals.totalAmountWithdrawn}
+                  {this.state.totalAmountWithdrawn
+                    ? `$${this.state.totalAmountWithdrawn}`
+                    : '$0'}
                 </p>
               </div>
 
@@ -144,12 +180,22 @@ class Earnings extends React.Component {
               </div>
             </div>
           </div>
-          <button
-            className="earnings-body-withdraw-button"
-            onClick={this.handleWithdrawal}
-          >
-            Withdraw
-          </button>
+          {this.state.withdrawals.currentWithdrawal > 0 ? (
+            <button
+              className="earnings-body-withdraw-button"
+              onClick={this.handleWithdrawal}
+            >
+              Withdraw
+            </button>
+          ) : (
+            <button
+              className="earnings-body-withdraw-button"
+              onClick={this.handleWithdrawal}
+              disabled
+            >
+              Withdraw
+            </button>
+          )}
           <div className="earnings-body-past-payments">
             <div className="earnings-body-past-payments-header">
               <div className="earnings-body-past-payments-date">
@@ -172,40 +218,45 @@ class Earnings extends React.Component {
                 <p className="earnings-body-past-payments-date-text">AMOUNT</p>
               </div>
             </div>
-            {
-              <div className="earnings-body-past-payments-header">
-                <div className="earnings-body-past-payments-date">
-                  <p className="earnings-body-past-payments-date-text">
-                    {this.state.withdrawals.date
-                      ? this.state.withdrawals.data
-                      : ''}
-                  </p>
-                </div>
-                <div
-                  className="earnings-body-past-payments-date"
-                  style={{ paddingLeft: 0, width: '60%' }}
-                >
-                  <p className="earnings-body-past-payments-date-text">
-                    Withdrawal Completed Successfully
-                  </p>
-                </div>
-                <div
-                  className="earnings-body-past-payments-date"
-                  style={{
-                    paddingRight: '43px',
-                    textAlign: 'right',
-                    width: '15%',
-                  }}
-                >
-                  <p
-                    className="earnings-body-past-payments-date-text"
-                    style={{ color: '#E52836' }}
-                  >
-                    {`-$${this.state.totalEarnings}`}
-                  </p>
-                </div>
-              </div>
-            }
+            {this.state.paymentReference
+              ? this.state.paymentReference.map((reference, index) => {
+                  return (
+                    <div
+                      className="earnings-body-past-payments-header"
+                      key={index}
+                    >
+                      <div className="earnings-body-past-payments-date">
+                        <p className="earnings-body-past-payments-date-text">
+                          {reference.withdrawals.date}
+                        </p>
+                      </div>
+                      <div
+                        className="earnings-body-past-payments-date"
+                        style={{ paddingLeft: 0, width: '60%' }}
+                      >
+                        <p className="earnings-body-past-payments-date-text">
+                          Withdrawal Completed Successfully
+                        </p>
+                      </div>
+                      <div
+                        className="earnings-body-past-payments-date"
+                        style={{
+                          paddingRight: '43px',
+                          textAlign: 'right',
+                          width: '15%',
+                        }}
+                      >
+                        <p
+                          className="earnings-body-past-payments-date-text"
+                          style={{ color: '#E52836' }}
+                        >
+                          {`-$${reference.withdrawals.storedCurrentWithdrawal}`}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              : ''}
           </div>
         </div>
         <Footer />

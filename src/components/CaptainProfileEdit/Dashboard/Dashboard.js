@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
     creationTime: '',
     boats: '',
     editProfile: true,
-    userEarning: '',
+    userEarning: 0,
     totalEarnings: '',
   };
 
@@ -243,7 +243,7 @@ class Dashboard extends React.Component {
                       <p className="personal-information-earnings-body-last-earning-amount">
                         {this.state.userEarning
                           ? `$${this.state.userEarning[0].amountPayed}`
-                          : ''}
+                          : '$0'}
                       </p>
                     </div>
                     <div
