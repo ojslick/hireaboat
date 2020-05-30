@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import BoatCard from './boatCard';
 import Footer from '../../Footer/Footer';
 import history from '../../../history';
+import { Placeholder } from 'semantic-ui-react';
 import './dashboard.css';
 
 class Dashboard extends React.Component {
@@ -76,11 +77,10 @@ class Dashboard extends React.Component {
 
         let total = 0;
         totalEarningRef.docs.forEach((doc) => {
-          console.log('amountPayed', doc.data().amountPayed);
           total += doc.data().amountPayed;
         });
 
-        this.setState({ totalEarnings: `$${total}` });
+        this.setState({ totalEarnings: `${total}` });
       });
     };
     fetchData();
@@ -91,7 +91,6 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log('userearning', this.state.userEarning);
     return (
       <div className="captain-profile-edit-container">
         <ProfileNav />
@@ -241,7 +240,7 @@ class Dashboard extends React.Component {
                         Last Earning
                       </p>
                       <p className="personal-information-earnings-body-last-earning-amount">
-                        {this.state.userEarning
+                        {this.state.userEarning && this.state.userEarning == []
                           ? `$${this.state.userEarning[0].amountPayed}`
                           : '$0'}
                       </p>
@@ -256,7 +255,9 @@ class Dashboard extends React.Component {
                         Available balance
                       </p>
                       <p className="personal-information-earnings-body-last-earning-amount">
-                        {this.state.totalEarnings}
+                        {this.state.totalEarnings >= 0
+                          ? `$${this.state.totalEarnings}`
+                          : ''}
                       </p>
                     </div>
                   </div>

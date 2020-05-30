@@ -69,7 +69,6 @@ class Earnings extends React.Component {
         let totalAmount = 0;
         if (this.state.paymentReference) {
           this.state.paymentReference.forEach((earning) => {
-            console.log('mountedAmount', earning.totalEarnings);
             totalAmount += earning.totalEarnings;
           });
           this.setState({ totalAmountWithdrawn: totalAmount });
@@ -101,7 +100,6 @@ class Earnings extends React.Component {
 
       await batch.commit();
 
-      console.log('response---->', totalEarningRef);
       if (totalEarningRef) {
         const setTotalAmountWithdrawn = async () => {
           this.setState({
@@ -147,7 +145,6 @@ class Earnings extends React.Component {
   };
 
   render() {
-    console.log('state===>', this.state);
     return (
       <div className="earnings-container">
         <ProfileNav />
@@ -163,20 +160,34 @@ class Earnings extends React.Component {
                 <p className="earnings-body-amount-withdrawn-flex-withdrawn-text">
                   Withdrawn
                 </p>
-                <p className="earnings-body-amount-withdrawn-flex-withdrawn-number">
-                  {this.state.totalAmountWithdrawn
-                    ? `$${this.state.totalAmountWithdrawn}`
-                    : '$0'}
-                </p>
+                <div className="earnings-body-amount-withdrawn-flex-withdrawn-number-container">
+                  <p className="earnings-body-amount-withdrawn-flex-withdrawn-number">
+                    {this.state.totalAmountWithdrawn ? (
+                      `$${this.state.totalAmountWithdrawn}`
+                    ) : (
+                      <div class="ui placeholder" style={{ height: '44px' }}>
+                        <div class="image"></div>
+                      </div>
+                    )}
+                  </p>
+                </div>
               </div>
 
               <div className="earnings-body-amount-withdrawn-flex-withdrawn">
                 <p className="earnings-body-amount-withdrawn-flex-withdrawn-text">
                   Available for Withdrawal
                 </p>
-                <p className="earnings-body-amount-withdrawn-flex-withdrawn-number">
-                  {`$${this.state.withdrawals.currentWithdrawal}`}
-                </p>
+                <div className="earnings-body-amount-withdrawn-flex-withdrawn-number-container">
+                  <p className="earnings-body-amount-withdrawn-flex-withdrawn-number">
+                    {this.state.withdrawals.currentWithdrawal >= 0 ? (
+                      `$${this.state.withdrawals.currentWithdrawal}`
+                    ) : (
+                      <div class="ui placeholder" style={{ height: '44px' }}>
+                        <div class="image"></div>
+                      </div>
+                    )}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -198,17 +209,17 @@ class Earnings extends React.Component {
           )}
           <div className="earnings-body-past-payments">
             <div className="earnings-body-past-payments-header">
-              <div className="earnings-body-past-payments-date">
+              <div className="earnings-body-past-payments-date date">
                 <p className="earnings-body-past-payments-date-text">DATE</p>
               </div>
               <div
-                className="earnings-body-past-payments-date"
+                className="earnings-body-past-payments-date purpose"
                 style={{ paddingLeft: 0, width: '60%' }}
               >
                 <p className="earnings-body-past-payments-date-text">PURPOSE</p>
               </div>
               <div
-                className="earnings-body-past-payments-date"
+                className="earnings-body-past-payments-date amount"
                 style={{
                   paddingRight: '43px',
                   textAlign: 'right',
@@ -225,13 +236,13 @@ class Earnings extends React.Component {
                       className="earnings-body-past-payments-header"
                       key={index}
                     >
-                      <div className="earnings-body-past-payments-date">
+                      <div className="earnings-body-past-payments-date date">
                         <p className="earnings-body-past-payments-date-text">
                           {reference.withdrawals.date}
                         </p>
                       </div>
                       <div
-                        className="earnings-body-past-payments-date"
+                        className="earnings-body-past-payments-date purpose"
                         style={{ paddingLeft: 0, width: '60%' }}
                       >
                         <p className="earnings-body-past-payments-date-text">
@@ -239,7 +250,7 @@ class Earnings extends React.Component {
                         </p>
                       </div>
                       <div
-                        className="earnings-body-past-payments-date"
+                        className="earnings-body-past-payments-date amount"
                         style={{
                           paddingRight: '43px',
                           textAlign: 'right',

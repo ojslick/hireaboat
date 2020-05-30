@@ -260,6 +260,13 @@
   background: #f04141;
 }
 
+.earnings-body-amount-withdrawn-flex-withdrawn-number-container {
+  width: 70%;
+  display: inline-block;
+  text-align: center;
+  height: 44px;
+}
+
 @media only screen and (max-width: 910px) {
   .dashboard-ash-profile-sailor-align {
     padding: 0 5%;
@@ -305,5 +312,49 @@
 @media only screen and (max-width: 768px) {
   .dashboard-ash-profile-sailor-align {
     padding-left: 8%;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .earnings-body-past-payments-date.purpose {
+    text-align: center;
+    width: 40% !important;
+  }
+  .earnings-body-past-payments-date.date {
+    width: 35% !important;
+  }
+  .earnings-body-past-payments-date {
+    padding-left: 10px !important;
+    height: 70px !important;
+  }
+
+  .earnings-body-past-payments-date.amount {
+    padding-right: 10px !important;
+    width: 35% !important;
+  }
+
+  .earnings-body-past-payments-header {
+    height: 70px !important;
+  }
+
+  .earnings-body-amount-withdrawn-flex-withdrawn {
+    display: table;
+    height: 146px;
+  }
+
+  .earnings-body-amount-withdrawn-flex-withdrawn-text {
+    display: table-row-group;
+    vertical-align: top;
+    height: 100%;
+  }
+
+  .earnings-body-amount-withdrawn-flex-withdrawn-number-container {
+    display: table-row-group;
+    vertical-align: bottom;
+    height: 100%;
+  }
+
+  .earnings-body {
+    padding: 28px 5% !important;
   }
 }
