@@ -91,6 +91,14 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    console.log(
+      'userearnign ==>',
+      this.state.userEarning == 0 ||
+        this.state.userEarning == [] ||
+        this.state.userEarning.length > 0
+    );
+
+    console.log(this.state.userEarning);
     return (
       <div className="captain-profile-edit-container">
         <ProfileNav />
@@ -240,7 +248,7 @@ class Dashboard extends React.Component {
                         Last Earning
                       </p>
                       <p className="personal-information-earnings-body-last-earning-amount">
-                        {this.state.userEarning && this.state.userEarning == []
+                        {this.state.userEarning.length > 0
                           ? `$${this.state.userEarning[0].amountPayed}`
                           : '$0'}
                       </p>

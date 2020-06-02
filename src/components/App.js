@@ -20,6 +20,8 @@ import CaptainProfileEdit from './CaptainProfileEdit/CaptainProfileEdit';
 import Dashboard from './CaptainProfileEdit/Dashboard/Dashboard';
 import CaptainProfile from './CaptainProfile/CaptainProfile';
 import Earnings from './CaptainProfileEdit/Earnings/Earnings';
+import Message from './Message/Message';
+import Conversation from './Message/Conversation';
 import {
   auth,
   createUserProfileDocument,
@@ -110,6 +112,12 @@ class App extends React.Component {
               <Route path="/dashboard" exact component={Dashboard} />
               <Route path="/captain-profile" exact component={CaptainProfile} />
               <Route path="/earnings" exact component={Earnings} />
+              <Route path="/message" exact component={Message} />
+              <Route
+                path="/message/conversation"
+                exact
+                component={Conversation}
+              />
             </Switch>
           </Router>
         )}
