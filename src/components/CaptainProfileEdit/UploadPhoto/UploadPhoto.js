@@ -137,7 +137,7 @@ class PersonalProfile extends React.Component {
                 </div>
               </div>
             </div>
-            {this.state.boatImages === [] ? (
+            {this.state.boatImages !== [] ? (
               <button
                 className="personal-information-button"
                 style={{ float: 'left' }}

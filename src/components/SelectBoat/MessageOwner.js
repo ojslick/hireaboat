@@ -1,9 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addMessage } from '../../firebase/firebase';
+import { ToastContainer, toast } from 'react-toastify';
 
 class MessageOwner extends React.Component {
+  state = {
+    message: '',
+    time: new Date().toLocaleTimeString(),
+    date: new Date().toLocaleDateString(),
+    timestamp: new Date(),
+    boatManufacturer: this.props.selectBoat.boatManufacturer,
+    boatModel: this.props.selectBoat.boatModel,
+    boatType: this.props.selectBoat.boatType,
+    boatOwnerUID: this.props.selectBoat.uid,
+    customerUID: this.props.currentUser.id,
+    currentMessageUID: this.props.currentUser.id,
+  };
+
+  handleSubmit = async () => {
+    if (this.state.message) {
+      await addMessage('messages', this.state);
+      toast.success('Message Sent', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   render() {
-    console.log('bookingdetailsprops===>', this.props.bookingDetails);
+    console.log('state===>', this.state);
+    console.log('time===>', this.state.time);
     return (
       <div className="select-boat-message-owner-container">
         <div className="select-boat-message-owner-container-left">
@@ -53,33 +84,14 @@ class MessageOwner extends React.Component {
             </p>
           </div>
           <div className="select-boat-message-owner-input-container">
-            <input
-              className="select-boat-message-owner-input-name"
-              type="text"
-              placeholder="Name"
-            />
-          </div>
-          <div className="select-boat-message-owner-input-container">
-            <input
-              className="select-boat-message-owner-input-name"
-              type="email"
-              required
-              placeholder="Email"
-            />
-          </div>
-          <div className="select-boat-message-owner-input-container">
-            <input
-              className="select-boat-message-owner-input-name"
-              type="number"
-              placeholder="Phone Number"
-            />
-          </div>
-          <div className="select-boat-message-owner-input-container">
             <textarea
               className="select-boat-message-owner-input-name"
               type="text"
               placeholder="Enter your message here"
               style={{ height: '135px', paddingTop: '12px' }}
+              onChange={(event) =>
+                this.setState({ message: event.target.value })
+              }
             />
           </div>
           <div className="select-boat-message-owner-button-container">
@@ -90,17 +102,27 @@ class MessageOwner extends React.Component {
               >
                 Cancel
               </button>
-              <button className="select-boat-message-owner-send">Send</button>
+              <button
+                className="select-boat-message-owner-send"
+                onClick={this.handleSubmit}
+              >
+                Send
+              </button>
             </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return { bookingDetails: state.bookingCard };
+  return {
+    bookingDetails: state.bookingCard,
+    selectBoat: state.selectBoat,
+    currentUser: state.currentUser,
+  };
 };
 
 export default connect(mapStateToProps)(MessageOwner);

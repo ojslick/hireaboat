@@ -23,7 +23,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const snapShot = await userRef.get();
 
-  if (!snapShot.exist) {
+  if (snapShot.exist) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
@@ -155,6 +155,15 @@ export const addWithdrawal = async (
   const newDocRef = collectionRef.doc(`${currentUser}`);
   const newCollectionRef = newDocRef.collection('userWithdrawal');
   const newRef = newCollectionRef.doc();
+  await batch.set(newRef, objectsToAdd);
+  return await batch.commit();
+};
+
+//addMessages
+export const addMessage = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  const newRef = collectionRef.doc();
   await batch.set(newRef, objectsToAdd);
   return await batch.commit();
 };

@@ -24,6 +24,7 @@ class Earnings extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     const fetchData = async () => {
       this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
         this.setState({ userId: userAuth.uid });

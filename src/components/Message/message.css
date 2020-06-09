@@ -40,9 +40,12 @@
 .message-inbox-body-message-container {
   width: 60%;
   height: 62px;
+  display: table;
 }
 
 .message-inbox-body-message {
+  display: table-cell;
+  vertical-align: middle;
   font-style: normal;
   font-weight: 300;
   font-size: 14px;
@@ -182,4 +185,19 @@
   line-height: 21px;
 
   color: #343434;
+}
+
+.message-inbox-body-date {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 21px;
+
+  color: #787878;
+}
+
+.message-inbox-body-profile-pic-size {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
 }
