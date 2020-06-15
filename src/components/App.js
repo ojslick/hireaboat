@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
+import { PrivateRoute } from './PrivateRoute';
 import history from '../history';
 import NavBar from './Header/NavBar/NavBar';
 import LandingPage from './Landing-page/LandingPage';

@@ -56,3 +56,10 @@ export const userProfile = (data) => async (dispatch) => {
 
   dispatch({ type: 'USER_PROFILE', payload: response });
 };
+
+// conversation
+export const conversation = (data) => async (dispatch) => {
+  const response = await data;
+
+  dispatch({ type: 'CONVERSATION', payload: response });
+};

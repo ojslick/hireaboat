@@ -8,6 +8,9 @@ import { auth } from '../../firebase/firebase';
 import firebase from 'firebase';
 import Loading from '../Loading/Loading';
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react';
+import Pagination from 'react-js-pagination';
+import { conversation } from '../../actions';
+import { connect } from 'react-redux';
 
 class Message extends React.Component {
   state = {
@@ -16,6 +19,7 @@ class Message extends React.Component {
     messages: '',
     loading: true,
     userType: '',
+    activePage: 1,
   };
 
   unsubscribeFromAuth = null;
@@ -33,123 +37,199 @@ class Message extends React.Component {
   };
 
   componentDidMount() {
-    const fetchData = async () => {
+    const fetchData = () => {
       this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-        const db = firebase.firestore();
+        const db = firebase.database();
 
         let messages = [];
 
         const boatOwnerMessage = async () => {
-          const messageRef = await db
-            .collection('messages')
-            .where(
-              'boatOwnerUID',
-              '==',
-              `${!userAuth ? 'empty' : userAuth.uid}`
-            )
-            .get();
-
-          messageRef.docs.map(async (snapshot) => {
-            const userRef = await db
-              .collection(`users`)
-              .doc(
-                `${
-                  !snapshot.data() ? 'empty' : snapshot.data().currentMessageUID
-                }`
-              );
-
+          const collectionRef = await db
+            .ref('messages')
+            .orderByChild('boatOwnerUID');
+          const ref = collectionRef.equalTo(
+            `${!userAuth ? 'empty' : userAuth.uid}`
+          );
+          return new Promise((resolve, reject) => {
             try {
-              const userId = await userRef.get();
+              ref.on('value', (snapshot) => {
+                console.log('snapBoatOwner', snapshot.val());
+                console.log(
+                  'ObjectValues',
+                  Object.values(snapshot.val() ? snapshot.val() : {})
+                );
 
-              const profilePic = await userId.get(`images`);
-              const firstName = await userId.get(`firstName`);
-              const lastName = await userId.get(`lastName`);
-              const displayName = await userId.get(`displayName`);
+                return Object.values(
+                  snapshot.val() ? snapshot.val() : {}
+                ).forEach(async (snap) => {
+                  console.log('snap', snap);
 
-              await messages.push({
-                ...snapshot.data(),
-                userProfile: {
-                  profilePic,
-                  firstName,
-                  lastName,
-                  displayName,
-                },
+                  const db = firebase.firestore();
+                  const userRef = await db
+                    .collection(`users`)
+                    .doc(`${!snap ? 'empty' : snap.boatOwnerUID}`);
+                  try {
+                    const userId = await userRef.get();
+
+                    console.log('userId', userId);
+
+                    const profilePic = await userId.get(`images`);
+                    const firstName = await userId.get(`firstName`);
+                    const lastName = await userId.get(`lastName`);
+                    const displayName = await userId.get(`displayName`);
+
+                    const response = await Promise.all([
+                      profilePic,
+                      firstName,
+                      lastName,
+                      displayName,
+                    ]);
+
+                    const userProfile = {
+                      profilePic,
+                      firstName,
+                      lastName,
+                      displayName,
+                    };
+
+                    let message = [];
+
+                    message.push({ ...snap, userProfile });
+                    resolve(message);
+                    console.log('messagePromise', message);
+                  } catch (err) {
+                    console.log('Error getting document:', err);
+                    reject(err);
+                  }
+                });
               });
             } catch (err) {
-              console.log('Error getting document:', err);
+              reject(err);
             }
           });
         };
-
-        await boatOwnerMessage();
 
         const customerMessageFunc = async () => {
-          const customerMessage = await db
-            .collection('messages')
-            .where('customerUID', '==', `${!userAuth ? 'empty' : userAuth.uid}`)
-            .get();
+          const collectionRef = await db
+            .ref('messages')
+            .orderByChild('customerUID');
+          const ref = collectionRef.equalTo(
+            `${!userAuth ? 'empty' : userAuth.uid}`
+          );
 
-          customerMessage.docs.map(async (snapshot) => {
-            const userRef = await db
-              .collection(`users`)
-              .doc(
-                `${
-                  !snapshot.data() ? 'empty' : snapshot.data().currentMessageUID
-                }`
-              );
-
+          return new Promise((resolve, reject) => {
             try {
-              const userId = await userRef.get();
+              ref.on('value', (snapshot) => {
+                console.log('snapValCustomer', snapshot.val());
 
-              const profilePic = userId.get(`images`);
-              const firstName = userId.get(`firstName`);
-              const lastName = userId.get(`lastName`);
-              const displayName = userId.get(`displayName`);
+                console.log(
+                  'ObjectValues',
+                  Object.values(
+                    snapshot.val()
+                      ? snapshot.val()
+                      : { currentMessageUID: 'empty' }
+                  )
+                );
 
-              messages.push({
-                ...snapshot.data(),
-                userProfile: {
-                  profilePic,
-                  firstName,
-                  lastName,
-                  displayName,
-                },
+                return Object.values(
+                  snapshot.val()
+                    ? snapshot.val()
+                    : { currentMessageUID: 'empty' }
+                ).forEach(async (snap) => {
+                  console.log('snap', snap);
+
+                  const db = firebase.firestore();
+                  const userRef = await db
+                    .collection(`users`)
+                    .doc(`${!snap ? 'empty' : snap.currentMessageUID}`);
+                  try {
+                    const userId = await userRef.get();
+
+                    console.log('userId', userId);
+
+                    const profilePic = await userId.get(`images`);
+                    const firstName = await userId.get(`firstName`);
+                    const lastName = await userId.get(`lastName`);
+                    const displayName = await userId.get(`displayName`);
+
+                    const response = await Promise.all([
+                      profilePic,
+                      firstName,
+                      lastName,
+                      displayName,
+                    ]);
+
+                    const userProfile = {
+                      profilePic,
+                      firstName,
+                      lastName,
+                      displayName,
+                    };
+
+                    let message = [];
+
+                    message.push({ ...snap, userProfile });
+                    resolve(message);
+                    console.log('messagePromise', message);
+                  } catch (err) {
+                    console.log('Error getting document:', err);
+                    reject(err);
+                  }
+                });
               });
             } catch (err) {
-              console.log('Error getting document:', err);
+              reject(err);
             }
-
-            // userRef
-            //   .get()
-            //   .then((doc) => {
-            //     console.log('messages', messages);
-            //     if (doc.exists) {
-            //       messages.push({
-            //         ...snapshot.data(),
-            //         userProfile: doc.data(),
-            //       });
-            //     } else {
-            //       // doc.data() will be undefined in this case
-            //       console.log('No such document!');
-            //     }
-            //   })
-            //   .catch(function (error) {
-            //     console.log('Error getting document:', error);
-            //   });
           });
         };
 
-        await customerMessageFunc();
+        // console.log('boatOwnerPromise', boatOwnerMessage());
+        // console.log('customerPromise', customerMessageFunc());
 
-        const key = boatOwnerMessage.length ? 'boatOwnerUID' : 'customerUID';
+        // const response = Promise.all([
+        //   boatOwnerMessage(),
+        //   customerMessageFunc(),
+        // ]);
 
-        boatOwnerMessage.length
-          ? this.setState({ userType: 'boatOwner' })
-          : this.setState({ userType: 'customerUID' });
+        // console.log('response', response);
 
-        messages = this.groupBy(messages, key);
+        Promise.all([boatOwnerMessage(), customerMessageFunc()]).then(
+          async (response) => {
+            console.log('response', response);
+            function flatten(arr) {
+              const result = [];
+              arr.forEach((val) => {
+                if (Array.isArray(val)) {
+                  result.push(...val);
+                } else {
+                  result.push(val);
+                }
+              });
+              return result;
+            }
 
-        this.setState({ messages, loading: false });
+            const flattedMessage = flatten(response);
+
+            console.log('flattedMessage', flattedMessage);
+
+            const checkData = await Promise.all(flattedMessage);
+
+            const newData = [];
+
+            // flattedMessage.map((item) => {
+            //   console.log('itemhdkd', item);
+            //   item.map((obj) => newData.push(obj));
+            // });
+
+            const sortedNewData = flattedMessage.sort(
+              (a, b) => b.timestamp - a.timestamp
+            );
+
+            messages = await this.groupBy(sortedNewData, 'currentMessageUID');
+
+            this.setState({ messages, loading: false });
+          }
+        );
       });
     };
 
@@ -172,12 +252,14 @@ class Message extends React.Component {
       this.setState({ boatingQualification: false });
     }
   };
-  render() {
-    console.log('stateMessage', this.state.messages);
-    const messagesArr = Object.values(this.state.messages);
-    console.log('messageArr', messagesArr);
-    console.log('screenWidth', window.innerWidth);
 
+  handlePageChange = (pageNumber) => {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+  };
+  render() {
+    let messagesArr = Object.values(this.state.messages);
+    console.log('stateMessage', this.state.messages);
     return (
       <div className="message-container">
         <ProfileNav />
@@ -232,13 +314,17 @@ class Message extends React.Component {
                     </Loader>
                   </div>
                 ) : (
-                  messagesArr.map((messageArr) => {
+                  messagesArr.map((messageArr, index) => {
                     const data = messageArr[0];
 
                     return messageArr.length > 0 ? (
                       <div
                         className="message-inbox-body"
-                        onClick={() => history.push('/message/conversation')}
+                        onClick={() => {
+                          history.push('/message/conversation');
+                          this.props.conversation(messagesArr[index]);
+                        }}
+                        key={index}
                       >
                         <div className="message-inbox-body-profile-pic">
                           <img
@@ -252,7 +338,7 @@ class Message extends React.Component {
                         </div>
                         <div className="message-inbox-body-username-container">
                           <p className="message-inbox-body-username">
-                            {this.state.messages
+                            {messageArr.length > 0
                               ? data.userProfile.firstName
                                 ? `${data.userProfile.firstName} ${data.userProfile.lastName}`
                                 : data.userProfile.displayName
@@ -262,16 +348,20 @@ class Message extends React.Component {
                         </div>
                         <div className="message-inbox-body-message-container">
                           <p className="message-inbox-body-message">
-                            {data.message.slice(
-                              0,
-                              window.innerWidth < 1020 ? 40 : 150
-                            )}
-                            {window.innerWidth < 1020
-                              ? data.message.length > 40
+                            {messageArr.length > 0
+                              ? `${data.message.slice(
+                                  0,
+                                  window.innerWidth < 1020 ? 40 : 150
+                                )} 
+                            ${
+                              window.innerWidth < 1020
+                                ? data.message.length > 40
+                                  ? '...'
+                                  : ''
+                                : data.message.length > 150
                                 ? '...'
                                 : ''
-                              : data.message.length > 150
-                              ? '...'
+                            }`
                               : ''}
                           </p>
                         </div>
@@ -300,10 +390,22 @@ class Message extends React.Component {
             )}
           </div>
         </div>
+        <div style={{ display: 'inline-block', marginTop: '20px' }}>
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={messagesArr.length}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+            itemClass="page-item"
+            linkClass="page-link"
+          />
+        </div>
+
         <Footer />
       </div>
     );
   }
 }
 
-export default Message;
+export default connect(null, { conversation })(Message);

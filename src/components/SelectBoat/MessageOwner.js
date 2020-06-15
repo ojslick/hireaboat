@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addMessage } from '../../firebase/firebase';
+import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 
 class MessageOwner extends React.Component {
@@ -15,11 +15,17 @@ class MessageOwner extends React.Component {
     boatOwnerUID: this.props.selectBoat.uid,
     customerUID: this.props.currentUser.id,
     currentMessageUID: this.props.currentUser.id,
+    messageIdentifier: this.props.currentUser.id,
   };
 
   handleSubmit = async () => {
+    const db = firebase.database();
     if (this.state.message) {
-      await addMessage('messages', this.state);
+      try {
+        await db.ref('messages').push(this.state);
+      } catch (error) {
+        this.setState({ writeError: error.message });
+      }
       toast.success('Message Sent', {
         position: 'top-right',
         autoClose: 5000,

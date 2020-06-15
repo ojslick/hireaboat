@@ -10,6 +10,7 @@ import bookingCardReducer from './bookingCardReducer';
 import currentUserReducer from './currentUserReducer';
 import checkoutDataReducer from './checkOutDataReducer';
 import userProfileReducer from './userProfileReducer';
+import conversationReducer from './conversationReducer';
 
 export default combineReducers({
   hoodie,
@@ -23,4 +24,5 @@ export default combineReducers({
   currentUser: currentUserReducer,
   checkoutData: checkoutDataReducer,
   userProfile: userProfileReducer,
+  conversation: conversationReducer,
 });

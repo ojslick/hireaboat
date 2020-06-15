@@ -10,7 +10,7 @@ class Pagination extends React.Component {
       paginate,
       currentPage,
       handleNextButton,
-      handlePrevButton
+      handlePrevButton,
     } = this.props;
     const pageNumbers = [];
 
@@ -25,7 +25,7 @@ class Pagination extends React.Component {
               display: 'flex',
               justifyContent: 'center',
               cursor: 'pointer',
-              paddingLeft: '0px'
+              paddingLeft: '0px',
             }}
           >
             <li
@@ -43,7 +43,7 @@ class Pagination extends React.Component {
                   fontWeight: '500',
                   fontSize: '18px',
                   lineHeight: '27px',
-                  color: '#787878'
+                  color: '#787878',
                 }}
               >
                 Prev
@@ -56,9 +56,9 @@ class Pagination extends React.Component {
                   currentPage < Math.ceil(totalBoats / boatsPerPage) &&
                   currentPage > 5
                 ) {
-                  this.setState(prevState => ({
+                  this.setState((prevState) => ({
                     startIndex: prevState.startIndex - 5,
-                    endIndex: prevState.endIndex - 5
+                    endIndex: prevState.endIndex - 5,
                   }));
                 }
               }}
@@ -69,7 +69,7 @@ class Pagination extends React.Component {
                   fontWeight: '500',
                   fontSize: '18px',
                   lineHeight: '27px',
-                  color: '#787878'
+                  color: '#787878',
                 }}
               >
                 ...
@@ -78,7 +78,7 @@ class Pagination extends React.Component {
 
             {pageNumbers
               .slice(this.state.startIndex, this.state.endIndex)
-              .map(number => (
+              .map((number) => (
                 <li
                   className={
                     currentPage === number
@@ -98,14 +98,14 @@ class Pagination extends React.Component {
                             fontWeight: '500',
                             fontSize: '18px',
                             lineHeight: '27px',
-                            color: '#ffffff'
+                            color: '#ffffff',
                           }
                         : {
                             fontStyle: 'normal',
                             fontWeight: '500',
                             fontSize: '18px',
                             lineHeight: '27px',
-                            color: '#787878'
+                            color: '#787878',
                           }
                     }
                   >
@@ -117,9 +117,9 @@ class Pagination extends React.Component {
               className="boat-result-pagination-page-number "
               onClick={() => {
                 if (currentPage < Math.ceil(totalBoats / boatsPerPage)) {
-                  this.setState(prevState => ({
+                  this.setState((prevState) => ({
                     startIndex: prevState.startIndex + 5,
-                    endIndex: prevState.endIndex + 5
+                    endIndex: prevState.endIndex + 5,
                   }));
                 }
               }}
@@ -130,7 +130,7 @@ class Pagination extends React.Component {
                   fontWeight: '500',
                   fontSize: '18px',
                   lineHeight: '27px',
-                  color: '#787878'
+                  color: '#787878',
                 }}
               >
                 ...
@@ -141,9 +141,9 @@ class Pagination extends React.Component {
               style={{ width: '87px' }}
               onClick={() => {
                 if (currentPage < Math.ceil(totalBoats / boatsPerPage)) {
-                  this.setState(prevState => ({
+                  this.setState((prevState) => ({
                     startIndex: prevState.startIndex + 5,
-                    endIndex: prevState.endIndex + 5
+                    endIndex: prevState.endIndex + 5,
                   }));
                 }
                 if (currentPage < Math.ceil(totalBoats / boatsPerPage)) {
@@ -157,7 +157,7 @@ class Pagination extends React.Component {
                   fontWeight: '500',
                   fontSize: '18px',
                   lineHeight: '27px',
-                  color: '#787878'
+                  color: '#787878',
                 }}
               >
                 Next

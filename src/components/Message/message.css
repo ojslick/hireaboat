@@ -201,3 +201,8 @@
   height: 60px;
   border-radius: 50px;
 }
+
+.page-item.active .page-link {
+  background-color: #39a0ed;
+  border-color: #39a0ed;
+}
