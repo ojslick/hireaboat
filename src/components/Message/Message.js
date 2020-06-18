@@ -43,6 +43,8 @@ class Message extends React.Component {
 
         let messages = [];
 
+        let uid = '';
+
         const boatOwnerMessage = async () => {
           const collectionRef = await db
             .ref('messages')
@@ -58,40 +60,57 @@ class Message extends React.Component {
                 if (!snapshot.val()) {
                   resolve([]);
                 } else {
-                  Object.values(snapshot.val()).forEach(async (snap) => {
-                    console.log('boatOwnerSnap', snap);
+                  let boatOwnerPushMessages = [];
+                  Promise.all(
+                    Object.values(snapshot.val()).map(async (snap) => {
+                      console.log('boatOwnerSnap', snap);
 
-                    const db = firebase.firestore();
-                    const userRef = await db
-                      .collection(`users`)
-                      .doc(`${!snap ? 'empty' : snap.currentMessageUID}`);
-                    try {
-                      const userId = await userRef.get();
+                      let userType = [];
 
-                      console.log('userId', userId);
+                      for (let key in snap) {
+                        if (key == 'customerUID') {
+                          userType.push(snap[key]);
+                        } else if (key == 'boatOwnerUID') {
+                          userType.push(snap[key]);
+                        }
+                      }
 
-                      const profilePic = await userId.get(`images`);
-                      const firstName = await userId.get(`firstName`);
-                      const lastName = await userId.get(`lastName`);
-                      const displayName = await userId.get(`displayName`);
+                      userType.map((id) => {
+                        if (id != userAuth.uid) {
+                          uid = id;
+                        }
+                      });
 
-                      const userProfile = {
-                        profilePic,
-                        firstName,
-                        lastName,
-                        displayName,
-                      };
+                      console.log('owneruid', uid);
 
-                      let message = [];
+                      const db = firebase.firestore();
+                      const userRef = await db
+                        .collection(`users`)
+                        .doc(`${!snap ? 'empty' : snap.uid}`);
+                      try {
+                        const userId = await userRef.get();
 
-                      message.push({ ...snap, userProfile });
-                      resolve(message);
-                      console.log('messagePromise', message);
-                    } catch (err) {
-                      console.log('Error getting document:', err);
-                      reject(err);
-                    }
-                  });
+                        const profilePic = await userId.get(`images`);
+                        const firstName = await userId.get(`firstName`);
+                        const lastName = await userId.get(`lastName`);
+                        const displayName = await userId.get(`displayName`);
+
+                        const userProfile = {
+                          profilePic,
+                          firstName,
+                          lastName,
+                          displayName,
+                        };
+
+                        boatOwnerPushMessages.push({ ...snap, userProfile });
+
+                        resolve(boatOwnerPushMessages);
+                      } catch (err) {
+                        console.log('Error getting document:', err);
+                        reject(err);
+                      }
+                    })
+                  );
                 }
               });
             } catch (err) {
@@ -113,45 +132,60 @@ class Message extends React.Component {
               ref.on('value', (snapshot) => {
                 console.log('snapValCustomer', snapshot.val());
 
-                console.log('ObjectValues', Object.values(snapshot.val()));
-
                 if (!snapshot.val()) {
                   resolve([]);
                 } else {
-                  Object.values(snapshot.val()).forEach(async (snap) => {
-                    console.log('customerSnap', snap);
+                  let customerMessage = [];
+                  Promise.all(
+                    Object.values(snapshot.val()).map(async (snap) => {
+                      console.log('customerSnap', snap);
 
-                    const db = firebase.firestore();
-                    const userRef = await db
-                      .collection(`users`)
-                      .doc(`${!snap ? 'empty' : snap.currentMessageUID}`);
-                    try {
-                      const userId = await userRef.get();
+                      let userType = [];
 
-                      console.log('userId', userId);
+                      for (let key in snap) {
+                        if (key == 'customerUID') {
+                          userType.push(snap[key]);
+                        } else if (key == 'boatOwnerUID') {
+                          userType.push(snap[key]);
+                        }
+                      }
 
-                      const profilePic = await userId.get(`images`);
-                      const firstName = await userId.get(`firstName`);
-                      const lastName = await userId.get(`lastName`);
-                      const displayName = await userId.get(`displayName`);
+                      userType.map((id) => {
+                        if (id != userAuth.uid) {
+                          uid = id;
+                        }
+                      });
 
-                      const userProfile = {
-                        profilePic,
-                        firstName,
-                        lastName,
-                        displayName,
-                      };
+                      console.log('customeruid', uid);
 
-                      let message = [];
+                      const db = firebase.firestore();
+                      const userRef = await db
+                        .collection(`users`)
+                        .doc(`${!snap ? 'empty' : snap.uid}`);
+                      try {
+                        const userId = await userRef.get();
 
-                      message.push({ ...snap, userProfile });
-                      resolve(message);
-                      console.log('messagePromise', message);
-                    } catch (err) {
-                      console.log('Error getting document:', err);
-                      reject(err);
-                    }
-                  });
+                        const profilePic = await userId.get(`images`);
+                        const firstName = await userId.get(`firstName`);
+                        const lastName = await userId.get(`lastName`);
+                        const displayName = await userId.get(`displayName`);
+
+                        const userProfile = {
+                          profilePic,
+                          firstName,
+                          lastName,
+                          displayName,
+                        };
+
+                        customerMessage.push({ ...snap, userProfile });
+
+                        resolve(customerMessage);
+                      } catch (err) {
+                        console.log('Error getting document:', err);
+                        reject(err);
+                      }
+                    })
+                  );
                 }
               });
             } catch (err) {
@@ -162,10 +196,6 @@ class Message extends React.Component {
 
         // console.log('boatOwnerPromise', boatOwnerMessage());
         // console.log('customerPromise', customerMessageFunc());
-
-        const response = Promise.all([customerMessageFunc()]);
-
-        console.log('response', response);
 
         Promise.all([boatOwnerMessage(), customerMessageFunc()]).then(
           async (response) => {
@@ -195,11 +225,12 @@ class Message extends React.Component {
             //   item.map((obj) => newData.push(obj));
             // });
 
-            const sortedNewData = flattedMessage.sort(
-              (a, b) => b.timestamp - a.timestamp
-            );
+            const userType =
+              uid == userAuth.uid ? 'boatOwnerUID' : 'customerUID';
 
-            messages = await this.groupBy(sortedNewData, 'currentMessageUID');
+            console.log('usertypehdfjh', userType);
+
+            messages = await this.groupBy(flattedMessage, userType);
 
             this.setState({ messages, loading: false });
           }
@@ -232,8 +263,13 @@ class Message extends React.Component {
     this.setState({ activePage: pageNumber });
   };
   render() {
-    let messagesArr = Object.values(this.state.messages);
+    const messagesArr = Object.values(this.state.messages);
     console.log('stateMessage', this.state.messages);
+    messagesArr.reverse();
+    const sortedArr = Object.values(this.state.messages)
+      .reverse()
+      .map((item) => item.reverse());
+
     return (
       <div className="message-container">
         <ProfileNav />
@@ -289,6 +325,7 @@ class Message extends React.Component {
                   </div>
                 ) : (
                   messagesArr.map((messageArr, index) => {
+                    console.log('messagehihdshd', messageArr[0]);
                     const data = messageArr[0];
 
                     return messageArr.length > 0 ? (

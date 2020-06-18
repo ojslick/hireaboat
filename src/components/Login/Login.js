@@ -82,7 +82,7 @@ class Login extends React.Component {
     return (
       <div className="login-background">
         <div className="login-form-container">
-          <div onClick={this.handleSubmit} className="login-form">
+          <div className="login-form">
             <h3>Welcome</h3>
             <div className="input-container">
               <div className="input-align">

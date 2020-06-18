@@ -16,6 +16,7 @@ class Conversation extends React.Component {
     message: [],
     userProfile: '',
     reply: '',
+    writeError: '',
   };
 
   componentDidMount() {
@@ -116,9 +117,8 @@ class Conversation extends React.Component {
     console.log('conversationState', this.state.message);
     console.log('userProfile', this.state.userProfile);
     console.log('reply', this.state.reply);
-    const messageArr = this.props.conversation.sort(
-      (a, b) => a.timestamp - b.timestamp
-    );
+    console.log('reverseState', this.state.message.reverse());
+    const messageArr = this.state.message.reverse();
     return (
       <div className="message-container">
         <ProfileNav />
@@ -173,7 +173,7 @@ class Conversation extends React.Component {
                   <div className="conversation-body">
                     <div className="conversation-body-left">
                       <div className="conversation-fixed-messages">
-                        {this.state.message.map((data) =>
+                        {messageArr.map((data) =>
                           data.messageIdentifier ==
                           this.props.currentUser.id ? (
                             <div className="conversation-body-received">
@@ -223,8 +223,8 @@ class Conversation extends React.Component {
                               currentMessageUID: this.props.conversation[0]
                                 .currentMessageUID,
                               messageIdentifier: this.props.currentUser.id,
-                              time: new Date().toLocaleTimeString(),
-                              date: new Date().toLocaleDateString(),
+                              time: new Date().toTimeString(),
+                              date: new Date().toDateString(),
                               timestamp: new Date(),
                             },
                           })
@@ -347,7 +347,7 @@ class Conversation extends React.Component {
 const mapStateToProps = (state) => {
   console.log('conversation', state.conversation);
   return {
-    conversation: state.conversation,
+    conversation: state.conversation.reverse(),
     currentUser: state.currentUser,
   };
 };
