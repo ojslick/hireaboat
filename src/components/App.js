@@ -23,6 +23,7 @@ import CaptainProfile from './CaptainProfile/CaptainProfile';
 import Earnings from './CaptainProfileEdit/Earnings/Earnings';
 import Message from './Message/Message';
 import Conversation from './Message/Conversation';
+import Bookings from './CaptainProfileEdit/Bookings/Bookings';
 import {
   auth,
   createUserProfileDocument,
@@ -119,6 +120,7 @@ class App extends React.Component {
                 exact
                 component={Conversation}
               />
+              <Route path="/bookings" exact component={Bookings} />
             </Switch>
           </Router>
         )}

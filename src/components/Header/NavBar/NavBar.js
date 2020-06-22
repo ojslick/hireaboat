@@ -60,7 +60,7 @@ class NavBar extends React.Component {
               <Link to="/help" className="item item3">
                 Help
               </Link>
-              <Link to="/profile" className="item item2">
+              <Link to="/dashboard" className="item item2">
                 My Account
               </Link>
 

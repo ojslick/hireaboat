@@ -6,8 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 class MessageOwner extends React.Component {
   state = {
     message: '',
-    time: new Date().toLocaleTimeString(),
-    date: new Date().toLocaleDateString(),
+    time: new Date().toTimeString(),
+    date: new Date().toDateString(),
     timestamp: new Date(),
     boatManufacturer: this.props.selectBoat.boatManufacturer,
     boatModel: this.props.selectBoat.boatModel,

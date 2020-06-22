@@ -23,12 +23,30 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const snapShot = await userRef.get();
 
-  if (snapShot.exist) {
+  console.log('snapShotExist', snapShot.exists);
+
+  if (snapShot.exists == true) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
     try {
       await userRef.update({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log('error creating user', error.message);
+    }
+  }
+
+  if (snapShot.exists == false) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
         displayName,
         email,
         createdAt,
@@ -232,6 +250,14 @@ export const addCollectionAndDocument = async (
 };
 
 export const addContactForm = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  const newDocRef = collectionRef.doc();
+  await batch.set(newDocRef, objectsToAdd);
+  return await batch.commit();
+};
+
+export const addBooking = async (collectionKey, objectsToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
   const batch = firestore.batch();
   const newDocRef = collectionRef.doc();

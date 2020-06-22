@@ -11,7 +11,7 @@ import './paymentCheckOut.css';
 import mastercard from './Images/mastercard.svg';
 import visa from './Images/visa.svg';
 import card from './Images/card.svg';
-import { auth, addEarnings } from '../../firebase/firebase';
+import { auth, addEarnings, addBooking } from '../../firebase/firebase';
 import firebase from 'firebase';
 
 class PaymentCheckOut extends React.Component {
@@ -27,7 +27,7 @@ class PaymentCheckOut extends React.Component {
     const fetchData = async () => {
       this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
         let boats = '';
-        let captainName: '';
+        let captainName = '';
         const db = firebase.firestore();
         const boatsAsync = async () => {
           const boatsRef = await db
@@ -38,16 +38,6 @@ class PaymentCheckOut extends React.Component {
 
           boats = boatsRef.docs.map((doc) => doc.data());
         };
-
-        // const earningsAsync = async () => {
-        //   const earningsRef = await db
-        //     .collection(`earnings`)
-        //     .doc(`${this.props.selectBoatState.uid}`)
-        //     .collection('userEarnings')
-        //     .get();
-
-        //   earnings = earningsRef.docs.map((doc) => doc.data());
-        // };
 
         await boatsAsync();
 
@@ -151,6 +141,12 @@ class PaymentCheckOut extends React.Component {
                             addEarnings('earnings', this.props.currentUser, {
                               ...this.state.amountEarned,
                               paymentID: details.id,
+                            }),
+
+                            addBooking('bookings', {
+                              ...this.state.amountEarned,
+                              customerUID: this.props.currentUser.id,
+                              ...this.props.selectBoatState,
                             })
                           );
                         }}
@@ -159,186 +155,6 @@ class PaymentCheckOut extends React.Component {
                   </div>
                 </div>
               </div>
-              {/* <div className="payment-checkout-card-details">
-                <div className="payment-checkout-card-details-header">
-                  <p className="payment-checkout-card-details-header-payment-information">
-                    Payment Information
-                  </p>
-                  <div className="payment-checkout-card-details-header-icons">
-                    <img src={mastercard} alt="icon" />
-                    <img src={visa} alt="icon" />
-                  </div>
-                </div>
-                <div className="payment-checkout-line"></div>
-                <div className="payment-checkout-card-details-container">
-                  <div className="payment-checkout-card-details-phone-number-align">
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Phone Number
-                    </label>
-                    <div className="payment-checkout-card-details-phone-number">
-                      <PhoneInput
-                        country={'us'}
-                        onChange={(phone) => this.setState({ phone })}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Email Address
-                    </label>
-                    <input
-                      className="payment-checkout-card-details-email"
-                      type="email"
-                      required
-                      onChange={(event) =>
-                        this.setState({ email: event.target.value })
-                      }
-                    />
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Name on the card
-                    </label>
-                    <input
-                      className="payment-checkout-card-details-email"
-                      type="text"
-                      required
-                    />
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Card Data
-                    </label>
-                    <div className="payment-checkout-card-details-data">
-                      <img src={card} alt="icon" />
-                      <input
-                        placeholder="Card number"
-                        type="number"
-                        className="payment-checkout-card-details-data-number"
-                      />
-                      <input
-                        placeholder="MM/YY"
-                        type="text"
-                        className="payment-checkout-card-details-data-date"
-                      />
-                      <input
-                        placeholder="CVC"
-                        type="number"
-                        className="payment-checkout-card-details-data-date"
-                      />
-                    </div>
-                  </div>
-                </div>
-                    </div>
-              <div className="payment-checkout-card-details">
-                <div className="payment-checkout-card-details-header">
-                  <p className="payment-checkout-card-details-header-payment-information">
-                    Billing Address
-                  </p>
-                </div>
-                <div className="payment-checkout-line"></div>
-                <div className="payment-checkout-card-details-container">
-                  <div className="payment-checkout-card-details-phone-number-align">
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Street Address
-                    </label>
-                    <input
-                      className="payment-checkout-card-details-email"
-                      type="text"
-                      required
-                    />
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      City
-                    </label>
-                    <input
-                      className="payment-checkout-card-details-email"
-                      type="text"
-                      required
-                    />
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      State
-                    </label>
-                    <div className="payment-checkout-card-details-city-container">
-                      <input
-                        className="payment-checkout-card-details-city"
-                        type="text"
-                        required
-                      />
-                      <div className="payment-checkout-card-details-zipcode-container">
-                        <label>Zip code</label>
-                        <input
-                          className="payment-checkout-card-details-zipcode"
-                          type="text"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="payment-checkout-card-details-phone-number-align"
-                    style={{ marginTop: '19px' }}
-                  >
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Country
-                    </label>
-                    <input
-                      className="payment-checkout-card-details-email"
-                      type="text"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="payment-checkout-card-details message"
-                style={{ height: '290px' }}
-              >
-                <div className="payment-checkout-card-details-header">
-                  <p className="payment-checkout-card-details-header-payment-information">
-                    Optional Message for the owner
-                  </p>
-                </div>
-                <div className="payment-checkout-line"></div>
-                <div className="payment-checkout-card-details-container">
-                  <div className="payment-checkout-card-details-phone-number-align">
-                    <label className="payment-checkout-card-details-phone-number-label">
-                      Message
-                    </label>
-                    <textarea
-                      className="payment-checkout-card-details-email "
-                      type="text"
-                      style={{ height: '178px' }}
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-              <button
-                className="payment-checkout-card-details-button"
-                onClick={() =>
-                  history.push('/selectboat/checkout/payment-confirmation')
-                }
-              >
-                Continue
-              </button>*/}
             </div>
 
             <div className="payment-checkout-flex-right">

@@ -13,8 +13,8 @@ class SignUp extends React.Component {
     password: '',
     repeat_password: '',
     errors: {
-      displayName: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       repeat_password: '',
@@ -28,7 +28,7 @@ class SignUp extends React.Component {
   }
 
   handleSubmit = async (event) => {
-    const { displayName, email, password } = this.state;
+    const { firstName, lastName, email, password } = this.state;
     event.preventDefault();
     const validateForm = (errors) => {
       let valid = true;
@@ -47,13 +47,17 @@ class SignUp extends React.Component {
         email,
         password
       );
-      const response = await createUserProfileDocument(user, { displayName });
+      const response = await createUserProfileDocument(user, {
+        firstName,
+        lastName,
+      });
       if (response) {
         history.push('/');
       }
 
       this.setState({
-        displayName: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         repeat_password: '',
@@ -70,9 +74,13 @@ class SignUp extends React.Component {
       /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
     );
     switch (name) {
-      case 'displayName':
+      case 'firstName':
         errors.displayName =
           value.length < 1 ? 'Kindly input your First Name' : '';
+        break;
+      case 'lastName':
+        errors.displayName =
+          value.length < 1 ? 'Kindly input your Last Name' : '';
         break;
       case 'email':
         errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
@@ -101,17 +109,35 @@ class SignUp extends React.Component {
               <div className="input-align">
                 <input
                   name="displayName"
-                  placeholder="Full Name"
+                  placeholder="First Name"
                   className="input-email"
                   type="text"
                   onChange={(event) => {
                     event.preventDefault();
-                    this.updateForm('displayName', event.target.value);
+                    this.updateForm('firstName', event.target.value);
                   }}
                 />
               </div>{' '}
             </div>
-            {errors.displayName.length > 0 && (
+            {errors.firstName.length > 0 && (
+              <span className="form-error">{errors.displayName}</span>
+            )}
+
+            <div className="input-container" style={{ marginTop: '10px' }}>
+              <div className="input-align">
+                <input
+                  name="displayName"
+                  placeholder="Last Name"
+                  className="input-email"
+                  type="text"
+                  onChange={(event) => {
+                    event.preventDefault();
+                    this.updateForm('lastName', event.target.value);
+                  }}
+                />
+              </div>{' '}
+            </div>
+            {errors.lastName.length > 0 && (
               <span className="form-error">{errors.displayName}</span>
             )}
 

@@ -54,39 +54,37 @@ class Message extends React.Component {
           );
           return new Promise((resolve, reject) => {
             try {
-              ref.on('value', (snapshot) => {
-                console.log('snapshotBoatOwner', snapshot.val());
+              ref.on('value', async (snapshot) => {
+                const snapShotValues = Object.values(
+                  snapshot.val() ? snapshot.val() : {}
+                );
+                let userType = [];
+
+                snapShotValues.map((item) => {
+                  for (let key in item) {
+                    if (key == 'customerUID') {
+                      userType.push(item[key]);
+                    } else if (key == 'boatOwnerUID') {
+                      userType.push(item[key]);
+                    }
+                  }
+                });
+
+                userType.map((id) => {
+                  if (id != userAuth.uid) {
+                    uid = id;
+                  }
+                });
 
                 if (!snapshot.val()) {
                   resolve([]);
                 } else {
-                  let boatOwnerPushMessages = [];
-                  Promise.all(
-                    Object.values(snapshot.val()).map(async (snap) => {
-                      console.log('boatOwnerSnap', snap);
-
-                      let userType = [];
-
-                      for (let key in snap) {
-                        if (key == 'customerUID') {
-                          userType.push(snap[key]);
-                        } else if (key == 'boatOwnerUID') {
-                          userType.push(snap[key]);
-                        }
-                      }
-
-                      userType.map((id) => {
-                        if (id != userAuth.uid) {
-                          uid = id;
-                        }
-                      });
-
-                      console.log('owneruid', uid);
-
+                  const promises = Object.values(snapshot.val()).map(
+                    async (snap) => {
                       const db = firebase.firestore();
                       const userRef = await db
                         .collection(`users`)
-                        .doc(`${!snap ? 'empty' : snap.uid}`);
+                        .doc(`${!snap ? 'empty' : uid}`);
                       try {
                         const userId = await userRef.get();
 
@@ -102,15 +100,15 @@ class Message extends React.Component {
                           displayName,
                         };
 
-                        boatOwnerPushMessages.push({ ...snap, userProfile });
-
-                        resolve(boatOwnerPushMessages);
+                        return { ...snap, userProfile };
                       } catch (err) {
                         console.log('Error getting document:', err);
                         reject(err);
                       }
-                    })
+                    }
                   );
+                  const placeCells = await Promise.all(promises);
+                  resolve(placeCells);
                 }
               });
             } catch (err) {
@@ -129,39 +127,38 @@ class Message extends React.Component {
 
           return new Promise((resolve, reject) => {
             try {
-              ref.on('value', (snapshot) => {
-                console.log('snapValCustomer', snapshot.val());
+              ref.on('value', async (snapshot) => {
+                const snapShotValues = Object.values(
+                  snapshot.val() ? snapshot.val() : {}
+                );
+
+                let userType = [];
+
+                snapShotValues.map((item) => {
+                  for (let key in item) {
+                    if (key == 'customerUID') {
+                      userType.push(item[key]);
+                    } else if (key == 'boatOwnerUID') {
+                      userType.push(item[key]);
+                    }
+                  }
+                });
+
+                userType.map((id) => {
+                  if (id != userAuth.uid) {
+                    uid = id;
+                  }
+                });
 
                 if (!snapshot.val()) {
                   resolve([]);
                 } else {
-                  let customerMessage = [];
-                  Promise.all(
-                    Object.values(snapshot.val()).map(async (snap) => {
-                      console.log('customerSnap', snap);
-
-                      let userType = [];
-
-                      for (let key in snap) {
-                        if (key == 'customerUID') {
-                          userType.push(snap[key]);
-                        } else if (key == 'boatOwnerUID') {
-                          userType.push(snap[key]);
-                        }
-                      }
-
-                      userType.map((id) => {
-                        if (id != userAuth.uid) {
-                          uid = id;
-                        }
-                      });
-
-                      console.log('customeruid', uid);
-
+                  const promises = Object.values(snapshot.val()).map(
+                    async (snap) => {
                       const db = firebase.firestore();
                       const userRef = await db
                         .collection(`users`)
-                        .doc(`${!snap ? 'empty' : snap.uid}`);
+                        .doc(`${!snap ? 'empty' : uid}`);
                       try {
                         const userId = await userRef.get();
 
@@ -177,15 +174,15 @@ class Message extends React.Component {
                           displayName,
                         };
 
-                        customerMessage.push({ ...snap, userProfile });
-
-                        resolve(customerMessage);
+                        return { ...snap, userProfile };
                       } catch (err) {
                         console.log('Error getting document:', err);
                         reject(err);
                       }
-                    })
+                    }
                   );
+                  const placeCells = await Promise.all(promises);
+                  resolve(placeCells);
                 }
               });
             } catch (err) {
@@ -194,12 +191,8 @@ class Message extends React.Component {
           });
         };
 
-        // console.log('boatOwnerPromise', boatOwnerMessage());
-        // console.log('customerPromise', customerMessageFunc());
-
         Promise.all([boatOwnerMessage(), customerMessageFunc()]).then(
           async (response) => {
-            console.log('response', response);
             function flatten(arr) {
               const result = [];
               arr.forEach((val) => {
@@ -214,21 +207,8 @@ class Message extends React.Component {
 
             const flattedMessage = flatten(response);
 
-            console.log('flattedMessage', flattedMessage);
-
-            const checkData = await Promise.all(flattedMessage);
-
-            const newData = [];
-
-            // flattedMessage.map((item) => {
-            //   console.log('itemhdkd', item);
-            //   item.map((obj) => newData.push(obj));
-            // });
-
             const userType =
               uid == userAuth.uid ? 'boatOwnerUID' : 'customerUID';
-
-            console.log('usertypehdfjh', userType);
 
             messages = await this.groupBy(flattedMessage, userType);
 
@@ -259,16 +239,12 @@ class Message extends React.Component {
   };
 
   handlePageChange = (pageNumber) => {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
   };
   render() {
     const messagesArr = Object.values(this.state.messages);
-    console.log('stateMessage', this.state.messages);
+
     messagesArr.reverse();
-    const sortedArr = Object.values(this.state.messages)
-      .reverse()
-      .map((item) => item.reverse());
 
     return (
       <div className="message-container">
@@ -290,16 +266,6 @@ class Message extends React.Component {
                 onClick={() => this.handleClick('general', true)}
               >
                 Inbox
-              </p>
-              <p
-                className={
-                  this.state.photos
-                    ? 'personal-profile-sub-text-blue'
-                    : 'personal-profile-sub-text'
-                }
-                onClick={() => this.handleClick('photos', true)}
-              >
-                Sent
               </p>
             </div>
             {!messagesArr.length && <div />}
@@ -325,8 +291,7 @@ class Message extends React.Component {
                   </div>
                 ) : (
                   messagesArr.map((messageArr, index) => {
-                    console.log('messagehihdshd', messageArr[0]);
-                    const data = messageArr[0];
+                    const data = messageArr[messageArr.length - 1];
 
                     return messageArr.length > 0 ? (
                       <div

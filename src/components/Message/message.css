@@ -206,3 +206,27 @@
   background-color: #39a0ed;
   border-color: #39a0ed;
 }
+
+@media only screen and (max-width: 768px) {
+  .conversation-body {
+    display: inline-block;
+  }
+
+  .conversation-body-left {
+    width: 100%;
+    padding: 16px 5%;
+    text-align: center;
+  }
+
+  .conversation-body-right {
+    width: 100%;
+  }
+
+  .conversation-body-trips {
+    text-align: center;
+  }
+
+  .conversation-body-reply-send {
+    float: none;
+  }
+}

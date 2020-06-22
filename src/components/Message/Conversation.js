@@ -69,22 +69,18 @@ class Conversation extends React.Component {
       } catch (err) {
         console.log('Error getting document: ', err);
       }
-
-      console.log('uid', uid);
-
-      console.log('userType', userType);
     });
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setState({ message: props.conversation });
-    console.log('props', props);
   }
 
   componentWillUnmount() {
     if (this.props.conversation.length < 1) {
       history.push('/message');
     }
+    this.unsubscribeFromAuth();
   }
 
   handleClick = (name, value) => {
@@ -114,11 +110,7 @@ class Conversation extends React.Component {
     }
   };
   render() {
-    console.log('conversationState', this.state.message);
-    console.log('userProfile', this.state.userProfile);
-    console.log('reply', this.state.reply);
-    console.log('reverseState', this.state.message.reverse());
-    const messageArr = this.state.message.reverse();
+    const messageArr = this.state.message;
     return (
       <div className="message-container">
         <ProfileNav />
@@ -143,16 +135,6 @@ class Conversation extends React.Component {
               >
                 Inbox
               </p>
-              <p
-                className={
-                  this.state.photos
-                    ? 'personal-profile-sub-text-blue'
-                    : 'personal-profile-sub-text'
-                }
-                onClick={() => this.handleClick('photos', true)}
-              >
-                Sent
-              </p>
             </div>
             {this.state.general ? (
               <div className="personal-profile-right">
@@ -162,21 +144,26 @@ class Conversation extends React.Component {
                 >
                   <div className="personal-information-header">
                     <h1 className="personal-information-header-text">
-                      {`Conversation with ${
+                      {`${
                         this.state.userProfile.firstName &&
                         this.state.userProfile.lastName
-                          ? `${this.state.userProfile.firstName} ${this.state.userProfile.lastName}`
-                          : `${this.state.userProfile.displayName}`
+                          ? `Conversation with ${this.state.userProfile.firstName} ${this.state.userProfile.lastName}`
+                          : this.state.userProfile.displayName
+                          ? `Conversation with ${this.state.userProfile.displayName}`
+                          : ''
                       }`}
                     </h1>
                   </div>
                   <div className="conversation-body">
                     <div className="conversation-body-left">
                       <div className="conversation-fixed-messages">
-                        {messageArr.map((data) =>
+                        {messageArr.map((data, index) =>
                           data.messageIdentifier ==
                           this.props.currentUser.id ? (
-                            <div className="conversation-body-received">
+                            <div
+                              className="conversation-body-received"
+                              key={index}
+                            >
                               <p className="conversation-body-received-text">
                                 {data.message}
                               </p>
@@ -188,26 +175,28 @@ class Conversation extends React.Component {
                               </p>
                             </div>
                           ) : (
-                            <div className="conversation-body-sent">
+                            <div className="conversation-body-sent" key={index}>
                               <p className="conversation-body-received-text">
                                 {data.message}
-                                <p
-                                  className="conversation-body-received-text"
-                                  style={{ marginTop: '10px' }}
-                                >
-                                  {`${data.date} ${data.time.slice(0, 5)}`}
-                                </p>
+                              </p>
+                              <p
+                                className="conversation-body-received-text"
+                                style={{ marginTop: '10px' }}
+                              >
+                                {`${data.date} ${data.time.slice(0, 5)}`}
                               </p>
                             </div>
                           )
                         )}
                       </div>
                       <p className="conversation-body-reply-to">
-                        {`Reply to ${
+                        {`${
                           this.state.userProfile.firstName &&
                           this.state.userProfile.lastName
-                            ? `${this.state.userProfile.firstName} ${this.state.userProfile.lastName}`
-                            : `${this.state.userProfile.displayName}`
+                            ? `Reply to ${this.state.userProfile.firstName} ${this.state.userProfile.lastName}`
+                            : this.state.userProfile.displayName
+                            ? `Reply to ${this.state.userProfile.displayName}`
+                            : ''
                         }`}
                       </p>
                       <textarea
@@ -260,7 +249,9 @@ class Conversation extends React.Component {
                         this.state.userProfile.firstName &&
                         this.state.userProfile.lastName
                           ? `${this.state.userProfile.firstName} ${this.state.userProfile.lastName}`
-                          : `${this.state.userProfile.displayName}`
+                          : this.state.userProfile.displayName
+                          ? `${this.state.userProfile.displayName}`
+                          : ''
                       }`}</p>
                       {this.state.userProfile.location ? (
                         <div
@@ -345,9 +336,8 @@ class Conversation extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('conversation', state.conversation);
   return {
-    conversation: state.conversation.reverse(),
+    conversation: state.conversation,
     currentUser: state.currentUser,
   };
 };

@@ -74,9 +74,9 @@ class BoatingQualification extends React.Component {
       sailingResume,
       sailingStatus,
       boatingExperience,
-      boatDriven,
     } = this.state.boatingQualification;
-    if ((sailingResume, sailingStatus, boatingExperience, boatDriven)) {
+
+    if ((sailingResume, sailingStatus, boatingExperience)) {
       await uploadBoatingQualification(
         this.props.currentUser,
         this.state.boatingQualification,
@@ -164,7 +164,21 @@ class BoatingQualification extends React.Component {
   };
 
   render() {
-    console.log('sailingStatus====>', this.state.boatingQualification);
+    const {
+      sailingResume,
+      sailingStatus,
+      boatingExperience,
+      boatDriven,
+    } = this.state.boatingQualification;
+
+    const boatingjshhhsd = {
+      sailingResume,
+      sailingStatus,
+      boatingExperience,
+      boatDriven,
+    };
+    console.log('boatingksjksdjk====>', boatingjshhhsd);
+
     const {
       JetSki,
       Catamaran,

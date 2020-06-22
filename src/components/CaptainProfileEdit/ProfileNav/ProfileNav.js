@@ -95,7 +95,7 @@ class ProfileNav extends React.Component {
               Message
             </Link>
             <Link
-              to="/trips"
+              to="/bookings"
               className={
                 this.state.trips
                   ? 'profileNav-bar-dashboard-ash'
@@ -103,7 +103,7 @@ class ProfileNav extends React.Component {
               }
               onClick={() => this.handleNavClick('trips', true)}
             >
-              Trips
+              Bookings
             </Link>
             <Link
               to="/profile/edit"

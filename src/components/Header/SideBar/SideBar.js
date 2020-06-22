@@ -74,10 +74,10 @@ class SideBar extends React.Component {
                   className="item"
                   onClick={async () => {
                     await this.props.handleClick();
-                    history.push('/trips');
+                    history.push('/bookings');
                   }}
                 >
-                  Trips
+                  Bookings
                 </div>
                 <div
                   className="item"
