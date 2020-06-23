@@ -1,0 +1,54 @@
+.personal-information-body-bookings-container {
+  width: 100%;
+  height: 124px;
+  background: #f6f6f6;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 2%;
+  align-items: center;
+}
+
+.personal-information-body-bookings-boat-image {
+  width: 133px;
+  height: 103px;
+  border-radius: 5px;
+}
+
+.personal-information-body-bookings-customer-name {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  margin: 0;
+  color: #343434;
+}
+
+.personal-information-body-bookings-date {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  color: #787878;
+}
+
+.personal-information-body-bookings-price {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 37px;
+  margin: 0;
+  color: #39a0ed;
+}
+
+@media only screen and (max-width: 850px) {
+  .personal-information-body-bookings-container {
+    height: 300px;
+    display: inline-block;
+  }
+
+  .personal-information-body-bookings-boat-image {
+    height: 180px;
+    width: 100%;
+  }
+}

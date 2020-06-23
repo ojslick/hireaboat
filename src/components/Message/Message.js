@@ -87,7 +87,6 @@ class Message extends React.Component {
                         .doc(`${!snap ? 'empty' : uid}`);
                       try {
                         const userId = await userRef.get();
-
                         const profilePic = await userId.get(`images`);
                         const firstName = await userId.get(`firstName`);
                         const lastName = await userId.get(`lastName`);

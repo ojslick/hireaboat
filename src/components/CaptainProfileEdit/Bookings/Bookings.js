@@ -38,6 +38,7 @@ class Bookings extends React.Component {
 
   render() {
     const bookingArr = this.state.bookings;
+    console.log('shjshdj  ', bookingArr);
     return (
       <div className="bookings-container">
         <ProfileNav />

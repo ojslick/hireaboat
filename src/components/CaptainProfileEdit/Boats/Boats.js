@@ -1,21 +1,17 @@
 import React from 'react';
-import ProfileNav from './ProfileNav/ProfileNav.js';
-import PersonalProfile from './PersonalProfile/PersonalProfile';
-import UploadPhoto from './UploadPhoto/UploadPhoto';
-import BoatingQualification from './BoatingQualification/BoatingQualification';
+import ProfileNav from '../ProfileNav/ProfileNav';
+import Bookings from './Bookings/Bookings';
 
-import './captainProfileEdit.css';
+import Boat from './Boats/Boats';
 
-import Footer from '../Footer/Footer';
+import Footer from '../../Footer/Footer';
 
-class CaptainProfileEdit extends React.Component {
+import './boats.css';
+
+class Boats extends React.Component {
   state = {
     general: true,
     photos: false,
-    boatingQualification: false,
-    toDate: new Date(),
-    clickToDay: true,
-    dob: '',
     captain: false,
   };
 
@@ -31,17 +27,14 @@ class CaptainProfileEdit extends React.Component {
     if (name == 'general') {
       this.setState({ general: true });
       this.setState({ photos: false });
-      this.setState({ boatingQualification: false });
     }
     if (name == 'photos') {
       this.setState({ general: false });
       this.setState({ photos: value });
-      this.setState({ boatingQualification: false });
     }
     if (name == 'boatingQualification') {
       this.setState({ general: false });
       this.setState({ photos: false });
-      this.setState({ boatingQualification: value });
     }
   };
 
@@ -51,7 +44,7 @@ class CaptainProfileEdit extends React.Component {
         <ProfileNav />
         <div className="personal-profile-flex">
           <div className="personal-profile-left">
-            <p className="personal-profile-text">Personal Profile</p>
+            <p className="personal-profile-text">Boats account</p>
             <div className="personal-profile-line"></div>
             <p
               className={
@@ -61,7 +54,7 @@ class CaptainProfileEdit extends React.Component {
               }
               onClick={() => this.handleClick('general', true)}
             >
-              General
+              Bookings
             </p>
             <p
               className={
@@ -71,24 +64,11 @@ class CaptainProfileEdit extends React.Component {
               }
               onClick={() => this.handleClick('photos', true)}
             >
-              Photos
-            </p>
-            <p
-              className={
-                this.state.boatingQualification
-                  ? 'personal-profile-sub-text-blue'
-                  : 'personal-profile-sub-text'
-              }
-              onClick={() => this.handleClick('boatingQualification', true)}
-            >
-              Boating Qualification
+              Boats
             </p>
           </div>
-          <PersonalProfile handleGeneralClick={this.state.general} />
-          <UploadPhoto handleGeneralClick={this.state.photos} />
-          <BoatingQualification
-            handleGeneralClick={this.state.boatingQualification}
-          />
+          <Bookings handleGeneralClick={this.state.general} />
+          <Boat handleGeneralClick={this.state.photos} />
         </div>
         <Footer />
       </div>
@@ -96,4 +76,4 @@ class CaptainProfileEdit extends React.Component {
   }
 }
 
-export default CaptainProfileEdit;
+export default Boats;

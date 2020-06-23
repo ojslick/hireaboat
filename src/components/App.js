@@ -24,6 +24,7 @@ import Earnings from './CaptainProfileEdit/Earnings/Earnings';
 import Message from './Message/Message';
 import Conversation from './Message/Conversation';
 import Bookings from './CaptainProfileEdit/Bookings/Bookings';
+import Boats from './CaptainProfileEdit/Boats/Boats';
 import {
   auth,
   createUserProfileDocument,
@@ -121,6 +122,7 @@ class App extends React.Component {
                 component={Conversation}
               />
               <Route path="/bookings" exact component={Bookings} />
+              <Route path="/boats" exact component={Boats} />
             </Switch>
           </Router>
         )}
