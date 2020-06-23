@@ -36,7 +36,6 @@ class BoatCard extends React.Component {
         to="/selectboat"
         className="boat-result-search-result-boat-list-card"
         key={data._id}
-        onClick={() => this.props.selectBoat(data)}
         style={{ width: '100%', marginTop: '0', height: '100%' }}
       >
         <Slide {...properties}>

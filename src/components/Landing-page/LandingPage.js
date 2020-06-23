@@ -16,7 +16,7 @@ class LandingPage extends React.Component {
   }
 
   screenSize = () => {
-    if (this.state.screenSize < 426) {
+    if (this.state.screenSize < 654) {
       return 'large';
     } else {
       return 'massive';
@@ -28,17 +28,24 @@ class LandingPage extends React.Component {
       <div>
         <div className="background-pic">
           <div className="get-your-boat-container">
-            <h1 className="get-your-boat-bold-text">
-              Let's get you your boats
-            </h1>
-            <p className="get-your-boat-intro-text">
-              More than 35,000 private yachts rental and bareboat charters
-              around the world to help you make the right choice
-            </p>
+            <div className="get-your-boat-container-text">
+              <h1 className="get-your-boat-bold-text">
+                Let's get you your boats
+              </h1>
+              <p className="get-your-boat-intro-text">
+                More than 35,000 private yachts rental and bareboat charters
+                around the world to help you make the right choice
+              </p>
+            </div>
             <Search size={this.screenSize()} />
-            <button className="ui primary button explore-boats">
-              Explore Boats
-            </button>
+            <div style={{ marginTop: '0' }}>
+              <button
+                className="ui primary button explore-boats"
+                style={{ marginTop: '100px' }}
+              >
+                Explore Boats
+              </button>
+            </div>
           </div>
         </div>
         <div className="generate-income">

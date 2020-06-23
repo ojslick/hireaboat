@@ -16,14 +16,14 @@
   text-align: center;
   max-width: 1140px;
   width: 95%;
+  height: 100%;
   margin: 0 auto;
   color: #fff;
 }
 
 .get-your-boat-bold-text {
-  position: relative;
   display: inline-block;
-  top: 165px;
+  margin-top: 175px !important;
   font-weight: 600;
   font-size: 57px;
   line-height: 60px;
@@ -32,7 +32,6 @@
 }
 
 .get-your-boat-intro-text {
-  position: relative;
   display: inline-block;
   height: 68px;
   top: 160px;
@@ -70,6 +69,12 @@
   width: 200px;
 }
 
+.get-your-boat-container-text {
+  width: 75%;
+  text-align: start;
+  display: inline-block;
+}
+
 @media only screen and (max-width: 425px) {
   .background-pic {
     height: 550px;
@@ -84,14 +89,18 @@
     background-repeat: no-repeat;
   }
 
+  .get-your-boat-container-text {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
   .get-your-boat-bold-text {
     font-size: 28px;
-    top: 100px;
+    margin-top: 70px !important;
     line-height: 45px;
   }
 
   .get-your-boat-intro-text {
-    top: 90px;
     font-size: 15px;
   }
 

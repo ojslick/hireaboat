@@ -92,4 +92,9 @@
     height: 330px;
     display: inline-block;
   }
+
+  .ui.small.basic.scrolling.modal.transition.visible.active {
+    left: 8%;
+    width: 80%;
+  }
 }
