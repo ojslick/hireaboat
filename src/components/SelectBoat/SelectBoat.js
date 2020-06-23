@@ -74,7 +74,7 @@ class SelectBoat extends React.Component {
         transform: 'translate(-50%, -50%)',
       },
     };
-
+    console.log('selectBoatState', this.props.selectBoatState);
     return (
       <div className="select-boat-container">
         <div>

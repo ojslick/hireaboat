@@ -265,6 +265,17 @@ export const addBooking = async (collectionKey, objectsToAdd) => {
   return await batch.commit();
 };
 
+export const deleteBoat = async (uid, randomId) => {
+  const response = await firestore
+    .collection('boats')
+    .doc(`${uid}`)
+    .collection('userBoats')
+    .doc(`${randomId}`)
+    .delete();
+
+  return response;
+};
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();

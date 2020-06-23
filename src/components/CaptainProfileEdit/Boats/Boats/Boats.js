@@ -1,19 +1,18 @@
 import React from 'react';
-import addIcon from './Images/addIcon.svg';
-import deleteIcon from './Images/deleteIcon.png';
-import captainIcon from './Images/Vector1.svg';
-import anchorIcon from './Images/Vector2.svg';
-import { Checkbox } from 'semantic-ui-react';
+import downArrow from './Images/downArrow.svg';
 import {
   auth,
   uploadBoatingQualification,
 } from '../../../../firebase/firebase';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
-import { ToastContainer, toast } from 'react-toastify';
+import { Dropdown, Button, Header, Icon, Modal } from 'semantic-ui-react';
+import { selectBoat } from '../../../../actions';
+import history from '../../../../history';
+import DeleteModal from './DeleteModal';
 
 class Boat extends React.Component {
-  state = {};
+  state = { boats: [] };
 
   unsubscribeFromAuth = null;
 
@@ -24,25 +23,17 @@ class Boat extends React.Component {
       const db = firebase.firestore();
 
       const docRef = await db
-        .collection(`users`)
-        .doc(`${!userAuth ? 'empty' : userAuth.uid}`);
+        .collection(`boats`)
+        .doc(`${!userAuth ? 'empty' : userAuth.uid}`)
+        .collection('userBoats')
+        .where('uid', '==', userAuth.uid)
+        .get();
 
-      const data = await docRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.setState({ boatingQualification: doc.data() });
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-        })
-        .catch(function (error) {
-          console.log('Error getting document:', error);
-        });
+      let boats = [];
 
-      console.log('docRef==>', docRef);
-      console.log('data===>', data);
+      docRef.docs.map((doc) => boats.push({ ...doc.data(), randomId: doc.id }));
+
+      this.setState({ boats });
     });
   }
 
@@ -50,7 +41,11 @@ class Boat extends React.Component {
     this.unsubscribeFromAuth();
   }
 
-  handleSubmit = async () => {};
+  handleDelete = (data) => {
+    let boats = this.state.boats.filter((item) => item !== data);
+
+    this.setState({ boats });
+  };
 
   render() {
     return (
@@ -66,9 +61,58 @@ class Boat extends React.Component {
               </div>
               <div
                 className="personal-information-body"
-                style={{ textAlign: 'center' }}
+                style={{
+                  padding: '15px 2%',
+                  minHeight: '100px',
+
+                  position: 'relative',
+                }}
               >
-                {/* TODO: Render body */}
+                {this.state.boats.map((data, index) => {
+                  return data ? (
+                    <div
+                      className="personal-information-body-bookings-container-boat"
+                      style={{ marginTop: '3px' }}
+                      key={index}
+                    >
+                      <img
+                        src={data.images[0]}
+                        alt="boatImage"
+                        className="personal-information-body-bookings-boat-image"
+                      />
+                      <p className="personal-information-body-bookings-customer-name">
+                        {`${data.boatManufacturer} ${data.boatModel}`}
+                      </p>
+                      <p className="personal-information-body-bookings-date">
+                        Daily
+                      </p>
+                      <p className="personal-information-body-bookings-price">
+                        {`$${data.dailyBookingPrice}`}
+                      </p>
+
+                      <Dropdown
+                        direction="left"
+                        className="personal-information-body-bookings-options-dropdown"
+                      >
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            text="Preview"
+                            onClick={async () => {
+                              await this.props.selectBoat(data);
+                              history.push('/selectboat');
+                            }}
+                          />
+                          <DeleteModal
+                            handleDelete={this.handleDelete}
+                            data={data}
+                          />
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                  ) : (
+                    ''
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -81,8 +125,7 @@ class Boat extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return { userProfile: state.userProfile, currentUser: state.currentUser };
 };
 
-export default connect(mapStateToProps)(Boat);
+export default connect(mapStateToProps, { selectBoat })(Boat);

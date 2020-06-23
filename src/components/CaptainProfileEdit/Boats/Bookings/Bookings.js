@@ -101,12 +101,13 @@ class Bookings extends React.Component {
                 {this.state.loading ? (
                   <Loading />
                 ) : (
-                  this.state.bookings.map((data) => {
+                  this.state.bookings.map((data, index) => {
                     console.log('data', data);
                     return data ? (
                       <div
                         className="personal-information-body-bookings-container"
                         style={{ marginTop: '3px' }}
+                        key={index}
                       >
                         <img
                           src={data.images[0]}
