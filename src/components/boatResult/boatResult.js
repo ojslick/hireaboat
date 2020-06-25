@@ -15,6 +15,7 @@ import Footer from '../Footer/Footer';
 import LengthSlider from './lengthSlider';
 import CapacitySliders from './capacitySlider';
 import CabinSlider from './cabinSlider';
+import Loading from '../Loading/Loading';
 
 import './boatResult.css';
 import pinIcon from './images/pinIcon.svg';
@@ -42,19 +43,8 @@ class boatResult extends React.Component {
     toDate: new Date(),
     clickToDay: true,
     clickFromDay: true,
+    loading: true,
   };
-
-  componentDidMount() {
-    window.scrollTo(0, 0);
-
-    const fetchData = async () => {
-      let db = firebase.firestore();
-      let boatsRef = await db.collectionGroup('userBoats').get();
-      console.log('boatsRef', boatsRef);
-      this.setState({ listOfBoats: boatsRef.docs.map((doc) => doc.data()) });
-    };
-    fetchData();
-  }
 
   componentDidUpdate() {
     this.props.similarBoats(this.state.filteredSearch);
@@ -176,6 +166,29 @@ class boatResult extends React.Component {
     });
   };
 
+  async componentDidMount() {
+    window.scrollTo(0, 0);
+
+    const fetchData = async () => {
+      let db = firebase.firestore();
+      let boatsRef = await db.collectionGroup('userBoats').get();
+
+      let boats = [];
+
+      boatsRef.docs.map((doc) => boats.push(doc.data()));
+
+      this.setState({
+        listOfBoats: boats,
+      });
+
+      return boats;
+    };
+    await fetchData();
+
+    this.handleFilter('city', this.props.location);
+    this.setState({ loading: false });
+  }
+
   paginate = (pageNumber) => this.setState({ currentPage: pageNumber });
 
   handlePrevButton = () => {
@@ -215,7 +228,10 @@ class boatResult extends React.Component {
                   type="text"
                   className="boat-result-input-search-city-input"
                   onChange={(event) => {
-                    this.handleFilter('city', event.target.value);
+                    this.handleFilter(
+                      'city',
+                      `${event.target.value || this.props.location}`
+                    );
                   }}
                 />
                 <img
@@ -437,15 +453,18 @@ class boatResult extends React.Component {
                   />
                 </div>
               </div>
-              {this.state.filteredSearch.length > 0 ? (
-                <div className="boat-result-search-result-boat-list">
-                  {currentBoats.map((data, index) => (
-                    <BoatCard data={data} key={index} />
-                  ))}
-                </div>
-              ) : (
-                <div>loading</div>
-              )}
+
+              <div className="boat-result-search-result-boat-list">
+                {!this.state.loading ? (
+                  <>
+                    {currentBoats.map((data, index) => (
+                      <BoatCard data={data} key={index} />
+                    ))}
+                  </>
+                ) : (
+                  <Loading />
+                )}
+              </div>
             </div>
           </div>
           <div className="boat-result-search-live-chat">
@@ -498,7 +517,8 @@ class boatResult extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { boats: state.boatList };
+  console.log('location', state.location);
+  return { boats: state.boatList, location: state.location };
 };
 
 export default connect(mapStateToProps, { listBoats, similarBoats })(

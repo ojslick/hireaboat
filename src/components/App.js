@@ -25,6 +25,7 @@ import Message from './Message/Message';
 import Conversation from './Message/Conversation';
 import Bookings from './CaptainProfileEdit/Bookings/Bookings';
 import Boats from './CaptainProfileEdit/Boats/Boats';
+import PasswordReset from './CaptainProfileEdit/Settings/PasswordReset';
 import {
   auth,
   createUserProfileDocument,
@@ -32,6 +33,7 @@ import {
 } from '../firebase/firebase';
 import { currentUser } from '../actions/';
 import firebase from 'firebase';
+
 class App extends React.Component {
   state = { currentUser: null, loading: false };
 
@@ -123,6 +125,7 @@ class App extends React.Component {
               />
               <Route path="/bookings" exact component={Bookings} />
               <Route path="/boats" exact component={Boats} />
+              <Route path="/settings" exact component={PasswordReset} />
             </Switch>
           </Router>
         )}

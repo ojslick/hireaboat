@@ -11,6 +11,7 @@ import currentUserReducer from './currentUserReducer';
 import checkoutDataReducer from './checkOutDataReducer';
 import userProfileReducer from './userProfileReducer';
 import conversationReducer from './conversationReducer';
+import location from './location';
 
 export default combineReducers({
   hoodie,
@@ -25,4 +26,5 @@ export default combineReducers({
   checkoutData: checkoutDataReducer,
   userProfile: userProfileReducer,
   conversation: conversationReducer,
+  location,
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import history from '../../history';
 import Search from './Search/Search';
 import boatIcon from './images/boat.svg';
 import worldIcon from './images/world.svg';
@@ -42,6 +42,7 @@ class LandingPage extends React.Component {
               <button
                 className="ui primary button explore-boats"
                 style={{ marginTop: '100px' }}
+                onClick={() => history.push('/boatResult')}
               >
                 Explore Boats
               </button>

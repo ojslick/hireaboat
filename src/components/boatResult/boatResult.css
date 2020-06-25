@@ -242,7 +242,7 @@
 }
 
 .boat-result-search-result-filter {
-  width: 23%;
+  width: 20%;
   min-height: 470px;
   margin-top: 30px;
   background: #ffffff;
@@ -290,11 +290,12 @@
 }
 
 .boat-result-search-result-boat-list {
-  width: 76%;
-
+  width: 79%;
+  position: relative;
   display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 .boat-result-search-result-boat-list-card {

@@ -63,3 +63,10 @@ export const conversation = (data) => async (dispatch) => {
 
   dispatch({ type: 'CONVERSATION', payload: response });
 };
+
+// location search
+export const location = (data) => async (dispatch) => {
+  const response = await data;
+
+  dispatch({ type: 'LOCATION', payload: response });
+};
