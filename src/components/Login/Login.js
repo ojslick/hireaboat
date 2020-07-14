@@ -37,8 +37,8 @@ class Login extends React.Component {
       const response = await auth.signInWithEmailAndPassword(email, password);
       if (response) {
         this.setState({ email: '', password: '' });
-        history.push('/');
       }
+      history.push('/');
     } catch (error) {
       console.log(error);
       this.setState({ error: error });
@@ -146,9 +146,10 @@ class Login extends React.Component {
             <div className="oauth-container">
               <button
                 className="login-with-facebook"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
-                  signInWithGoogle();
+                  await signInWithGoogle();
+                  history.push('/');
                 }}
               >
                 <img
